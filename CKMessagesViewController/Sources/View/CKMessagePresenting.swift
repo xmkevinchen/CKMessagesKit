@@ -10,14 +10,12 @@
 
 public protocol CKMessagePresenting {
     
-    associatedtype Message: CKMessageData
-    
-    static func presentor(with message: Message) -> Self
+                
+    static func presentor(with message: CKMessageData) -> CKMessagePresenting
     
     var messageView: UIView { get }
-    
-    func refresh(with message: Message)
-    
-    
+    var messageType: CKMessageData.Type { get }
+    func refresh(with message: CKMessageData)
+        
     
 }

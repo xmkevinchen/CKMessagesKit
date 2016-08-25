@@ -11,6 +11,16 @@ import CKMessagesViewController
 
 final class GridViewController: UIViewController, CKMessagePresenting {
     
+    public var messageType: CKMessageData.Type = CKTextMessage.self
+
+    
+    public static func presentor(with message: CKMessageData) -> CKMessagePresenting {
+        let viewControlelr = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "GridViewController") as! GridViewController
+        viewControlelr.message = message as? CKTextMessage
+        return viewControlelr
+    }
+
+    
 
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -22,19 +32,13 @@ final class GridViewController: UIViewController, CKMessagePresenting {
         collectionView.reloadData()
     }
     
-
-    typealias Message = CKMessage
-    var message: CKMessage?
     
-    static func presentor(with message: Message) -> GridViewController {
-        let viewControlelr = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "GridViewController") as! GridViewController
-        viewControlelr.message = message
-        return viewControlelr
-    }
+    var message: CKTextMessage?
     
     
-    func refresh(with message: CKMessage) {
-        self.message = message
+    
+    public func refresh(with message: CKMessageData) {
+        self.message = message as? CKTextMessage
         collectionView.reloadData()
     }
     
@@ -74,7 +78,7 @@ extension GridViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GridCell", for: indexPath) as! GridCell
-        cell.textLabel.text = String(indexPath.item + Int(message!.text)!)
+        cell.textLabel.text = String(indexPath.item + Int(message!.message)!)
         return cell
     }
     

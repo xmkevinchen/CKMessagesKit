@@ -8,19 +8,17 @@
 
 import Foundation
 
-public struct CKMessage: CKMessageData {
-    
+public struct CKTextMessage: CKMessageData {
+        
     public var senderId: String
     public var sender: String
-    public var text: String
+    public var message: String
     public var timestamp: Date
     
-    public typealias MessageType = String
-    
-    public init(senderId: String, sender: String, text: String, timestamp: Date) {
+    public init(senderId: String, sender: String, message: String, timestamp: Date = Date()) {
         self.senderId = sender
         self.sender = sender
-        self.text = text
+        self.message = message
         self.timestamp = timestamp
     }
     

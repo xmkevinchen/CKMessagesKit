@@ -1,6 +1,6 @@
 //
 //  CKMessagesViewCell.swift
-//  CKCollectionViewForDataCard
+//  CKMessagesViewController
 //
 //  Created by Kevin Chen on 8/24/16.
 //  Copyright © 2016 Kevin Chen. All rights reserved.
@@ -8,17 +8,36 @@
 
 import UIKit
 
-
-
 open class CKMessagesViewCell: UICollectionViewCell {
     
-    static open func nib() -> UINib {
-        return UINib(nibName: String(describing: CKMessagesViewCell.self),
-                     bundle: Bundle(for: CKMessagesViewCell.self))
+    var messageView: UIView? {
+        
+        willSet {
+            
+            if newValue == nil {
+                messageView?.removeFromSuperview()
+            }
+        }
+        
+        didSet {
+            
+            if let view = messageView {
+                view.translatesAutoresizingMaskIntoConstraints = false
+                contentView.addSubview(view)
+                contentView.clipsToBounds = true
+                
+                view.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+                view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+                view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+                view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+            }
+        }
     }
     
-    static open func identifier() -> String {
-        return String(describing: CKMessagesViewCell.self)
+    open override func prepareForReuse() {
+        super.prepareForReuse()
+        messageView = nil
     }
+        
     
 }

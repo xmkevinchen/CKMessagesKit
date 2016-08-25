@@ -24,10 +24,8 @@
 		912224491D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224401D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutAttributes.swift */; };
 		9122244A1D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutInvalidationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224411D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutInvalidationContext.swift */; };
 		9122244B1D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224431D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift */; };
-		9122244C1D6E7BE300C5F3B4 /* CKMessagesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224441D6E7BE300C5F3B4 /* CKMessagesViewCell.swift */; };
-		9122244D1D6E7BE300C5F3B4 /* CKMessagesViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 912224451D6E7BE300C5F3B4 /* CKMessagesViewCell.xib */; };
 		9122244F1D6E7BF800C5F3B4 /* CKMessagePresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9122244E1D6E7BF800C5F3B4 /* CKMessagePresenting.swift */; };
-		912224531D6E801400C5F3B4 /* CKMessagesViewCustomizeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224521D6E801400C5F3B4 /* CKMessagesViewCustomizeCell.swift */; };
+		912224531D6E801400C5F3B4 /* CKMessagesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224521D6E801400C5F3B4 /* CKMessagesViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +56,7 @@
 		0AFD7D471D6E9E2D000367B2 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridViewController.swift; sourceTree = "<group>"; };
 		0AFD7D4A1D6EB403000367B2 /* CKMessageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageData.swift; sourceTree = "<group>"; };
 		0AFD7D4C1D6EB528000367B2 /* CKMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessage.swift; sourceTree = "<group>"; };
+		0AFD7D4E1D6F2F0E000367B2 /* CKMessagesViewController.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = CKMessagesViewController.playground; sourceTree = "<group>"; };
 		912224041D6E6D0E00C5F3B4 /* CKMessagesViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CKMessagesViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		912224071D6E6D0E00C5F3B4 /* CKMessagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CKMessagesViewController.h; sourceTree = "<group>"; };
 		912224081D6E6D0E00C5F3B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -74,10 +73,8 @@
 		912224401D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesCollectionViewLayoutAttributes.swift; sourceTree = "<group>"; };
 		912224411D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutInvalidationContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesCollectionViewLayoutInvalidationContext.swift; sourceTree = "<group>"; };
 		912224431D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesCollectionView.swift; sourceTree = "<group>"; };
-		912224441D6E7BE300C5F3B4 /* CKMessagesViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesViewCell.swift; sourceTree = "<group>"; };
-		912224451D6E7BE300C5F3B4 /* CKMessagesViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKMessagesViewCell.xib; sourceTree = "<group>"; };
 		9122244E1D6E7BF800C5F3B4 /* CKMessagePresenting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagePresenting.swift; sourceTree = "<group>"; };
-		912224521D6E801400C5F3B4 /* CKMessagesViewCustomizeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesViewCustomizeCell.swift; sourceTree = "<group>"; };
+		912224521D6E801400C5F3B4 /* CKMessagesViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +108,7 @@
 		912223FA1D6E6D0E00C5F3B4 = {
 			isa = PBXGroup;
 			children = (
+				0AFD7D4E1D6F2F0E000367B2 /* CKMessagesViewController.playground */,
 				912224061D6E6D0E00C5F3B4 /* CKMessagesViewController */,
 				912224141D6E6D3300C5F3B4 /* Sample */,
 				912224051D6E6D0E00C5F3B4 /* Products */,
@@ -175,11 +173,9 @@
 		912224421D6E7BE300C5F3B4 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				912224431D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift */,
 				9122244E1D6E7BF800C5F3B4 /* CKMessagePresenting.swift */,
-				912224521D6E801400C5F3B4 /* CKMessagesViewCustomizeCell.swift */,
-				912224441D6E7BE300C5F3B4 /* CKMessagesViewCell.swift */,
-				912224451D6E7BE300C5F3B4 /* CKMessagesViewCell.xib */,
+				912224431D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift */,
+				912224521D6E801400C5F3B4 /* CKMessagesViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -247,7 +243,6 @@
 				TargetAttributes = {
 					912224031D6E6D0E00C5F3B4 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = BV2XDV2QJ7;
 						ProvisioningStyle = Automatic;
 					};
 					912224121D6E6D3300C5F3B4 = {
@@ -281,7 +276,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9122244D1D6E7BE300C5F3B4 /* CKMessagesViewCell.xib in Resources */,
 				912224471D6E7BE300C5F3B4 /* CKMessagesViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,13 +297,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				912224531D6E801400C5F3B4 /* CKMessagesViewCustomizeCell.swift in Sources */,
+				912224531D6E801400C5F3B4 /* CKMessagesViewCell.swift in Sources */,
 				9122244A1D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutInvalidationContext.swift in Sources */,
 				912224481D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayout.swift in Sources */,
 				0AFD7D4D1D6EB528000367B2 /* CKMessage.swift in Sources */,
 				912224461D6E7BE300C5F3B4 /* CKMessagesViewController.swift in Sources */,
 				912224491D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutAttributes.swift in Sources */,
-				9122244C1D6E7BE300C5F3B4 /* CKMessagesViewCell.swift in Sources */,
 				9122244F1D6E7BF800C5F3B4 /* CKMessagePresenting.swift in Sources */,
 				9122244B1D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift in Sources */,
 				0AFD7D4B1D6EB403000367B2 /* CKMessageData.swift in Sources */,
@@ -460,7 +453,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = BV2XDV2QJ7;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -479,7 +472,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = BV2XDV2QJ7;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
