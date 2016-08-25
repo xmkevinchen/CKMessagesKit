@@ -2,7 +2,7 @@
 //  CKMessagesCollectionViewLayout.swift
 //  CKCollectionViewForDataCard
 //
-//  Created by Chen Kevin on 8/24/16.
+//  Created by Kevin Chen on 8/24/16.
 //  Copyright © 2016 Kevin Chen. All rights reserved.
 //
 
@@ -28,6 +28,10 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     required public init?(coder aDecoder: NSCoder) {
         super.init()
         configure()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override public func awakeFromNib() {
@@ -84,9 +88,15 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
         sectionInset = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
         minimumLineSpacing = 5
         
-        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveApplicationMemoryWarningNotification(_:)), name: Notification.Name.UIApplicationDidReceiveMemoryWarning, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didReceiveApplicationMemoryWarningNotification(_:)),
+                                               name: Notification.Name.UIApplicationDidReceiveMemoryWarning,
+                                               object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveDeviceOrientationDidChangeNotification(_:)), name: Notification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didReceiveDeviceOrientationDidChangeNotification(_:)),
+                                               name: Notification.Name.UIDeviceOrientationDidChange,
+                                               object: nil)
         
     }
     

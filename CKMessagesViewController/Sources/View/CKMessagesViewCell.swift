@@ -2,7 +2,7 @@
 //  CKMessagesViewCell.swift
 //  CKCollectionViewForDataCard
 //
-//  Created by Chen Kevin on 8/24/16.
+//  Created by Kevin Chen on 8/24/16.
 //  Copyright © 2016 Kevin Chen. All rights reserved.
 //
 
@@ -10,7 +10,7 @@ import UIKit
 
 
 
-open class CKMessagesViewCell: UICollectionViewCell, CKMessageCell {
+open class CKMessagesViewCell: UICollectionViewCell {
     
     static open func nib() -> UINib {
         return UINib(nibName: String(describing: CKMessagesViewCell.self),

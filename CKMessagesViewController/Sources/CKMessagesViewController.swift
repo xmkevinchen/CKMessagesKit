@@ -2,18 +2,16 @@
 //  CKMessagesViewController.swift
 //  CKCollectionViewForDataCard
 //
-//  Created by Chen Kevin on 8/17/16.
+//  Created by Kevin Chen on 8/17/16.
 //  Copyright © 2016 Kevin Chen. All rights reserved.
 //
 
 import UIKit
 
+
 open class CKMessagesViewController: UIViewController {
 
-    @IBOutlet weak var messagesView: CKMessagesCollectionView!
-        
-    @IBOutlet weak var topConstraint: NSLayoutConstraint!
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet open weak var messagesView: CKMessagesCollectionView!
     
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +28,7 @@ open class CKMessagesViewController: UIViewController {
             return UINib(nibName: String(CKMessagesViewController.self), bundle: Bundle(for: CKMessagesViewController.self))
         #endif
     }
+    
 
     private func configure() {
         
@@ -73,7 +72,9 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
     }
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
         if let layout = collectionViewLayout as? CKMessagesCollectionViewLayout {
+                                    
             return layout.sizeForItem(at: indexPath)
         } else {
             return CGSize.zero

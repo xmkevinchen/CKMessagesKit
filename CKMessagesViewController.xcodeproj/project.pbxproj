@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0AFD7D481D6E9E2D000367B2 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFD7D471D6E9E2D000367B2 /* GridViewController.swift */; };
+		0AFD7D4B1D6EB403000367B2 /* CKMessageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFD7D4A1D6EB403000367B2 /* CKMessageData.swift */; };
+		0AFD7D4D1D6EB528000367B2 /* CKMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFD7D4C1D6EB528000367B2 /* CKMessage.swift */; };
 		912224091D6E6D0E00C5F3B4 /* CKMessagesViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 912224071D6E6D0E00C5F3B4 /* CKMessagesViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		912224161D6E6D3300C5F3B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224151D6E6D3300C5F3B4 /* AppDelegate.swift */; };
 		912224181D6E6D3300C5F3B4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224171D6E6D3300C5F3B4 /* ViewController.swift */; };
@@ -23,7 +26,7 @@
 		9122244B1D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224431D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift */; };
 		9122244C1D6E7BE300C5F3B4 /* CKMessagesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224441D6E7BE300C5F3B4 /* CKMessagesViewCell.swift */; };
 		9122244D1D6E7BE300C5F3B4 /* CKMessagesViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 912224451D6E7BE300C5F3B4 /* CKMessagesViewCell.xib */; };
-		9122244F1D6E7BF800C5F3B4 /* CKMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9122244E1D6E7BF800C5F3B4 /* CKMessageCell.swift */; };
+		9122244F1D6E7BF800C5F3B4 /* CKMessagePresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9122244E1D6E7BF800C5F3B4 /* CKMessagePresenting.swift */; };
 		912224531D6E801400C5F3B4 /* CKMessagesViewCustomizeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224521D6E801400C5F3B4 /* CKMessagesViewCustomizeCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +55,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0AFD7D471D6E9E2D000367B2 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridViewController.swift; sourceTree = "<group>"; };
+		0AFD7D4A1D6EB403000367B2 /* CKMessageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageData.swift; sourceTree = "<group>"; };
+		0AFD7D4C1D6EB528000367B2 /* CKMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessage.swift; sourceTree = "<group>"; };
 		912224041D6E6D0E00C5F3B4 /* CKMessagesViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CKMessagesViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		912224071D6E6D0E00C5F3B4 /* CKMessagesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CKMessagesViewController.h; sourceTree = "<group>"; };
 		912224081D6E6D0E00C5F3B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -70,7 +76,7 @@
 		912224431D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesCollectionView.swift; sourceTree = "<group>"; };
 		912224441D6E7BE300C5F3B4 /* CKMessagesViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesViewCell.swift; sourceTree = "<group>"; };
 		912224451D6E7BE300C5F3B4 /* CKMessagesViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKMessagesViewCell.xib; sourceTree = "<group>"; };
-		9122244E1D6E7BF800C5F3B4 /* CKMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageCell.swift; sourceTree = "<group>"; };
+		9122244E1D6E7BF800C5F3B4 /* CKMessagePresenting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagePresenting.swift; sourceTree = "<group>"; };
 		912224521D6E801400C5F3B4 /* CKMessagesViewCustomizeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesViewCustomizeCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,6 +99,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0AFD7D491D6EB3AA000367B2 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0AFD7D4A1D6EB403000367B2 /* CKMessageData.swift */,
+				0AFD7D4C1D6EB528000367B2 /* CKMessage.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		912223FA1D6E6D0E00C5F3B4 = {
 			isa = PBXGroup;
 			children = (
@@ -126,6 +141,7 @@
 			children = (
 				912224151D6E6D3300C5F3B4 /* AppDelegate.swift */,
 				912224171D6E6D3300C5F3B4 /* ViewController.swift */,
+				0AFD7D471D6E9E2D000367B2 /* GridViewController.swift */,
 				912224191D6E6D3300C5F3B4 /* Main.storyboard */,
 				9122241C1D6E6D3300C5F3B4 /* Assets.xcassets */,
 				9122241E1D6E6D3300C5F3B4 /* LaunchScreen.storyboard */,
@@ -139,6 +155,7 @@
 			children = (
 				9122243C1D6E7BE300C5F3B4 /* CKMessagesViewController.swift */,
 				9122243D1D6E7BE300C5F3B4 /* CKMessagesViewController.xib */,
+				0AFD7D491D6EB3AA000367B2 /* Model */,
 				9122243E1D6E7BE300C5F3B4 /* Layout */,
 				912224421D6E7BE300C5F3B4 /* View */,
 			);
@@ -159,7 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				912224431D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift */,
-				9122244E1D6E7BF800C5F3B4 /* CKMessageCell.swift */,
+				9122244E1D6E7BF800C5F3B4 /* CKMessagePresenting.swift */,
 				912224521D6E801400C5F3B4 /* CKMessagesViewCustomizeCell.swift */,
 				912224441D6E7BE300C5F3B4 /* CKMessagesViewCell.swift */,
 				912224451D6E7BE300C5F3B4 /* CKMessagesViewCell.xib */,
@@ -289,11 +306,13 @@
 				912224531D6E801400C5F3B4 /* CKMessagesViewCustomizeCell.swift in Sources */,
 				9122244A1D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutInvalidationContext.swift in Sources */,
 				912224481D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayout.swift in Sources */,
+				0AFD7D4D1D6EB528000367B2 /* CKMessage.swift in Sources */,
 				912224461D6E7BE300C5F3B4 /* CKMessagesViewController.swift in Sources */,
 				912224491D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutAttributes.swift in Sources */,
 				9122244C1D6E7BE300C5F3B4 /* CKMessagesViewCell.swift in Sources */,
-				9122244F1D6E7BF800C5F3B4 /* CKMessageCell.swift in Sources */,
+				9122244F1D6E7BF800C5F3B4 /* CKMessagePresenting.swift in Sources */,
 				9122244B1D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift in Sources */,
+				0AFD7D4B1D6EB403000367B2 /* CKMessageData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +322,7 @@
 			files = (
 				912224181D6E6D3300C5F3B4 /* ViewController.swift in Sources */,
 				912224161D6E6D3300C5F3B4 /* AppDelegate.swift in Sources */,
+				0AFD7D481D6E9E2D000367B2 /* GridViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,6 +540,7 @@
 				9122240E1D6E6D0E00C5F3B4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		912224221D6E6D3300C5F3B4 /* Build configuration list for PBXNativeTarget "Sample" */ = {
 			isa = XCConfigurationList;
@@ -528,6 +549,7 @@
 				912224241D6E6D3300C5F3B4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

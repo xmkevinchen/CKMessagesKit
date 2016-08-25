@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  Sample
 //
-//  Created by Chen Kevin on 8/24/16.
+//  Created by Kevin Chen on 8/24/16.
 //  Copyright © 2016 Kevin Chen. All rights reserved.
 //
 
