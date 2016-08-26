@@ -39,7 +39,6 @@ open class CKMessagesCollectionView: UICollectionView {
         if #available(iOS 10, *) {
             isPrefetchingEnabled = true
         }
-        
     }
     
 }

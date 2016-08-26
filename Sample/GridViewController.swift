@@ -9,42 +9,48 @@
 import UIKit
 import CKMessagesViewController
 
-final class GridViewController: UIViewController, CKMessagePresenting {
+class CKTrackingView: UIView {
     
-    public var messageType: CKMessageData.Type = CKTextMessage.self
+    override func willMove(toSuperview newSuperview: UIView?) {
+        if newSuperview == nil {
+            print("====> superview: from \(superview), to \(newSuperview)")
+        }
+    }
+    
+    
+}
 
+class GridViewController: UIViewController, CKMessagePresenting {
+    
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+    }
+
+    
+    public var message: CKMessageData?
+    public var messageType: CKMessageData.Type = CKTextMessage.self
     
     public static func presentor(with message: CKMessageData) -> CKMessagePresenting {
         let viewControlelr = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "GridViewController") as! GridViewController
         viewControlelr.message = message as? CKTextMessage
         return viewControlelr
     }
-
     
-
-    @IBOutlet weak var collectionView: UICollectionView!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        
-        collectionView.reloadData()
+    func renderPresenting(with message: CKMessageData) {
+        if let message = message as? CKTextMessage, let collectionView = collectionView {
+            self.message = message
+            collectionView.reloadData()
+        }
     }
     
-    
-    var message: CKTextMessage?
-    
-    
-    
-    public func refresh(with message: CKMessageData) {
-        self.message = message as? CKTextMessage
-        collectionView.reloadData()
-    }
     
     var messageView: UIView {
         return view
     }
+        
 }
 
 
@@ -73,12 +79,13 @@ class GridCell: UICollectionViewCell {
 extension GridViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return 20
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GridCell", for: indexPath) as! GridCell
-        cell.textLabel.text = String(indexPath.item + Int(message!.message)!)
+        
+        cell.textLabel.text = String(indexPath.item + Int((message as! CKTextMessage).message)!)
         return cell
     }
     

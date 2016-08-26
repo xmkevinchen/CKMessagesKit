@@ -42,37 +42,94 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
     }
     
     private var registeredPresentors = [String: CKMessagePresenting.Type]()
-    private var presentors = [IndexPath: CKMessagePresenting]()
+    
+    private var usingPresentors = [IndexPath: CKMessagePresenting]()
     private var reusablePresentors = [String: [CKMessagePresenting]]()
+    private var preparedPresentors = [IndexPath: CKMessagePresenting]()
     
     private func presentor(at indexPath: IndexPath) -> CKMessagePresenting? {
         
         if let message = delegate?.messageView(messagesView, messageForItemAt: indexPath) {
+            
             let key = String(describing: type(of:message))
             
             guard registeredPresentors[key] != nil else {
                 return nil
             }
             
-            if let presentor = reusablePresentors[key]?.last {
-                reusablePresentors[key]?.removeLast()
-                return presentor
-            } else {
-                let presentor = registeredPresentors[key]!.presentor(with: message)
-                if presentor is UIViewController {
-                    addChildViewController(presentor as! UIViewController)
-                }
+            if let presentor = usingPresentors[indexPath] {
                 return presentor
             }
+            
+            var presentor: CKMessagePresenting
+            
+            if #available(iOS 10, *) {
+                if let _presentor = preparedPresentors[indexPath] {
+                    preparedPresentors.removeValue(forKey: indexPath)
+                    presentor = _presentor
+                    usingPresentors[indexPath] = presentor
+                    return presentor
+                }
+            }
+                        
+            
+            if let _presentor = reusablePresentors[key]?.last {
+                reusablePresentors[key]?.removeLast()
+                presentor = _presentor
+                presentor.message = message
+            } else {
+                presentor = registeredPresentors[key]!.presentor(with: message)
+            }
+            
+            usingPresentors[indexPath] = presentor
+            
+            return presentor
         }
+        
         
         return nil
         
     }
     
-    private func recycle(presentor: CKMessagePresenting, at indexPath: IndexPath) {
+    func preparePresentor(for indexPath: IndexPath) {
         
-        presentors.removeValue(forKey: indexPath)
+        if let message = delegate?.messageView(messagesView, messageForItemAt: indexPath) {
+            
+            if var presentor = preparedPresentors[indexPath] {
+                presentor.message = message
+                return
+            }
+            
+            let key = String(describing: type(of:message))
+            
+            guard registeredPresentors[key] != nil else {
+                return
+            }
+            
+            if var presentor = reusablePresentors[key]?.last {
+                presentor.message = message
+                reusablePresentors[key]?.removeLast()
+                preparedPresentors[indexPath] = presentor
+            } else {
+                let presentor = registeredPresentors[key]!.presentor(with: message)
+                preparedPresentors[indexPath] = presentor
+
+            }
+            
+            
+        }
+        
+        
+    }
+    
+    private func recyclePresentor(at indexPath: IndexPath) {
+        
+        guard let presentor = usingPresentors[indexPath] else {
+            return
+        }
+        
+        usingPresentors.removeValue(forKey: indexPath)
+        
         
         let key = String(describing:presentor.messageType)
         
@@ -96,20 +153,38 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
             self.dynamicType.nib().instantiate(withOwner: self, options: nil)
         #endif
         
-        
-        messagesView.topAnchor.constraint(equalTo: topLayoutGuide.topAnchor).isActive = true
+        messagesView.translatesAutoresizingMaskIntoConstraints = false
+                
+        messagesView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         messagesView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         messagesView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        messagesView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.bottomAnchor).isActive = true
+        messagesView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
                 
-        messagesView.register(CKMessagesViewCell.classForCoder(), forCellWithReuseIdentifier: "CKMessagesViewCell")
+        messagesView.register(CKMessagesViewCell.self, forCellWithReuseIdentifier: String(describing: CKMessagesViewCell.self))
         
         
         messagesView.delegate = self
         messagesView.dataSource = self
+        
+        if #available(iOS 10, *) {
+            messagesView.prefetchDataSource = self
+        }
+        
         messagesView.reloadData()
-
+        
+        
     }
+    
+    
+    open override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+        reusablePresentors.removeAll()
+        preparedPresentors.removeAll()
+        
+        
+    }
+    
     
     open func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -121,10 +196,10 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CKMessagesViewCell", for: indexPath) as! CKMessagesViewCell
-        if let presentor = presentor(at: indexPath) {
-            cell.messageView = presentor.messageView
-        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CKMessagesViewCell.self), for: indexPath) as! CKMessagesViewCell
+        
+        preparePresentor(for: indexPath)
+        
         
         return cell
     }
@@ -139,10 +214,31 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
         }
     }
     
-    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if let presentor = presentors[indexPath] {
-            recycle(presentor: presentor, at: indexPath)
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        if let cell = cell as? CKMessagesViewCell {
+            
+            guard let presentor = presentor(at: indexPath) , let message = delegate?.messageView(messagesView, messageForItemAt: indexPath) else {
+                return
+            }
+            
+            presentor.renderPresenting(with: message)
+            cell.messageView = presentor.messageView
+            
         }
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        recyclePresentor(at: indexPath)
+    }
+    
+}
+
+@available(iOS 10, *)
+extension CKMessagesViewController: UICollectionViewDataSourcePrefetching {
+    
+    public func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        indexPaths.forEach { preparePresentor(for: $0) }
     }
 }
 

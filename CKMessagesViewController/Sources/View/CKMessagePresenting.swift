@@ -14,8 +14,9 @@ public protocol CKMessagePresenting {
     static func presentor(with message: CKMessageData) -> CKMessagePresenting
     
     var messageView: UIView { get }
-    var messageType: CKMessageData.Type { get }
-    func refresh(with message: CKMessageData)
-        
+    var messageType: CKMessageData.Type { get }        
+    var message: CKMessageData? { get set }
     
+    
+    func renderPresenting(with message: CKMessageData)
 }

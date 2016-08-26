@@ -32,7 +32,7 @@
                         <viewControllerLayoutGuide type="top" id="cSX-Zn-GN8"/>
                         <viewControllerLayoutGuide type="bottom" id="qPm-wW-EL6"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="lWO-Dn-Bju">
+                    <view key="view" contentMode="scaleToFill" id="lWO-Dn-Bju" customClass="CKTrackingView" customModule="Sample" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>

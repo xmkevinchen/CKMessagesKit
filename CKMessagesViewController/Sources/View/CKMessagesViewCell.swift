@@ -12,15 +12,11 @@ open class CKMessagesViewCell: UICollectionViewCell {
     
     var messageView: UIView? {
         
-        willSet {
-            
-            if newValue == nil {
-                messageView?.removeFromSuperview()
-            }
-        }
-        
+//        willSet {
+//            messageView?.removeFromSuperview()
+//        }
+                
         didSet {
-            
             if let view = messageView {
                 view.translatesAutoresizingMaskIntoConstraints = false
                 contentView.addSubview(view)
@@ -30,13 +26,17 @@ open class CKMessagesViewCell: UICollectionViewCell {
                 view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
                 view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
                 view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+                
             }
         }
     }
     
+    
+    
     open override func prepareForReuse() {
         super.prepareForReuse()
         messageView = nil
+        
     }
         
     

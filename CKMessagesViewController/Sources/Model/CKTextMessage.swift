@@ -1,5 +1,5 @@
 //
-//  CKMessage.swift
+//  CKTextMessage.swift
 //  CKMessagesViewController
 //
 //  Created by Kevin Chen on 8/24/16.
