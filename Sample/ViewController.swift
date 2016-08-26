@@ -23,13 +23,13 @@ class ViewController: CKMessagesViewController, CKMessagesViewDelegate {
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 100
+        return 6
     }
     
     
     func messageView(_ messageView: CKMessagesCollectionView, messageForItemAt indexPath: IndexPath) -> CKMessageData {
         
-        return CKTextMessage(senderId: "1", sender: "CK", message: String(indexPath.item + 1))
+        return CKTextMessage(senderId: "1", sender: "CK", message: String(indexPath.item))
         
     }
 }

@@ -8,13 +8,14 @@
 
 import UIKit
 
+
 public protocol CKMessagesViewDelegate: class {
     
     func messageView(_ messageView: CKMessagesCollectionView, messageForItemAt indexPath: IndexPath) -> CKMessageData
     
 }
 
-open class CKMessagesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+open class CKMessagesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
 
     @IBOutlet open weak var messagesView: CKMessagesCollectionView!
     
@@ -44,105 +45,77 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
     private var registeredPresentors = [String: CKMessagePresenting.Type]()
     
     private var usingPresentors = [IndexPath: CKMessagePresenting]()
-    private var reusablePresentors = [String: [CKMessagePresenting]]()
-    private var preparedPresentors = [IndexPath: CKMessagePresenting]()
+    private var unusedPresentors = [String: [CKMessagePresenting]]()
+    private var pretchedPresentors = [IndexPath: CKMessagePresenting]()
     
-    private func presentor(at indexPath: IndexPath) -> CKMessagePresenting? {
+    private  func presentor(of message: CKMessageData, at indexPath: IndexPath) -> CKMessagePresenting? {
         
-        if let message = delegate?.messageView(messagesView, messageForItemAt: indexPath) {
-            
-            let key = String(describing: type(of:message))
-            
-            guard registeredPresentors[key] != nil else {
-                return nil
-            }
-            
-            if let presentor = usingPresentors[indexPath] {
-                return presentor
-            }
-            
-            var presentor: CKMessagePresenting
-            
-            if #available(iOS 10, *) {
-                if let _presentor = preparedPresentors[indexPath] {
-                    preparedPresentors.removeValue(forKey: indexPath)
-                    presentor = _presentor
-                    usingPresentors[indexPath] = presentor
-                    return presentor
-                }
-            }
-                        
-            
-            if let _presentor = reusablePresentors[key]?.last {
-                reusablePresentors[key]?.removeLast()
-                presentor = _presentor
-                presentor.message = message
-            } else {
-                presentor = registeredPresentors[key]!.presentor(with: message)
-            }
-            
+        let MessageType = String(describing: type(of:message))
+        guard let PresentorType = registeredPresentors[MessageType] else {
+            return nil
+        }
+        
+        // If pretchPresentors has presentor for indexPath then just use it
+        
+        if let presentor = pretchedPresentors[indexPath] {
             usingPresentors[indexPath] = presentor
-            
+            pretchedPresentors.removeValue(forKey: indexPath)
             return presentor
         }
         
         
-        return nil
+        if var presentor = unusedPresentors[MessageType]?.first {
+            unusedPresentors[MessageType]?.removeFirst()
+            usingPresentors[indexPath] = presentor
+            presentor.message = message
+            return presentor
+        }
+        
+        var presentor = PresentorType.presentor()
+        presentor.message = message
+        usingPresentors[indexPath] = presentor
+        return presentor
         
     }
     
-    func preparePresentor(for indexPath: IndexPath) {
+    func prefetchPresentor(of message: CKMessageData, at indexPath: IndexPath) {
         
-        if let message = delegate?.messageView(messagesView, messageForItemAt: indexPath) {
-            
-            if var presentor = preparedPresentors[indexPath] {
-                presentor.message = message
-                return
-            }
-            
-            let key = String(describing: type(of:message))
-            
-            guard registeredPresentors[key] != nil else {
-                return
-            }
-            
-            if var presentor = reusablePresentors[key]?.last {
-                presentor.message = message
-                reusablePresentors[key]?.removeLast()
-                preparedPresentors[indexPath] = presentor
-            } else {
-                let presentor = registeredPresentors[key]!.presentor(with: message)
-                preparedPresentors[indexPath] = presentor
-
-            }
-            
-            
+        guard pretchedPresentors[indexPath] == nil else {
+            return
         }
         
+        let MessageType = String(describing: type(of:message))
+        guard let PresentorType = registeredPresentors[MessageType] else {
+            return
+        }
+        
+        if var presentor = unusedPresentors[MessageType]?.first {
+            unusedPresentors[MessageType]?.removeFirst()
+            presentor.message = message
+            pretchedPresentors[indexPath] = presentor
+        } else {
+            var presentor = PresentorType.presentor()
+            presentor.message = message
+            pretchedPresentors[indexPath] = presentor
+        }
         
     }
+    
     
     private func recyclePresentor(at indexPath: IndexPath) {
         
-        guard let presentor = usingPresentors[indexPath] else {
-            return
+        if let presentor = usingPresentors[indexPath] {
+            usingPresentors.removeValue(forKey: indexPath)
+            
+            let MessageType = String(describing: presentor.messageType)
+            if unusedPresentors[MessageType] == nil {
+                unusedPresentors[MessageType] = []
+            }
+            
+            presentor.messageView.removeFromSuperview()
+            
+            unusedPresentors[MessageType]!.append(presentor)
         }
-        
-        usingPresentors.removeValue(forKey: indexPath)
-        
-        
-        let key = String(describing:presentor.messageType)
-        
-        guard registeredPresentors[key] != nil else {
-            return
-        }
-        
-        if reusablePresentors[key] == nil {
-            reusablePresentors[key] = [presentor]
-        } else {
-            reusablePresentors[key]?.append(presentor)
-        }
-        
     }
 
     private func configure() {
@@ -164,7 +137,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
         
         
         messagesView.delegate = self
-        messagesView.dataSource = self
+        messagesView.dataSource = self        
         
         if #available(iOS 10, *) {
             messagesView.prefetchDataSource = self
@@ -179,9 +152,11 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
     open override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
-        reusablePresentors.removeAll()
-        preparedPresentors.removeAll()
+        unusedPresentors.removeAll()
+        pretchedPresentors.removeAll()
+        usingPresentors.removeAll()
         
+        messagesView.collectionViewLayout.invalidateLayout()
         
     }
     
@@ -198,7 +173,20 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CKMessagesViewCell.self), for: indexPath) as! CKMessagesViewCell
         
-        preparePresentor(for: indexPath)
+        if #available(iOS 10, *) {
+            
+            /**
+             * For some unknown reason, on iOS 10, the hostedView sometime would be added to wrong indexPath cell
+             * which makes some cells are empty.
+             * So on iOS 10, at least, for now, moving attaching hostedView process to @collectionView(_:willDisplay:forItemAt:) delegate could solve the issue
+             */
+            
+        } else {
+            if let message = delegate?.messageView(messagesView, messageForItemAt: indexPath),
+                let presentor = presentor(of: message, at: indexPath) {
+                cell.attach(hostedView: presentor.messageView)
+            }
+        }
         
         
         return cell
@@ -216,29 +204,51 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
     
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
-        if let cell = cell as? CKMessagesViewCell {
+        if #available(iOS 10, *) {
             
-            guard let presentor = presentor(at: indexPath) , let message = delegate?.messageView(messagesView, messageForItemAt: indexPath) else {
-                return
+            /**
+             * For some unknown reason, on iOS 10, the hostedView sometime would be added to wrong indexPath cell
+             * which makes some cells are empty.
+             * So on iOS 10, at least, for now, process attaching hostedView in willDisplay could solve the issue
+             */
+            
+            if let cell = cell as? CKMessagesViewCell,
+                let message = delegate?.messageView(messagesView, messageForItemAt: indexPath),
+                let presentor = presentor(of: message, at: indexPath) {
+                cell.attach(hostedView: presentor.messageView)
+                presentor.renderPresenting(with: message)
             }
-            
-            presentor.renderPresenting(with: message)
-            cell.messageView = presentor.messageView
-            
         }
     }
+    
+
     
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         recyclePresentor(at: indexPath)
     }
     
+    
+    fileprivate func debuggingPresentors(place: StaticString = #function) {
+        print("===> \(place) usingPresentors: \(usingPresentors)")
+        print("===> \(place) unusedPresentors: \(unusedPresentors)")
+        print("===> \(place) pretchedPresentors: \(pretchedPresentors)")
+        print("")
+        print("")
+    }
 }
 
 @available(iOS 10, *)
 extension CKMessagesViewController: UICollectionViewDataSourcePrefetching {
     
     public func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        indexPaths.forEach { preparePresentor(for: $0) }
+        indexPaths.forEach { indexPath in
+            if let message = delegate?.messageView(messagesView, messageForItemAt: indexPath) {
+                prefetchPresentor(of: message, at: indexPath)
+            }
+        }
+        
+        debuggingPresentors()
+    
     }
 }
 

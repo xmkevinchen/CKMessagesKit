@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A327A851D6FC4CE008A88E8 /* CKMessagePresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A327A841D6FC4CE008A88E8 /* CKMessagePresenting.swift */; };
+		0A327A871D6FF616008A88E8 /* CKUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A327A861D6FF616008A88E8 /* CKUtils.swift */; };
 		0AFD7D481D6E9E2D000367B2 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFD7D471D6E9E2D000367B2 /* GridViewController.swift */; };
 		0AFD7D4B1D6EB403000367B2 /* CKMessageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFD7D4A1D6EB403000367B2 /* CKMessageData.swift */; };
 		0AFD7D4D1D6EB528000367B2 /* CKTextMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFD7D4C1D6EB528000367B2 /* CKTextMessage.swift */; };
@@ -24,7 +26,6 @@
 		912224491D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224401D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutAttributes.swift */; };
 		9122244A1D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutInvalidationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224411D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutInvalidationContext.swift */; };
 		9122244B1D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224431D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift */; };
-		9122244F1D6E7BF800C5F3B4 /* CKMessagePresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9122244E1D6E7BF800C5F3B4 /* CKMessagePresenting.swift */; };
 		912224531D6E801400C5F3B4 /* CKMessagesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224521D6E801400C5F3B4 /* CKMessagesViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0A327A841D6FC4CE008A88E8 /* CKMessagePresenting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagePresenting.swift; sourceTree = "<group>"; };
+		0A327A861D6FF616008A88E8 /* CKUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKUtils.swift; sourceTree = "<group>"; };
 		0AFD7D471D6E9E2D000367B2 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridViewController.swift; sourceTree = "<group>"; };
 		0AFD7D4A1D6EB403000367B2 /* CKMessageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageData.swift; sourceTree = "<group>"; };
 		0AFD7D4C1D6EB528000367B2 /* CKTextMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKTextMessage.swift; sourceTree = "<group>"; };
@@ -73,7 +76,6 @@
 		912224401D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesCollectionViewLayoutAttributes.swift; sourceTree = "<group>"; };
 		912224411D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutInvalidationContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesCollectionViewLayoutInvalidationContext.swift; sourceTree = "<group>"; };
 		912224431D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesCollectionView.swift; sourceTree = "<group>"; };
-		9122244E1D6E7BF800C5F3B4 /* CKMessagePresenting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagePresenting.swift; sourceTree = "<group>"; };
 		912224521D6E801400C5F3B4 /* CKMessagesViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -96,6 +98,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A327A831D6FC4CE008A88E8 /* Presentors */ = {
+			isa = PBXGroup;
+			children = (
+				0A327A841D6FC4CE008A88E8 /* CKMessagePresenting.swift */,
+			);
+			path = Presentors;
+			sourceTree = "<group>";
+		};
 		0AFD7D491D6EB3AA000367B2 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -155,7 +165,9 @@
 				9122243D1D6E7BE300C5F3B4 /* CKMessagesViewController.xib */,
 				0AFD7D491D6EB3AA000367B2 /* Model */,
 				9122243E1D6E7BE300C5F3B4 /* Layout */,
+				0A327A831D6FC4CE008A88E8 /* Presentors */,
 				912224421D6E7BE300C5F3B4 /* View */,
+				0A327A861D6FF616008A88E8 /* CKUtils.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -173,7 +185,6 @@
 		912224421D6E7BE300C5F3B4 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				9122244E1D6E7BF800C5F3B4 /* CKMessagePresenting.swift */,
 				912224431D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift */,
 				912224521D6E801400C5F3B4 /* CKMessagesViewCell.swift */,
 			);
@@ -302,8 +313,9 @@
 				912224481D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayout.swift in Sources */,
 				0AFD7D4D1D6EB528000367B2 /* CKTextMessage.swift in Sources */,
 				912224461D6E7BE300C5F3B4 /* CKMessagesViewController.swift in Sources */,
+				0A327A871D6FF616008A88E8 /* CKUtils.swift in Sources */,
+				0A327A851D6FC4CE008A88E8 /* CKMessagePresenting.swift in Sources */,
 				912224491D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutAttributes.swift in Sources */,
-				9122244F1D6E7BF800C5F3B4 /* CKMessagePresenting.swift in Sources */,
 				9122244B1D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift in Sources */,
 				0AFD7D4B1D6EB403000367B2 /* CKMessageData.swift in Sources */,
 			);

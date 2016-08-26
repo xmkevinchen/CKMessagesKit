@@ -9,17 +9,6 @@
 import UIKit
 import CKMessagesViewController
 
-class CKTrackingView: UIView {
-    
-    override func willMove(toSuperview newSuperview: UIView?) {
-        if newSuperview == nil {
-            print("====> superview: from \(superview), to \(newSuperview)")
-        }
-    }
-    
-    
-}
-
 class GridViewController: UIViewController, CKMessagePresenting {
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -29,13 +18,19 @@ class GridViewController: UIViewController, CKMessagePresenting {
         
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let message = self.message {
+            renderPresenting(with: message)
+        }
+        
+    }
     
     public var message: CKMessageData?
     public var messageType: CKMessageData.Type = CKTextMessage.self
     
-    public static func presentor(with message: CKMessageData) -> CKMessagePresenting {
-        let viewControlelr = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "GridViewController") as! GridViewController
-        viewControlelr.message = message as? CKTextMessage
+    public static func presentor() -> CKMessagePresenting {
+        let viewControlelr = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "GridViewController") as! GridViewController        
         return viewControlelr
     }
     

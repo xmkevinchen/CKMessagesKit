@@ -4,7 +4,8 @@ import Foundation
 import CKMessagesViewController
 
 
-
+var a = [Int]()
+a.removeFirst()
 
 
 

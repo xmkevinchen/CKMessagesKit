@@ -8,36 +8,43 @@
 
 import UIKit
 
+public class CKPresentingView: UIView {
+    
+    
+    
+}
+
 open class CKMessagesViewCell: UICollectionViewCell {
     
-    var messageView: UIView? {
+    private weak var hostedView: UIView?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        contentView.clipsToBounds = true
         
-//        willSet {
-//            messageView?.removeFromSuperview()
-//        }
-                
-        didSet {
-            if let view = messageView {
-                view.translatesAutoresizingMaskIntoConstraints = false
-                contentView.addSubview(view)
-                contentView.clipsToBounds = true
-                
-                view.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-                view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-                view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-                view.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
-                
-            }
-        }
     }
     
-    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        contentView.clipsToBounds = true
+    }
     
     open override func prepareForReuse() {
         super.prepareForReuse()
-        messageView = nil
-        
+        hostedView?.removeFromSuperview()
     }
+    
+    func attach(hostedView: UIView) {
+                        
+        contentView.addSubview(hostedView)
         
+        hostedView.translatesAutoresizingMaskIntoConstraints = false
+        hostedView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        hostedView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        hostedView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        hostedView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+
+    }
+    
     
 }

@@ -11,12 +11,12 @@
 public protocol CKMessagePresenting {
     
                 
-    static func presentor(with message: CKMessageData) -> CKMessagePresenting
+    
     
     var messageView: UIView { get }
     var messageType: CKMessageData.Type { get }        
     var message: CKMessageData? { get set }
     
-    
+    static func presentor() -> CKMessagePresenting
     func renderPresenting(with message: CKMessageData)
 }
