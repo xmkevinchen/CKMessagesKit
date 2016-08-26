@@ -77,7 +77,7 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     // MARK:- Public
     
     func sizeForItem(at indexPath: IndexPath) -> CGSize {
-        return CGSize(width: itemWidth, height: 200)
+        return CGSize(width: itemWidth, height: 50)
     }
     
     

@@ -8,15 +8,15 @@
 
 import UIKit
 
-public class CKPresentingView: UIView {
-    
-    
+
+class CKMessagePresentingView: UIView {
     
 }
 
+
 open class CKMessagesViewCell: UICollectionViewCell {
     
-    private weak var hostedView: UIView?
+    private var hostedView: UIView?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,11 +31,14 @@ open class CKMessagesViewCell: UICollectionViewCell {
     
     open override func prepareForReuse() {
         super.prepareForReuse()
-        hostedView?.removeFromSuperview()
+        hostedView = nil
+        
+        
     }
     
     func attach(hostedView: UIView) {
-                        
+        self.hostedView = hostedView
+        
         contentView.addSubview(hostedView)
         
         hostedView.translatesAutoresizingMaskIntoConstraints = false

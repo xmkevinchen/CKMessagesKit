@@ -111,10 +111,10 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
             if unusedPresentors[MessageType] == nil {
                 unusedPresentors[MessageType] = []
             }
+                        
+            unusedPresentors[MessageType]!.append(presentor)
             
             presentor.messageView.removeFromSuperview()
-            
-            unusedPresentors[MessageType]!.append(presentor)
         }
     }
 
@@ -247,7 +247,7 @@ extension CKMessagesViewController: UICollectionViewDataSourcePrefetching {
             }
         }
         
-        debuggingPresentors()
+//        debuggingPresentors()
     
     }
 }
