@@ -127,13 +127,23 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
         #endif
         
         messagesView.translatesAutoresizingMaskIntoConstraints = false
+        
+        if #available(iOS 9, *) {
+            
+            messagesView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+            messagesView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+            messagesView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+            messagesView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+            
+        } else {            
+            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[m]|", options: [], metrics: nil, views: ["m": self.messagesView]))
+            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[m]|", options: [], metrics: nil, views: ["m": self.messagesView]))
+            
+        }
                 
-        messagesView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        messagesView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        messagesView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        messagesView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
                 
-        messagesView.register(CKMessagesViewCell.self, forCellWithReuseIdentifier: String(describing: CKMessagesViewCell.self))
+        messagesView.register(CKMessageViewCell.self, forCellWithReuseIdentifier: String(describing: CKMessageViewCell.self))
         
         
         messagesView.delegate = self
@@ -171,7 +181,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CKMessagesViewCell.self), for: indexPath) as! CKMessagesViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CKMessageViewCell.self), for: indexPath) as! CKMessageViewCell
         
         if #available(iOS 10, *) {
             
@@ -188,6 +198,18 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
             }
         }
         
+        
+        
+        
+        if indexPath.item % 2 == 0 {
+            cell.direction = .incoming
+            cell.topLabel.text = "Cell Top"
+            cell.bottomLabel.text = "cell Bottom"
+        } else {
+            cell.direction = .outgoing
+            cell.messageTopLabel.text = "Message Top"
+            
+        }
         
         return cell
     }
@@ -212,7 +234,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
              * So on iOS 10, at least, for now, process attaching hostedView in willDisplay could solve the issue
              */
             
-            if let cell = cell as? CKMessagesViewCell,
+            if let cell = cell as? CKMessageViewCell,
                 let message = delegate?.messageView(messagesView, messageForItemAt: indexPath),
                 let presentor = presentor(of: message, at: indexPath) {
                 cell.attach(hostedView: presentor.messageView)

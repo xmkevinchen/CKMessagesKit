@@ -26,6 +26,11 @@ class GridViewController: UIViewController, CKMessagePresenting {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+    }
+    
     public var message: CKMessageData?
     public var messageType: CKMessageData.Type = CKTextMessage.self
     

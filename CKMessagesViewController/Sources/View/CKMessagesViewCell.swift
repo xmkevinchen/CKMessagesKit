@@ -14,9 +14,9 @@ class CKMessagePresentingView: UIView {
 }
 
 
-open class CKMessagesViewCell: UICollectionViewCell {
+open class CKMessageViewCell: UICollectionViewCell {
         
-    private var messagesView: CKMessagesView!
+    private weak var messageView: CKMessageView!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -37,74 +37,92 @@ open class CKMessagesViewCell: UICollectionViewCell {
     
     open override func prepareForReuse() {
         super.prepareForReuse()
+        messageView.prepareForReuse()
                 
     }
     
     private func configure() {
-        messagesView = CKMessagesView(frame: frame)
-        contentView.clipsToBounds = true
-        contentView.addSubview(messagesView)
-        messagesView.translatesAutoresizingMaskIntoConstraints = false
-        messagesView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        messagesView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-        messagesView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-        messagesView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
-
+        
+        messageView = UINib(nibName: String(describing:CKMessageView.self),
+                            bundle: Bundle(for: CKMessageView.self))
+            .instantiate(withOwner: nil, options: nil).last as? CKMessageView
+        
+        assert(messageView != nil)
+        messageView.prepareForReuse()
+        
+        contentView.addSubview(messageView)
+        messageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        if #available(iOS 9, *) {
+            
+            messageView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+            messageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+            messageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+            messageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+            
+        } else {
+                        
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[m]|", options: [], metrics: nil, views: ["m": messageView]))
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[m]|", options: [], metrics: nil, views: ["m": messageView]))
+            
+        }
         
     }
     
     public func attach(hostedView: UIView) {
-                
-        messagesView.contentView.addSubview(hostedView)
+        
+        messageView.contentView.addSubview(hostedView)
         
         hostedView.translatesAutoresizingMaskIntoConstraints = false
-        hostedView.topAnchor.constraint(equalTo: messagesView.contentView.topAnchor).isActive = true
-        hostedView.bottomAnchor.constraint(equalTo: messagesView.contentView.bottomAnchor).isActive = true
-        hostedView.leadingAnchor.constraint(equalTo: messagesView.contentView.leadingAnchor).isActive = true
-        hostedView.trailingAnchor.constraint(equalTo: messagesView.contentView.trailingAnchor).isActive = true
         
-        contentView.updateConstraints()
-        contentView.setNeedsLayout()
-        contentView.layoutIfNeeded()
-        
-    }
-    
-    public var topLabel: CKInsetsLabel {
-        return messagesView.topLabel
-    }
-    
-    public var messageTopLabel: CKInsetsLabel {
-        return messagesView.messageTopLabel
-    }
-    
-    public var bottomLabel: CKInsetsLabel {
-        return messagesView.bottomLabel
-    }
-    
-    
-    var avatarSize: CGSize {
-        
-        get {
-            return messagesView.avatarSize
+        if #available(iOS 9, *) {
+            
+            hostedView.topAnchor.constraint(equalTo: messageView.contentView.topAnchor).isActive = true
+            hostedView.bottomAnchor.constraint(equalTo: messageView.contentView.bottomAnchor).isActive = true
+            hostedView.leadingAnchor.constraint(equalTo: messageView.contentView.leadingAnchor).isActive = true
+            hostedView.trailingAnchor.constraint(equalTo: messageView.contentView.trailingAnchor).isActive = true
+            
+        } else {
+            
+            messageView.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v]|", options: [], metrics: nil, views: ["v": hostedView]))
+            messageView.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v]|", options: [], metrics: nil, views: ["v": hostedView]))
+            
         }
         
-        set {
-            messagesView.avatarSize = avatarSize
-        }
+        
     }
     
-    public var avatarView: UIImageView {
-        return messagesView.avatarView
+    public var topLabel: UILabel {
+        return messageView.topLabel
+    }
+    
+    public var messageTopLabel: UILabel {
+        return messageView.messageTopLabel
+    }
+    
+    public var bottomLabel: UILabel {
+        return messageView.bottomLabel
     }
     
     public var accessoryView: UIView? {
         get {
-            return messagesView.accessoryView
+            return messageView.accessoryView
         }
         
         set {
-            messagesView.accessoryView = newValue
+            messageView.accessoryView = newValue
         }
     }
+    
+    public var direction: CKMessageDirection {
+        get {
+            return messageView.direction
+        }
+        
+        set {
+            messageView.direction = newValue
+        }
+    }
+    
     
 }
