@@ -67,6 +67,8 @@ open class CKMessageViewCell: UICollectionViewCell {
             
         }
         
+        avatarSize = .zero
+        
     }
     
     public func attach(hostedView: UIView) {
@@ -90,6 +92,16 @@ open class CKMessageViewCell: UICollectionViewCell {
         }
         
         
+    }
+    
+    public var avatarSize: CGSize {
+        get {
+            return messageView.avatarSize
+        }
+        
+        set {
+            messageView.avatarSize = newValue
+        }
     }
     
     public var topLabel: UILabel {

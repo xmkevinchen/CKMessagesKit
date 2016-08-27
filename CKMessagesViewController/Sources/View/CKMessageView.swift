@@ -190,8 +190,8 @@ class CKMessageView: UIView {
             }
             
             let removingAttributes: [NSLayoutAttribute] = [.width, .height]
-            accessoryContainerView.removeConstraints(
-                accessoryContainerView.constraints.filter {
+            avatarContainerView.removeConstraints(
+                avatarContainerView.constraints.filter {
                     removingAttributes.contains($0.firstAttribute)
                 }
             )
@@ -204,8 +204,8 @@ class CKMessageView: UIView {
                 
             } else {
                 
-                accessoryContainerView.addConstraint(
-                    NSLayoutConstraint(item: accessoryContainerView,
+                avatarContainerView.addConstraint(
+                    NSLayoutConstraint(item: avatarContainerView,
                                        attribute: .width,
                                        relatedBy: .equal,
                                        toItem: nil,
@@ -213,8 +213,8 @@ class CKMessageView: UIView {
                                        multiplier: 1.0,
                                        constant: avatarSize.width))
                 
-                accessoryContainerView.addConstraint(
-                    NSLayoutConstraint(item: accessoryContainerView,
+                avatarContainerView.addConstraint(
+                    NSLayoutConstraint(item: avatarContainerView,
                                        attribute: .height,
                                        relatedBy: .equal,
                                        toItem: nil,
