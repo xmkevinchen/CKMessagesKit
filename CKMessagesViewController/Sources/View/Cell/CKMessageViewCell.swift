@@ -9,11 +9,11 @@
 import UIKit
 
 class CKMessageViewCell: CKMessageDataViewCell {
-    
-    let textView: UITextView = UITextView()
+            
+    let textView: CKMessageCellTextView = CKMessageCellTextView()
 
     override init(frame: CGRect) {
-        super.init(frame: frame)
+        super.init(frame: frame)        
         attach(hostedView: textView)
     }
     
@@ -21,4 +21,5 @@ class CKMessageViewCell: CKMessageDataViewCell {
         super.init(coder: aDecoder)
         attach(hostedView: textView)
     }
+        
 }

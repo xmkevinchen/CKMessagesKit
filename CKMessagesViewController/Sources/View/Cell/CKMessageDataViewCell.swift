@@ -15,7 +15,7 @@ class CKMessagePresentingView: UIView {
 
 
 open class CKMessageDataViewCell: UICollectionViewCell {
-        
+                
     private weak var messageView: CKMessageView!
     
     override init(frame: CGRect) {

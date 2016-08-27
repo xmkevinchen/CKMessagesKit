@@ -37,6 +37,8 @@
 		917D41561D721704001E678D /* CollectionMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917D41551D721704001E678D /* CollectionMessage.swift */; };
 		917D41591D72197B001E678D /* CKMessageDataViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917D41581D72197B001E678D /* CKMessageDataViewCell.swift */; };
 		917D415B1D7219FF001E678D /* CKMessageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917D415A1D7219FF001E678D /* CKMessageViewCell.swift */; };
+		917D415D1D722E4F001E678D /* CKReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917D415C1D722E4F001E678D /* CKReusableView.swift */; };
+		917D415F1D7238BD001E678D /* CKMessageCellTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917D415E1D7238BD001E678D /* CKMessageCellTextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +99,8 @@
 		917D41551D721704001E678D /* CollectionMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionMessage.swift; sourceTree = "<group>"; };
 		917D41581D72197B001E678D /* CKMessageDataViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageDataViewCell.swift; sourceTree = "<group>"; };
 		917D415A1D7219FF001E678D /* CKMessageViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageViewCell.swift; sourceTree = "<group>"; };
+		917D415C1D722E4F001E678D /* CKReusableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKReusableView.swift; sourceTree = "<group>"; };
+		917D415E1D7238BD001E678D /* CKMessageCellTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageCellTextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				0A70A3151D71220D001B9044 /* CKInsetsLabel.swift */,
+				917D415E1D7238BD001E678D /* CKMessageCellTextView.swift */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
@@ -226,6 +231,7 @@
 		912224421D6E7BE300C5F3B4 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				917D415C1D722E4F001E678D /* CKReusableView.swift */,
 				917D41571D72197B001E678D /* Cell */,
 				0A70A3141D71220D001B9044 /* Widget */,
 				0A3A8B031D70980F0002B9CE /* Layout */,
@@ -380,7 +386,9 @@
 				912224491D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutAttributes.swift in Sources */,
 				9122244B1D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift in Sources */,
 				0AFD7D4B1D6EB403000367B2 /* CKMessageData.swift in Sources */,
+				917D415F1D7238BD001E678D /* CKMessageCellTextView.swift in Sources */,
 				0A70A3161D71220D001B9044 /* CKInsetsLabel.swift in Sources */,
+				917D415D1D722E4F001E678D /* CKReusableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
