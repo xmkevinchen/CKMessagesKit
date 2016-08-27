@@ -18,7 +18,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         delegate = self
-        register(presentor: GridViewController.self, for: CKTextMessage.self)
+        register(presentor: GridViewController.self, for: CollectionMessage.self)
         
     }
     
@@ -31,7 +31,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewDelegate {
     
     func messageView(_ messageView: CKMessagesCollectionView, messageForItemAt indexPath: IndexPath) -> CKMessageData {
         
-        return CKTextMessage(senderId: "1", sender: "CK", message: String(indexPath.item))
+        return CollectionMessage(senderId: "1", sender: "CK", text: String(indexPath.item))
         
     }
 }

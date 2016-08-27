@@ -14,7 +14,7 @@ class CKMessagePresentingView: UIView {
 }
 
 
-open class CKMessageViewCell: UICollectionViewCell {
+open class CKMessageDataViewCell: UICollectionViewCell {
         
     private weak var messageView: CKMessageView!
     
@@ -26,13 +26,14 @@ open class CKMessageViewCell: UICollectionViewCell {
     
     open override func awakeFromNib() {
         super.awakeFromNib()
-        configure()
+        
     }
+    
     
     required public init?(coder aDecoder: NSCoder) {
         
         super.init(coder: aDecoder)
-        
+        configure()
     }
     
     open override func prepareForReuse() {

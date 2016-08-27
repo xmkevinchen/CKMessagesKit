@@ -143,7 +143,8 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
                 
         
                 
-        messagesView.register(CKMessageViewCell.self, forCellWithReuseIdentifier: String(describing: CKMessageViewCell.self))
+        messagesView.register(CKMessageDataViewCell.self,
+                              forCellWithReuseIdentifier: String(describing: CKMessageDataViewCell.self))
         
         
         messagesView.delegate = self
@@ -181,7 +182,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CKMessageViewCell.self), for: indexPath) as! CKMessageViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CKMessageDataViewCell.self), for: indexPath) as! CKMessageDataViewCell
         
         if #available(iOS 10, *) {
             
@@ -234,7 +235,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
              * So on iOS 10, at least, for now, process attaching hostedView in willDisplay could solve the issue
              */
             
-            if let cell = cell as? CKMessageViewCell,
+            if let cell = cell as? CKMessageDataViewCell,
                 let message = delegate?.messageView(messagesView, messageForItemAt: indexPath),
                 let presentor = presentor(of: message, at: indexPath) {
                 cell.attach(hostedView: presentor.messageView)
@@ -269,8 +270,6 @@ extension CKMessagesViewController: UICollectionViewDataSourcePrefetching {
             }
         }
         
-//        debuggingPresentors()
-    
     }
 }
 

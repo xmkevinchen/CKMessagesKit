@@ -9,10 +9,7 @@
 
 
 public protocol CKMessagePresenting {
-    
-                
-    
-    
+                            
     var messageView: UIView { get }
     var messageType: CKMessageData.Type { get }        
     var message: CKMessageData? { get set }

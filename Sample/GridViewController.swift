@@ -32,7 +32,7 @@ class GridViewController: UIViewController, CKMessagePresenting {
     }
     
     public var message: CKMessageData?
-    public var messageType: CKMessageData.Type = CKTextMessage.self
+    public var messageType: CKMessageData.Type = CollectionMessage.self
     
     public static func presentor() -> CKMessagePresenting {
         let viewControlelr = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "GridViewController") as! GridViewController        
@@ -40,7 +40,7 @@ class GridViewController: UIViewController, CKMessagePresenting {
     }
     
     func renderPresenting(with message: CKMessageData) {
-        if let message = message as? CKTextMessage, let collectionView = collectionView {
+        if let message = message as? CollectionMessage, let collectionView = collectionView {
             self.message = message
             collectionView.reloadData()
         }
@@ -85,7 +85,7 @@ extension GridViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GridCell", for: indexPath) as! GridCell
         
-        cell.textLabel.text = String(indexPath.item + Int((message as! CKTextMessage).message)!)
+        cell.textLabel.text = String(indexPath.item + Int(message!.text)!)
         return cell
     }
     

@@ -8,19 +8,20 @@
 
 import Foundation
 
-public struct CKTextMessage: CKMessageData {
-        
+public struct CKMessage: CKMessageData, Hashable {
+    
     public var senderId: String
     public var sender: String
-    public var message: String
+    public var text: String
     public var timestamp: Date
     
-    public init(senderId: String, sender: String, message: String, timestamp: Date = Date()) {
+    public init(senderId: String, sender: String, text: String, timestamp: Date = Date()) {
         self.senderId = sender
         self.sender = sender
-        self.message = message
+        self.text = text
         self.timestamp = timestamp
     }
     
+        
 
 }
