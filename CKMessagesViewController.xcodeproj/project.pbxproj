@@ -9,8 +9,10 @@
 /* Begin PBXBuildFile section */
 		0A327A851D6FC4CE008A88E8 /* CKMessagePresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A327A841D6FC4CE008A88E8 /* CKMessagePresenting.swift */; };
 		0A327A871D6FF616008A88E8 /* CKUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A327A861D6FF616008A88E8 /* CKUtils.swift */; };
-		0A3A8B021D701E910002B9CE /* CKMessagesViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A3A8B011D701E910002B9CE /* CKMessagesViewCell.xib */; };
 		0A3A8B051D709A5F0002B9CE /* CKViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A3A8B041D709A5F0002B9CE /* CKViewLayout.swift */; };
+		0A70A30D1D70FFB8001B9044 /* CKMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A70A30C1D70FFB8001B9044 /* CKMessagesView.swift */; };
+		0A70A3161D71220D001B9044 /* CKInsetsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A70A3151D71220D001B9044 /* CKInsetsLabel.swift */; };
+		0A70A3181D71371F001B9044 /* CKMessagesView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A70A3171D71371F001B9044 /* CKMessagesView.xib */; };
 		0ADC2DFC1D70C00800DEE3A4 /* UIView+CKViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADC2DFB1D70C00800DEE3A4 /* UIView+CKViewLayout.swift */; };
 		0ADC2DFE1D70C0AB00DEE3A4 /* CKInsetsLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADC2DFD1D70C0AB00DEE3A4 /* CKInsetsLayout.swift */; };
 		0ADC2E001D70C29A00DEE3A4 /* CKBackgroundLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADC2DFF1D70C29A00DEE3A4 /* CKBackgroundLayout.swift */; };
@@ -61,8 +63,10 @@
 /* Begin PBXFileReference section */
 		0A327A841D6FC4CE008A88E8 /* CKMessagePresenting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagePresenting.swift; sourceTree = "<group>"; };
 		0A327A861D6FF616008A88E8 /* CKUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKUtils.swift; sourceTree = "<group>"; };
-		0A3A8B011D701E910002B9CE /* CKMessagesViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKMessagesViewCell.xib; sourceTree = "<group>"; };
 		0A3A8B041D709A5F0002B9CE /* CKViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKViewLayout.swift; sourceTree = "<group>"; };
+		0A70A30C1D70FFB8001B9044 /* CKMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesView.swift; sourceTree = "<group>"; };
+		0A70A3151D71220D001B9044 /* CKInsetsLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKInsetsLabel.swift; sourceTree = "<group>"; };
+		0A70A3171D71371F001B9044 /* CKMessagesView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKMessagesView.xib; sourceTree = "<group>"; };
 		0ADC2DFB1D70C00800DEE3A4 /* UIView+CKViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+CKViewLayout.swift"; sourceTree = "<group>"; };
 		0ADC2DFD1D70C0AB00DEE3A4 /* CKInsetsLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKInsetsLayout.swift; sourceTree = "<group>"; };
 		0ADC2DFF1D70C29A00DEE3A4 /* CKBackgroundLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKBackgroundLayout.swift; sourceTree = "<group>"; };
@@ -125,6 +129,14 @@
 				0ADC2DFF1D70C29A00DEE3A4 /* CKBackgroundLayout.swift */,
 			);
 			path = Layout;
+			sourceTree = "<group>";
+		};
+		0A70A3141D71220D001B9044 /* Widget */ = {
+			isa = PBXGroup;
+			children = (
+				0A70A3151D71220D001B9044 /* CKInsetsLabel.swift */,
+			);
+			path = Widget;
 			sourceTree = "<group>";
 		};
 		0AFD7D491D6EB3AA000367B2 /* Model */ = {
@@ -206,10 +218,12 @@
 		912224421D6E7BE300C5F3B4 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0A70A3141D71220D001B9044 /* Widget */,
 				0A3A8B031D70980F0002B9CE /* Layout */,
 				912224431D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift */,
 				912224521D6E801400C5F3B4 /* CKMessagesViewCell.swift */,
-				0A3A8B011D701E910002B9CE /* CKMessagesViewCell.xib */,
+				0A70A30C1D70FFB8001B9044 /* CKMessagesView.swift */,
+				0A70A3171D71371F001B9044 /* CKMessagesView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -310,7 +324,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A3A8B021D701E910002B9CE /* CKMessagesViewCell.xib in Resources */,
+				0A70A3181D71371F001B9044 /* CKMessagesView.xib in Resources */,
 				912224471D6E7BE300C5F3B4 /* CKMessagesViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -332,6 +346,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A70A30D1D70FFB8001B9044 /* CKMessagesView.swift in Sources */,
 				912224531D6E801400C5F3B4 /* CKMessagesViewCell.swift in Sources */,
 				9122244A1D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutInvalidationContext.swift in Sources */,
 				912224481D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayout.swift in Sources */,
@@ -346,6 +361,7 @@
 				912224491D6E7BE300C5F3B4 /* CKMessagesCollectionViewLayoutAttributes.swift in Sources */,
 				9122244B1D6E7BE300C5F3B4 /* CKMessagesCollectionView.swift in Sources */,
 				0AFD7D4B1D6EB403000367B2 /* CKMessageData.swift in Sources */,
+				0A70A3161D71220D001B9044 /* CKInsetsLabel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
