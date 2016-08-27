@@ -9,15 +9,21 @@
 import UIKit
 import CKMessagesViewController
 
-class ViewController: CKMessagesViewController, CKMessagesViewDelegate {
+class ViewController: CKMessagesViewController, CKMessagesViewDataSource {
     
     
+    public var senderId: String {
+        return "kevin"
+    }
     
+    public var sender: String {
+        return "Kevin Chen"
+    }
         
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        delegate = self
+        dataSource = self
         register(presentor: GridViewController.self, for: CollectionMessage.self)
         
     }
@@ -27,11 +33,13 @@ class ViewController: CKMessagesViewController, CKMessagesViewDelegate {
     }
     
     
-    
-    
     func messageView(_ messageView: CKMessagesCollectionView, messageForItemAt indexPath: IndexPath) -> CKMessageData {
         
-        return CollectionMessage(senderId: "1", sender: "CK", text: String(indexPath.item))
+        if arc4random() % 3 == 0 {
+            return CKMessage(senderId: senderId, sender: sender, text: "Send out message")
+        } else {
+            return CKMessage(senderId: "fiona", sender: "Fiona", text: "Incoming message")
+        }
         
     }
 }

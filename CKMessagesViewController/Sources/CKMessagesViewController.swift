@@ -9,17 +9,36 @@
 import UIKit
 
 
-public protocol CKMessagesViewDelegate: class {
+public protocol CKMessagesViewDataSource: class {
     
+    var senderId: String { get }
+    var sender: String { get }
     func messageView(_ messageView: CKMessagesCollectionView, messageForItemAt indexPath: IndexPath) -> CKMessageData
-    
 }
 
-open class CKMessagesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
+@objc public protocol CKMessagesViewDelegate: class {
+    
+    @objc optional func messageView(_ messageView: CKMessagesCollectionView, textForTopAt indexPath: IndexPath) -> String?
+    @objc optional func messageView(_ messageView: CKMessagesCollectionView, attributedTextForTopAt indexPath: IndexPath) -> NSAttributedString?
+    
+    @objc optional func messageView(_ messageView: CKMessagesCollectionView, textForMessageTopAt indexPath: IndexPath) -> String?
+    @objc optional func messageView(_ messageView: CKMessagesCollectionView, attributedTextForMessageTopAt indexPath: IndexPath) -> NSAttributedString?
+    
+    @objc optional func messageView(_ messageView: CKMessagesCollectionView, textForBottomAt indexPath: IndexPath) -> String?
+    @objc optional func messageView(_ messageView: CKMessagesCollectionView, attributedTextForBottom indexPath: IndexPath) -> NSAttributedString?
+    
+    
+    @objc optional func messageView(_ messageView: CKMessagesCollectionView, sizeForItemAt indexPath: IndexPath) -> CGSize
+}
+
+
+
+open class CKMessagesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     @IBOutlet open weak var messagesView: CKMessagesCollectionView!
     
     open weak var delegate: CKMessagesViewDelegate?
+    open weak var dataSource: CKMessagesViewDataSource?
     
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -36,19 +55,153 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
         #endif
     }
     
+    open override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+        unusedPresentors.removeAll()
+        pretchedPresentors.removeAll()
+        usingPresentors.removeAll()
+        
+        messagesView.collectionViewLayout.invalidateLayout()
+        
+    }
+
+    
+    // MARK:- Public functions
+    
     public func register(presentor: CKMessagePresenting.Type, for message: CKMessageData.Type) {
         
         registeredPresentors[String(describing: message)] = presentor
         
     }
     
-    private var registeredPresentors = [String: CKMessagePresenting.Type]()
     
+    
+    // MARK: - UICollectionView
+    
+    open func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 0
+    }
+    
+    open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        guard let message = dataSource?.messageView(messagesView, messageForItemAt: indexPath) else {
+            fatalError("CKMessagesViewDataSource.messageView(_:messageForItemAt:) should be implement")
+        }
+        
+        var cellForItem: UICollectionViewCell!
+        
+        if hasPresentor(of: message) {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CKMessageDataViewCell.self), for: indexPath) as! CKMessageDataViewCell
+            
+            if #available(iOS 10, *) {
+                
+                /**
+                 * For some unknown reason, on iOS 10, the hostedView sometime would be added to wrong indexPath cell
+                 * which makes some cells are empty.
+                 * So on iOS 10, at least, for now, moving attaching hostedView process to @collectionView(_:willDisplay:forItemAt:) delegate could solve the issue
+                 */
+                
+            } else {
+                if let presentor = presentor(of: message, at: indexPath) {
+                    cell.attach(hostedView: presentor.messageView)
+                }
+            }
+            
+            cellForItem = cell
+        } else {
+            guard isProcessable(of: message) else {
+                fatalError("Unknown message type")
+            }
+            
+            // Just for CKMessage now
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CKMessageViewCell.ReuseIdentifier, for: indexPath) as! CKMessageViewCell
+            
+            
+            cell.textView.text = message.text
+            
+            print("===> message: \(message.senderId) dataSource: \(dataSource!.senderId)")
+            
+            if message.senderId == dataSource!.senderId {
+                cell.direction = .outgoing
+            } else {
+                cell.direction = .incoming
+            }
+            
+            
+            cellForItem = cell
+        }
+        
+        return cellForItem
+    }
+    
+    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        if let layout = collectionViewLayout as? CKMessagesCollectionViewLayout {
+            
+            return layout.sizeForItem(at: indexPath)
+        } else {
+            return CGSize.zero
+        }
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        if #available(iOS 10, *) {
+            
+            /**
+             * For some unknown reason, on iOS 10, the hostedView sometime would be added to wrong indexPath cell
+             * which makes some cells are empty.
+             * So on iOS 10, at least, for now, process attaching hostedView in willDisplay could solve the issue
+             */
+            
+            if let cell = cell as? CKMessageDataViewCell,
+                let message = dataSource?.messageView(messagesView, messageForItemAt: indexPath),
+                let presentor = presentor(of: message, at: indexPath) {
+                cell.attach(hostedView: presentor.messageView)
+                presentor.renderPresenting(with: message)
+            }
+        }
+    }
+    
+    
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        recyclePresentor(at: indexPath)
+    }
+    
+    // MARK: - Private Properties
+    
+    private var registeredPresentors = [String: CKMessagePresenting.Type]()
     private var usingPresentors = [IndexPath: CKMessagePresenting]()
     private var unusedPresentors = [String: [CKMessagePresenting]]()
     private var pretchedPresentors = [IndexPath: CKMessagePresenting]()
     
-    private  func presentor(of message: CKMessageData, at indexPath: IndexPath) -> CKMessagePresenting? {
+    // MARK: - Private functions
+    
+    private func hasPresentor(of message: CKMessageData) -> Bool {
+        return registeredPresentors[String(describing: type(of:message))] != nil
+    }
+    
+    private func isProcessable(of message: CKMessageData) -> Bool {
+        var isProcessable = false
+        
+        switch message {
+        case is CKMessage:
+            isProcessable = true
+        default:
+            break
+        }
+        
+        return isProcessable
+        
+    }
+    
+    private func presentor(of message: CKMessageData, at indexPath: IndexPath) -> CKMessagePresenting? {
         
         let MessageType = String(describing: type(of:message))
         guard let PresentorType = registeredPresentors[MessageType] else {
@@ -78,7 +231,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
         
     }
     
-    func prefetchPresentor(of message: CKMessageData, at indexPath: IndexPath) {
+    fileprivate func prefetchPresentor(of message: CKMessageData, at indexPath: IndexPath) {
         
         guard pretchedPresentors[indexPath] == nil else {
             return
@@ -111,13 +264,13 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
             if unusedPresentors[MessageType] == nil {
                 unusedPresentors[MessageType] = []
             }
-                        
+            
             unusedPresentors[MessageType]!.append(presentor)
             
             presentor.messageView.removeFromSuperview()
         }
     }
-
+    
     private func configure() {
         
         #if swift(>=3.0)
@@ -135,20 +288,18 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
             messagesView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
             messagesView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
             
-        } else {            
+        } else {
             view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[m]|", options: [], metrics: nil, views: ["m": self.messagesView]))
             view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[m]|", options: [], metrics: nil, views: ["m": self.messagesView]))
             
         }
-                
         
-                
-        messagesView.register(CKMessageDataViewCell.self,
-                              forCellWithReuseIdentifier: String(describing: CKMessageDataViewCell.self))
+        messagesView.register(CKMessageDataViewCell.self, forCellWithReuseIdentifier: CKMessageDataViewCell.ReuseIdentifier)
+        messagesView.register(CKMessageViewCell.self, forCellWithReuseIdentifier: CKMessageViewCell.ReuseIdentifier)
         
         
         messagesView.delegate = self
-        messagesView.dataSource = self        
+        messagesView.dataSource = self
         
         if #available(iOS 10, *) {
             messagesView.prefetchDataSource = self
@@ -158,98 +309,6 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDataSourc
         
         
     }
-    
-    
-    open override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        
-        unusedPresentors.removeAll()
-        pretchedPresentors.removeAll()
-        usingPresentors.removeAll()
-        
-        messagesView.collectionViewLayout.invalidateLayout()
-        
-    }
-    
-    
-    open func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
-    }
-    
-    open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CKMessageDataViewCell.self), for: indexPath) as! CKMessageDataViewCell
-        
-        if #available(iOS 10, *) {
-            
-            /**
-             * For some unknown reason, on iOS 10, the hostedView sometime would be added to wrong indexPath cell
-             * which makes some cells are empty.
-             * So on iOS 10, at least, for now, moving attaching hostedView process to @collectionView(_:willDisplay:forItemAt:) delegate could solve the issue
-             */
-            
-        } else {
-            if let message = delegate?.messageView(messagesView, messageForItemAt: indexPath),
-                let presentor = presentor(of: message, at: indexPath) {
-                cell.attach(hostedView: presentor.messageView)
-            }
-        }
-        
-        
-        
-        
-        if indexPath.item % 2 == 0 {
-            cell.direction = .incoming
-            cell.topLabel.text = "Cell Top"
-            cell.bottomLabel.text = "cell Bottom"
-        } else {
-            cell.direction = .outgoing
-            cell.messageTopLabel.text = "Message Top"
-            
-        }
-        
-        return cell
-    }
-    
-    open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        if let layout = collectionViewLayout as? CKMessagesCollectionViewLayout {
-            
-            return layout.sizeForItem(at: indexPath)
-        } else {
-            return CGSize.zero
-        }
-    }
-    
-    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-        if #available(iOS 10, *) {
-            
-            /**
-             * For some unknown reason, on iOS 10, the hostedView sometime would be added to wrong indexPath cell
-             * which makes some cells are empty.
-             * So on iOS 10, at least, for now, process attaching hostedView in willDisplay could solve the issue
-             */
-            
-            if let cell = cell as? CKMessageDataViewCell,
-                let message = delegate?.messageView(messagesView, messageForItemAt: indexPath),
-                let presentor = presentor(of: message, at: indexPath) {
-                cell.attach(hostedView: presentor.messageView)
-                presentor.renderPresenting(with: message)
-            }
-        }
-    }
-    
-
-    
-    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        recyclePresentor(at: indexPath)
-    }
-    
     
     fileprivate func debuggingPresentors(place: StaticString = #function) {
         print("===> \(place) usingPresentors: \(usingPresentors)")
@@ -265,7 +324,7 @@ extension CKMessagesViewController: UICollectionViewDataSourcePrefetching {
     
     public func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         indexPaths.forEach { indexPath in
-            if let message = delegate?.messageView(messagesView, messageForItemAt: indexPath) {
+            if let message = dataSource?.messageView(messagesView, messageForItemAt: indexPath) {
                 prefetchPresentor(of: message, at: indexPath)
             }
         }
