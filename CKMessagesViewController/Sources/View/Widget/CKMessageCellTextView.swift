@@ -8,25 +8,25 @@
 
 import UIKit
 
-class CKMessageCellTextView: UITextView {
+public class CKMessageCellTextView: UITextView {
     
-    override init(frame: CGRect, textContainer: NSTextContainer?) {
+    override public init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         configure()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    override func awakeFromNib() {
+    override open func awakeFromNib() {
         super.awakeFromNib()
         configure()
     }
     
     
     private func configure() {
-        
+        font = UIFont.preferredFont(forTextStyle: .body)
 //        textColor = UIColor.white
         isEditable = false
         isSelectable = false
@@ -37,19 +37,21 @@ class CKMessageCellTextView: UITextView {
         isScrollEnabled = false
         
         backgroundColor = UIColor.clear
-        self.contentInset = .zero;
-        self.scrollIndicatorInsets = .zero;
-        self.contentOffset = .zero;
-        self.textContainerInset = .zero;
-        self.textContainer.lineFragmentPadding = 0;
+        contentInset = .zero;
+        scrollIndicatorInsets = .zero;
+        contentOffset = .zero;
+        textContainerInset = .zero
+        textContainer.lineFragmentPadding = 0;
+        
         self.linkTextAttributes = [
+            NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body),
 //            NSForegroundColorAttributeName : UIColor.white,
             NSUnderlineStyleAttributeName : [NSUnderlineStyle.styleSingle, .patternSolid]
         ]
         
     }
 
-    override var selectedRange: NSRange {
+    override open var selectedRange: NSRange {
         get {
             return NSRange(location: NSNotFound, length: 0)
         }
@@ -59,7 +61,7 @@ class CKMessageCellTextView: UITextView {
         }
     }
     
-    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    override open func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         if let tap = gestureRecognizer as? UITapGestureRecognizer {
             if tap.numberOfTapsRequired == 2 {
                 return false

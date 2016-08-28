@@ -47,14 +47,15 @@
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="8a0-cB-LKA" firstAttribute="top" secondItem="irj-VC-Svg" secondAttribute="top" id="0Gc-Rp-dqa"/>
-                                <constraint firstAttribute="trailing" secondItem="8a0-cB-LKA" secondAttribute="trailing" id="3PN-yj-Ev0"/>
+                                <constraint firstItem="8a0-cB-LKA" firstAttribute="top" secondItem="irj-VC-Svg" secondAttribute="top" constant="2" id="0Gc-Rp-dqa"/>
+                                <constraint firstAttribute="trailing" secondItem="8a0-cB-LKA" secondAttribute="trailing" constant="2" id="3PN-yj-Ev0"/>
                                 <constraint firstItem="AWG-V6-ir5" firstAttribute="top" secondItem="irj-VC-Svg" secondAttribute="top" id="MHR-m6-CEU"/>
-                                <constraint firstItem="8a0-cB-LKA" firstAttribute="leading" secondItem="irj-VC-Svg" secondAttribute="leading" id="QmZ-nn-oOy"/>
+                                <constraint firstItem="8a0-cB-LKA" firstAttribute="leading" secondItem="irj-VC-Svg" secondAttribute="leading" constant="2" id="QmZ-nn-oOy"/>
+                                <constraint firstAttribute="width" constant="240" id="WAg-GH-8x8"/>
                                 <constraint firstAttribute="bottom" secondItem="AWG-V6-ir5" secondAttribute="bottom" id="cwR-dS-9m0"/>
                                 <constraint firstAttribute="trailing" secondItem="AWG-V6-ir5" secondAttribute="trailing" id="kNQ-ls-EJg"/>
                                 <constraint firstItem="AWG-V6-ir5" firstAttribute="leading" secondItem="irj-VC-Svg" secondAttribute="leading" id="mnp-fj-U74"/>
-                                <constraint firstAttribute="bottom" secondItem="8a0-cB-LKA" secondAttribute="bottom" id="wey-lk-vbF"/>
+                                <constraint firstAttribute="bottom" secondItem="8a0-cB-LKA" secondAttribute="bottom" constant="2" id="wey-lk-vbF"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="anD-40-m0y">
@@ -73,7 +74,7 @@
                         <constraint firstItem="anD-40-m0y" firstAttribute="top" secondItem="1ZP-U4-d5W" secondAttribute="top" id="L1c-Gf-3Qc"/>
                         <constraint firstAttribute="bottom" secondItem="anD-40-m0y" secondAttribute="bottom" id="UDe-TE-Kps"/>
                         <constraint firstAttribute="bottom" secondItem="6K8-w3-mkc" secondAttribute="bottom" id="Zfi-tz-o2w"/>
-                        <constraint firstAttribute="trailing" secondItem="anD-40-m0y" secondAttribute="trailing" id="cba-w3-jLp"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="anD-40-m0y" secondAttribute="trailing" id="cba-w3-jLp"/>
                         <constraint firstItem="anD-40-m0y" firstAttribute="leading" secondItem="irj-VC-Svg" secondAttribute="trailing" id="wFa-xf-yse"/>
                     </constraints>
                 </view>
@@ -108,8 +109,13 @@
                 <outlet property="bottomLabel" destination="lM5-XE-x1Y" id="nbS-5f-EdV"/>
                 <outlet property="containerView" destination="1ZP-U4-d5W" id="jD8-js-4WM"/>
                 <outlet property="contentView" destination="8a0-cB-LKA" id="AVF-jV-1Fi"/>
+                <outlet property="contentViewBottomConstraint" destination="wey-lk-vbF" id="KYY-X9-KbX"/>
+                <outlet property="contentViewLeadingConstraint" destination="QmZ-nn-oOy" id="6Sj-XY-2AG"/>
+                <outlet property="contentViewTopConstraint" destination="0Gc-Rp-dqa" id="RXT-hR-nKE"/>
+                <outlet property="contentViewTrailingConstraint" destination="3PN-yj-Ev0" id="hDN-vd-aF6"/>
                 <outlet property="messageBubbleImageView" destination="AWG-V6-ir5" id="74q-vY-wyX"/>
                 <outlet property="messageContainerView" destination="irj-VC-Svg" id="4a6-fu-JlN"/>
+                <outlet property="messageContainerViewWidthConstraint" destination="WAg-GH-8x8" id="Lgs-Yt-aMA"/>
                 <outlet property="messageTopLabel" destination="6vn-5D-F8h" id="8Mx-et-JrO"/>
                 <outlet property="topLabel" destination="NuR-dj-pdr" id="nsP-Hm-xQB"/>
             </connections>

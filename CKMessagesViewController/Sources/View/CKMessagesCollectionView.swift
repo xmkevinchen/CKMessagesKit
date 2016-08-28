@@ -8,8 +8,30 @@
 
 import UIKit
 
-open class CKMessagesCollectionView: UICollectionView {
+public protocol CKMessagesViewDataSource: UICollectionViewDataSource {
     
+    var senderId: String { get }
+    var sender: String { get }
+    func messageView(_ messageView: CKMessagesCollectionView, messageForItemAt indexPath: IndexPath) -> CKMessageData
+}
+
+@objc public protocol CKMessagesViewDelegate: UICollectionViewDelegateFlowLayout {
+    
+    @objc optional func messageView(_ messageView: CKMessagesCollectionView, textForTopAt indexPath: IndexPath) -> String?
+    @objc optional func messageView(_ messageView: CKMessagesCollectionView, attributedTextForTopAt indexPath: IndexPath) -> NSAttributedString?
+    
+    @objc optional func messageView(_ messageView: CKMessagesCollectionView, textForMessageTopAt indexPath: IndexPath) -> String?
+    @objc optional func messageView(_ messageView: CKMessagesCollectionView, attributedTextForMessageTopAt indexPath: IndexPath) -> NSAttributedString?
+    
+    @objc optional func messageView(_ messageView: CKMessagesCollectionView, textForBottomAt indexPath: IndexPath) -> String?
+    @objc optional func messageView(_ messageView: CKMessagesCollectionView, attributedTextForBottom indexPath: IndexPath) -> NSAttributedString?
+    
+    
+    @objc optional func messageView(_ messageView: CKMessagesCollectionView, sizeForMessageContainerAt indexPath: IndexPath) -> CGSize
+}
+
+
+open class CKMessagesCollectionView: UICollectionView {
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)

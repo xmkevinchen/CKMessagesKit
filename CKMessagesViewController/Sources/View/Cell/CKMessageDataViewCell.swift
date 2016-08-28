@@ -42,6 +42,26 @@ open class CKMessageDataViewCell: UICollectionViewCell {
                 
     }
     
+    open override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+        super.apply(layoutAttributes)
+        
+        if let attributes = layoutAttributes as? CKMessagesCollectionViewLayoutAttributes {
+            
+            messageView.contentInsets = attributes.contentViewInsets
+            
+            if messageView.direction == .incoming {
+                messageView.avatarSize = attributes.incomingAvatarSize
+            } else {
+                messageView.avatarSize = attributes.outgoingAvatarSize
+            }
+            
+            messageView.messageContainerViewWidthConstraint.constant = attributes.messageContainerWidth
+            
+            
+        }
+        
+    }
+    
     private func configure() {
         
         messageView = UINib(nibName: String(describing:CKMessageView.self),
@@ -51,8 +71,8 @@ open class CKMessageDataViewCell: UICollectionViewCell {
         assert(messageView != nil)
         messageView.prepareForReuse()
         
-        contentView.addSubview(messageView)
         messageView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(messageView)
         
         if #available(iOS 9, *) {
             
@@ -63,12 +83,11 @@ open class CKMessageDataViewCell: UICollectionViewCell {
             
         } else {
                         
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[m]|", options: [], metrics: nil, views: ["m": messageView]))
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[m]|", options: [], metrics: nil, views: ["m": messageView]))
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[m]-0-|", options: [], metrics: nil, views: ["m": messageView]))
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[m]-0-|", options: [], metrics: nil, views: ["m": messageView]))
             
         }
-        
-        avatarSize = .zero
+                
         
     }
     
@@ -91,7 +110,6 @@ open class CKMessageDataViewCell: UICollectionViewCell {
             messageView.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v]|", options: [], metrics: nil, views: ["v": hostedView]))
             
         }
-        
         
     }
     

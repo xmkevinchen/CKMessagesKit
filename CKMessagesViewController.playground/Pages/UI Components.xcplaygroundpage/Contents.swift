@@ -5,35 +5,37 @@ import UIKit
 import CKMessagesViewController
 import PlaygroundSupport
 
+let view = UIView(frame: CGRect(x: 0, y: 0, width: 600, height: 600))
+view.backgroundColor = UIColor.white
+PlaygroundPage.current.liveView = view
 
-let viewController = UIViewController()
-viewController.view.backgroundColor = UIColor.white
+var stringRect = NSString(string: "Incoming message")
+    .boundingRect(with: CGSize(width: 600, height: 600),
+                  options: [],
+                  attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body)],
+                  context: nil).integral
 
-
-PlaygroundPage.current.liveView = viewController
-
-viewController.view.bounds
-
-let stackView = UIStackView(frame: viewController.view.bounds)
-stackView.backgroundColor = UIColor.blue.withAlphaComponent(0.25)
-stackView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-stackView.bounds
-stackView.axis = .vertical
-stackView.spacing = 5
-stackView.alignment = .center
-
-viewController.view.addSubview(stackView)
-
-let label = CKInsetsLabel()
-label.backgroundColor = UIColor.lightGray
-label.text = "Hello World"
-label.sizeToFit()
-label.bounds
+var size = stringRect.size
+size.width += 28
+size.height -= stringRect.origin.y
 
 
-stackView.addSubview(label)
-label.textInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-label.intrinsicContentSize
+let frame = CGRect(origin: .zero, size: size)
+
+
+let textView = CKMessageCellTextView(frame: frame)
+textView.textContainerInset = UIEdgeInsets(top: 7, left: 14, bottom: 7, right: 14)
+textView.text = "Incoming message"
+textView.font = UIFont.preferredFont(forTextStyle: .body)
+view.addSubview(textView)
+
+
+
+
+
+
+
+
 
 
 

@@ -9,6 +9,8 @@
 import UIKit
 
 public class CKMessagesCollectionViewLayoutInvalidationContext: UICollectionViewFlowLayoutInvalidationContext {
+    
+    public var invalidateLayoutMessagesCache: Bool = false
 
     static func context() -> CKMessagesCollectionViewLayoutInvalidationContext {
         let context = CKMessagesCollectionViewLayoutInvalidationContext()

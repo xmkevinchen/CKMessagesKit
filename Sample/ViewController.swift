@@ -9,31 +9,31 @@
 import UIKit
 import CKMessagesViewController
 
-class ViewController: CKMessagesViewController, CKMessagesViewDataSource {
+class ViewController: CKMessagesViewController {
     
     
-    public var senderId: String {
+    override public var senderId: String {
         return "kevin"
     }
     
-    public var sender: String {
+    override public var sender: String {
         return "Kevin Chen"
     }
         
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        dataSource = self
         register(presentor: GridViewController.self, for: CollectionMessage.self)
+//        (messagesView.collectionViewLayout as! CKMessagesCollectionViewLayout).messageFont = UIFont.systemFont(ofSize: 14)
         
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return 10
     }
     
     
-    func messageView(_ messageView: CKMessagesCollectionView, messageForItemAt indexPath: IndexPath) -> CKMessageData {
+    override func messageView(_ messageView: CKMessagesCollectionView, messageForItemAt indexPath: IndexPath) -> CKMessageData {
         
         if arc4random() % 3 == 0 {
             return CKMessage(senderId: senderId, sender: sender, text: "Send out message")
