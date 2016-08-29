@@ -13,11 +13,19 @@ open class CKMessagesViewController: UIViewController, CKMessagesViewDataSource,
 
     @IBOutlet open weak var messagesView: CKMessagesCollectionView!
     
+    private var incomingBubbleImage: CKMessageBubbleImageData!
+    private var outgoingBubbleImage: CKMessageBubbleImageData!
+    
     override open func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
         configure()
+        
+        let factory = CKMessagesBubbleImageFactory()
+        
+        incomingBubbleImage = factory.incomingBubbleImage(with: UIColor.messageBubbleBlue)
+        outgoingBubbleImage = factory.outgoingBubbleImage(with: UIColor.messageBubbleLightGray)
     }
     
     static open func nib() -> UINib {
@@ -63,10 +71,12 @@ open class CKMessagesViewController: UIViewController, CKMessagesViewDataSource,
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         
+        var cellForItem: UICollectionViewCell!
+        
         if let dataSource = collectionView.dataSource as? CKMessagesViewDataSource {
-            let message = dataSource.messageView(messagesView, messageForItemAt: indexPath)
+            var messageCell: CKMessageDataViewCell!
             
-            var cellForItem: UICollectionViewCell!
+            let message = dataSource.messageView(messagesView, messageForItemAt: indexPath)
             
             if hasPresentor(of: message) {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CKMessageDataViewCell.self), for: indexPath) as! CKMessageDataViewCell
@@ -85,7 +95,8 @@ open class CKMessagesViewController: UIViewController, CKMessagesViewDataSource,
                     }
                 }
                 
-                cellForItem = cell
+                messageCell = cell
+                
             } else {
                 guard isProcessable(of: message) else {
                     fatalError("Unknown message type")
@@ -94,26 +105,31 @@ open class CKMessagesViewController: UIViewController, CKMessagesViewDataSource,
                 // Just for CKMessage now
                 
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CKMessageViewCell.ReuseIdentifier, for: indexPath) as! CKMessageViewCell
-                
-                
                 cell.textView.text = message.text
                 
-                print("===> message: \(message.senderId) dataSource: \(dataSource.senderId)")
-                
-                if message.senderId == dataSource.senderId {
-                    cell.direction = .outgoing
-                } else {
-                    cell.direction = .incoming
-                }
-                
-                
-                cellForItem = cell
+                messageCell = cell
             }
             
-            return cellForItem
-        } else {
-            fatalError("CKMessagesViewDataSource.messageView(_:messageForItemAt:) should be implement")
+            let bubbleImageData = dataSource.messageView(collectionView as! CKMessagesCollectionView, messageBubbleImageAt: indexPath)
+            
+            if isOutgoing(message: message) {
+                messageCell.direction = .outgoing
+                
+            } else {
+                messageCell.direction = .incoming
+            }
+            
+            messageCell.messageBubbleImageView.image = bubbleImageData?.image
+            messageCell.messageBubbleImageView.highlightedImage = bubbleImageData?.highlightedImage
+            
+            cellForItem = messageCell
+            
         }
+        
+        
+        assert(cellForItem != nil)
+        
+        return cellForItem
         
         
         
@@ -171,6 +187,14 @@ open class CKMessagesViewController: UIViewController, CKMessagesViewDataSource,
         assert(false, "ERROR: required method not implemented: \(#function)")
     }
     
+    open func messageView(_ messageView: CKMessagesCollectionView, messageBubbleImageAt indexPath: IndexPath) -> CKMessageBubbleImageData? {
+        let message = (messageView.dataSource as! CKMessagesViewDataSource).messageView(messageView, messageForItemAt: indexPath)
+        if isOutgoing(message: message) {
+            return outgoingBubbleImage
+        } else {
+            return incomingBubbleImage
+        }
+    }
     
     
     // MARK: - Private Properties
@@ -307,6 +331,10 @@ open class CKMessagesViewController: UIViewController, CKMessagesViewDataSource,
         messagesView.reloadData()
         
         
+    }
+    
+    private func isOutgoing(message: CKMessageData) -> Bool {
+        return message.senderId == senderId
     }
     
     fileprivate func debuggingPresentors(place: StaticString = #function) {

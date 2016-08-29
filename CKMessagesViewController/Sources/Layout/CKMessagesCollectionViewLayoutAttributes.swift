@@ -41,6 +41,7 @@ public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAtt
         copy.incomingAvatarSize = incomingAvatarSize
         copy.outgoingAvatarSize = outgoingAvatarSize
         copy.messageContainerWidth = messageContainerWidth
+        copy.messageTextViewContainerInsetes = messageTextViewContainerInsetes
         
         return copy
     }
@@ -54,6 +55,7 @@ public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAtt
                     && incomingAvatarSize == attributes.incomingAvatarSize
                     && outgoingAvatarSize == attributes.outgoingAvatarSize
                     && messageContainerWidth == attributes.messageContainerWidth
+                    && messageTextViewContainerInsetes == attributes.messageTextViewContainerInsetes
                     && super.isEqual(attributes)
             } else {
                 return super.isEqual(attributes)

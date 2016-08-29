@@ -27,25 +27,25 @@ public class CKMessageCellTextView: UITextView {
     
     private func configure() {
         font = UIFont.preferredFont(forTextStyle: .body)
-//        textColor = UIColor.white
+        textColor = UIColor.white
         isEditable = false
         isSelectable = false
         isUserInteractionEnabled = false
-        dataDetectorTypes = []
+        dataDetectorTypes = [.all]
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
         isScrollEnabled = false
         
         backgroundColor = UIColor.clear
-        contentInset = .zero;
-        scrollIndicatorInsets = .zero;
-        contentOffset = .zero;
         textContainerInset = .zero
-        textContainer.lineFragmentPadding = 0;
+        contentInset = .zero
+        contentOffset = .zero
+        scrollIndicatorInsets = .zero
+        textContainer.lineFragmentPadding = 0
         
-        self.linkTextAttributes = [
-            NSFontAttributeName: UIFont.preferredFont(forTextStyle: .body),
-//            NSForegroundColorAttributeName : UIColor.white,
+        
+        self.linkTextAttributes = [            
+            NSForegroundColorAttributeName : UIColor.white,
             NSUnderlineStyleAttributeName : [NSUnderlineStyle.styleSingle, .patternSolid]
         ]
         

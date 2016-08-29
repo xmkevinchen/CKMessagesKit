@@ -25,17 +25,18 @@ class ViewController: CKMessagesViewController {
         // Do any additional setup after loading the view, typically from a nib.
         register(presentor: GridViewController.self, for: CollectionMessage.self)
 //        (messagesView.collectionViewLayout as! CKMessagesCollectionViewLayout).messageFont = UIFont.systemFont(ofSize: 14)
+     
         
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return 2
     }
     
     
     override func messageView(_ messageView: CKMessagesCollectionView, messageForItemAt indexPath: IndexPath) -> CKMessageData {
         
-        if arc4random() % 3 == 0 {
+        if indexPath.item % 2 == 0 {
             return CKMessage(senderId: senderId, sender: sender, text: "Send out message")
         } else {
             return CKMessage(senderId: "fiona", sender: "Fiona", text: "Incoming message")
@@ -44,3 +45,8 @@ class ViewController: CKMessagesViewController {
     }
 }
 
+extension Bundle {
+    static var messages: Bundle {
+        return Bundle()
+    }
+}

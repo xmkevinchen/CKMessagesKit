@@ -40,10 +40,7 @@ class CKMessageView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         translatesAutoresizingMaskIntoConstraints = false
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        avatarContainerView.translatesAutoresizingMaskIntoConstraints = false
-        messageContainerView.translatesAutoresizingMaskIntoConstraints = false
-        accessoryContainerView.translatesAutoresizingMaskIntoConstraints = false
+        
                         
         topLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
         topLabel.textAlignment = .center
@@ -60,6 +57,12 @@ class CKMessageView: UIView {
         bottomLabel.textColor = UIColor.lightGray
         bottomLabel.numberOfLines = 0
         
+        backgroundColor = UIColor.clear
+        containerView.backgroundColor = UIColor.clear
+        avatarContainerView.backgroundColor = UIColor.clear
+        messageContainerView.backgroundColor = UIColor.clear
+        contentView.backgroundColor = UIColor.clear
+        accessoryContainerView.backgroundColor = UIColor.clear
         
     }
     
@@ -263,9 +266,13 @@ class CKMessageView: UIView {
             }
             
             contentViewTopConstraint.constant = contentInsets.top
-            contentViewLeadingConstraint.constant = contentInsets.left
-            contentViewTrailingConstraint.constant = contentInsets.right
             contentViewBottomConstraint.constant = contentInsets.bottom
+//            contentViewLeadingConstraint.constant = contentInsets.left
+//            contentViewLeadingConstraint.constant = contentInsets.right
+            contentViewLeadingConstraint.constant = direction == .incoming ? contentInsets.left : 0
+            contentViewTrailingConstraint.constant = direction == .outgoing ? contentInsets.right : 0
+            
+            
             
             setNeedsLayout()
             
@@ -278,5 +285,7 @@ class CKMessageView: UIView {
         bottomLabel.text = nil
         avatarImageView.image = nil
         avatarImageView.highlightedImage = nil
+        messageBubbleImageView.image = nil
+        messageBubbleImageView.highlightedImage = nil
     }
 }

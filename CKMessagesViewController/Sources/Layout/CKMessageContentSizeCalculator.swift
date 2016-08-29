@@ -40,8 +40,7 @@ class CKMessageContentSizeCalculator: CKMessageContentSizeCalculating {
         let textContainerInsets = layout.messageTextViewContainerInsets
         let contentInsets = layout.contentInsets
         
-        let hInsets = textContainerInsets.left + textContainerInsets.right
-            + contentInsets.left + contentInsets.right
+        let hInsets = textContainerInsets.left + textContainerInsets.right + contentInsets.left + contentInsets.right
         
         let maximumTextWidth = layout.itemWidth - avatarSize.width - layout.messageContainerMargin - hInsets
         
@@ -53,8 +52,7 @@ class CKMessageContentSizeCalculator: CKMessageContentSizeCalculating {
         
         let stringSize = stringRect.integral.size
                 
-        let vInsets = textContainerInsets.top + textContainerInsets.bottom
-            + contentInsets.top + contentInsets.bottom
+        let vInsets = textContainerInsets.top + textContainerInsets.bottom + contentInsets.top + contentInsets.bottom
         
         let width = stringSize.width + hInsets
         let height = stringSize.height + vInsets

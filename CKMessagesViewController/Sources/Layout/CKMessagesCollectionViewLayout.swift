@@ -13,11 +13,53 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     private let defaultAvatarSize: CGSize = CGSize(width: 30, height: 30)
     
     public var messageFont: UIFont = UIFont.preferredFont(forTextStyle: .body)
-    public var incomingAvatarSize: CGSize = .zero
-    public var outgoingAvatarSize: CGSize = .zero
-    public var contentInsets: UIEdgeInsets = .zero
-    public var messageTextViewContainerInsets: UIEdgeInsets = .zero
-    public var messageContainerMargin: CGFloat = 0.0
+    {
+        didSet {
+            if messageFont != oldValue {
+                invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
+            }
+        }
+
+    }
+    
+    public var incomingAvatarSize: CGSize = .zero {
+        didSet {
+            if incomingAvatarSize != oldValue {
+                invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
+            }
+        }
+    }
+    public var outgoingAvatarSize: CGSize = .zero {
+        didSet {
+            if outgoingAvatarSize != oldValue {
+                invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
+            }
+        }
+    }
+    
+    public var contentInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 6) {
+        didSet {
+            if contentInsets != oldValue {
+                invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
+            }
+            
+        }
+    }
+    
+    public var messageTextViewContainerInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8) {
+        didSet {
+            if messageTextViewContainerInsets != oldValue {
+                invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
+            }
+        }
+    }
+    public var messageContainerMargin: CGFloat = 0.0 {
+        didSet {
+            if messageContainerMargin != oldValue {
+                invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
+            }
+        }
+    }
     
     public var messageSizeCalculator: CKMessageContentSizeCalculating = CKMessageContentSizeCalculator()
     
@@ -103,10 +145,7 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
                 context.invalidateFlowLayoutDelegateMetrics = true
             }
             
-            if context.invalidateFlowLayoutAttributes || context.invalidateFlowLayoutDelegateMetrics {
-                
-            }
-            
+
             if context.invalidateLayoutMessagesCache {
                 reset()
             }
@@ -174,8 +213,6 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
             messageContainerMargin = 50
         }
         
-        contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 6.0)
-        messageTextViewContainerInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(didReceiveApplicationMemoryWarningNotification(_:)),

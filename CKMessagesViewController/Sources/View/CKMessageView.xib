@@ -12,12 +12,12 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NuR-dj-pdr">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NuR-dj-pdr">
                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6vn-5D-F8h">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6vn-5D-F8h">
                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -33,29 +33,29 @@
                                 <constraint firstItem="7f3-jc-Pmm" firstAttribute="leading" secondItem="6K8-w3-mkc" secondAttribute="leading" id="5fb-qs-fHf"/>
                                 <constraint firstAttribute="bottom" secondItem="7f3-jc-Pmm" secondAttribute="bottom" id="MCi-E1-vaJ"/>
                                 <constraint firstAttribute="trailing" secondItem="7f3-jc-Pmm" secondAttribute="trailing" id="O7S-FI-VRL"/>
-                                <constraint firstAttribute="width" constant="36" id="fWK-qx-uVo"/>
+                                <constraint firstAttribute="width" constant="30" id="fWK-qx-uVo"/>
                                 <constraint firstItem="7f3-jc-Pmm" firstAttribute="top" secondItem="6K8-w3-mkc" secondAttribute="top" id="gcn-BC-VLO"/>
-                                <constraint firstAttribute="height" constant="36" id="ttr-gc-FgY"/>
+                                <constraint firstAttribute="height" constant="30" id="ttr-gc-FgY"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="irj-VC-Svg">
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AWG-V6-ir5"/>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8a0-cB-LKA" customClass="CKMessagePresentingView" customModule="CKMessagesViewController" customModuleProvider="target">
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstItem="8a0-cB-LKA" firstAttribute="top" secondItem="irj-VC-Svg" secondAttribute="top" constant="2" id="0Gc-Rp-dqa"/>
-                                <constraint firstAttribute="trailing" secondItem="8a0-cB-LKA" secondAttribute="trailing" constant="2" id="3PN-yj-Ev0"/>
+                                <constraint firstItem="8a0-cB-LKA" firstAttribute="top" secondItem="irj-VC-Svg" secondAttribute="top" id="0Gc-Rp-dqa"/>
+                                <constraint firstAttribute="trailing" secondItem="8a0-cB-LKA" secondAttribute="trailing" id="3PN-yj-Ev0"/>
                                 <constraint firstItem="AWG-V6-ir5" firstAttribute="top" secondItem="irj-VC-Svg" secondAttribute="top" id="MHR-m6-CEU"/>
-                                <constraint firstItem="8a0-cB-LKA" firstAttribute="leading" secondItem="irj-VC-Svg" secondAttribute="leading" constant="2" id="QmZ-nn-oOy"/>
+                                <constraint firstItem="8a0-cB-LKA" firstAttribute="leading" secondItem="irj-VC-Svg" secondAttribute="leading" constant="6" id="QmZ-nn-oOy"/>
                                 <constraint firstAttribute="width" constant="240" id="WAg-GH-8x8"/>
                                 <constraint firstAttribute="bottom" secondItem="AWG-V6-ir5" secondAttribute="bottom" id="cwR-dS-9m0"/>
                                 <constraint firstAttribute="trailing" secondItem="AWG-V6-ir5" secondAttribute="trailing" id="kNQ-ls-EJg"/>
                                 <constraint firstItem="AWG-V6-ir5" firstAttribute="leading" secondItem="irj-VC-Svg" secondAttribute="leading" id="mnp-fj-U74"/>
-                                <constraint firstAttribute="bottom" secondItem="8a0-cB-LKA" secondAttribute="bottom" constant="2" id="wey-lk-vbF"/>
+                                <constraint firstAttribute="bottom" secondItem="8a0-cB-LKA" secondAttribute="bottom" id="wey-lk-vbF"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="anD-40-m0y">
@@ -78,7 +78,7 @@
                         <constraint firstItem="anD-40-m0y" firstAttribute="leading" secondItem="irj-VC-Svg" secondAttribute="trailing" id="wFa-xf-yse"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lM5-XE-x1Y">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lM5-XE-x1Y">
                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>

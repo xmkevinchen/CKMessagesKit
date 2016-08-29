@@ -12,7 +12,10 @@ public protocol CKMessagesViewDataSource: UICollectionViewDataSource {
     
     var senderId: String { get }
     var sender: String { get }
+    
     func messageView(_ messageView: CKMessagesCollectionView, messageForItemAt indexPath: IndexPath) -> CKMessageData
+    
+    func messageView(_ messageView: CKMessagesCollectionView, messageBubbleImageAt indexPath: IndexPath) -> CKMessageBubbleImageData?
 }
 
 @objc public protocol CKMessagesViewDelegate: UICollectionViewDelegateFlowLayout {
@@ -25,8 +28,7 @@ public protocol CKMessagesViewDataSource: UICollectionViewDataSource {
     
     @objc optional func messageView(_ messageView: CKMessagesCollectionView, textForBottomAt indexPath: IndexPath) -> String?
     @objc optional func messageView(_ messageView: CKMessagesCollectionView, attributedTextForBottom indexPath: IndexPath) -> NSAttributedString?
-    
-    
+        
     @objc optional func messageView(_ messageView: CKMessagesCollectionView, sizeForMessageContainerAt indexPath: IndexPath) -> CGSize
 }
 

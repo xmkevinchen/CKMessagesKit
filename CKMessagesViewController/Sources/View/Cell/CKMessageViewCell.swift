@@ -8,9 +8,9 @@
 
 import UIKit
 
-class CKMessageViewCell: CKMessageDataViewCell {
+public class CKMessageViewCell: CKMessageDataViewCell {
             
-    let textView: CKMessageCellTextView = CKMessageCellTextView()
+    public var textView: UITextView!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -21,11 +21,16 @@ class CKMessageViewCell: CKMessageDataViewCell {
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    public override func awakeFromNib() {
+        super.awakeFromNib()
+        
         configure()
         attach(hostedView: textView)
     }
     
-    override func prepareForReuse() {
+    override public func prepareForReuse() {
         super.prepareForReuse()
         textView.dataDetectorTypes = []
         textView.text = nil
@@ -33,30 +38,24 @@ class CKMessageViewCell: CKMessageDataViewCell {
     }
     
     
-    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+    override public func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
         
         if let attributes = layoutAttributes as? CKMessagesCollectionViewLayoutAttributes {
             
             if attributes.messageTextViewContainerInsetes != textView.textContainerInset {
-                textView.textContainerInset = attributes.messageTextViewContainerInsetes
-                textView.setNeedsDisplay()
+                textView.textContainerInset = attributes.messageTextViewContainerInsetes         
             }
             
             if attributes.messageFont != textView.font {
                 textView.font = attributes.messageFont
-                textView.linkTextAttributes = [
-                    NSFontAttributeName: attributes.messageFont,
-                    //            NSForegroundColorAttributeName : UIColor.white,
-                    NSUnderlineStyleAttributeName : [NSUnderlineStyle.styleSingle, .patternSolid] ]
             }
             
         }
     }
     
     private func configure() {
-        textView.layer.borderColor = UIColor.red.cgColor
-        textView.layer.borderWidth = 1
+        textView = CKMessageCellTextView(frame: frame)
     }
         
 }

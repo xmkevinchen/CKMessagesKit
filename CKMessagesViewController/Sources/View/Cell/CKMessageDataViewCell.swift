@@ -135,6 +135,10 @@ open class CKMessageDataViewCell: UICollectionViewCell {
         return messageView.bottomLabel
     }
     
+    public var messageBubbleImageView: UIImageView {
+        return messageView.messageBubbleImageView
+    }
+    
     public var accessoryView: UIView? {
         get {
             return messageView.accessoryView
