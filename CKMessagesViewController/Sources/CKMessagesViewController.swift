@@ -13,9 +13,6 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
 
     @IBOutlet open weak var messagesView: CKMessagesCollectionView!
     
-    private var incomingBubbleImage: CKMessageBubbleImageData!
-    private var outgoingBubbleImage: CKMessageBubbleImageData!
-    
     override open func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -41,7 +38,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
         super.didReceiveMemoryWarning()
         
         unusedPresentors.removeAll()
-        pretchedPresentors.removeAll()
+        prefetchedPresentors.removeAll()
         usingPresentors.removeAll()
         
         messagesView.collectionViewLayout.invalidateLayout()
@@ -182,7 +179,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
     private var registeredPresentors = [String: CKMessagePresenting.Type]()
     private var usingPresentors = [IndexPath: CKMessagePresenting]()
     private var unusedPresentors = [String: [CKMessagePresenting]]()
-    private var pretchedPresentors = [IndexPath: CKMessagePresenting]()
+    private var prefetchedPresentors = [IndexPath: CKMessagePresenting]()
     
     // MARK: - Private functions
     
@@ -213,9 +210,9 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
         
         // If pretchPresentors has presentor for indexPath then just use it
         
-        if let presentor = pretchedPresentors[indexPath] {
+        if let presentor = prefetchedPresentors[indexPath] {
             usingPresentors[indexPath] = presentor
-            pretchedPresentors.removeValue(forKey: indexPath)
+            prefetchedPresentors.removeValue(forKey: indexPath)
             return presentor
         }
         
@@ -236,7 +233,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
     
     fileprivate func prefetchPresentor(of message: CKMessageData, at indexPath: IndexPath) {
         
-        guard pretchedPresentors[indexPath] == nil else {
+        guard prefetchedPresentors[indexPath] == nil else {
             return
         }
         
@@ -248,11 +245,11 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
         if var presentor = unusedPresentors[MessageType]?.first {
             unusedPresentors[MessageType]?.removeFirst()
             presentor.message = message
-            pretchedPresentors[indexPath] = presentor
+            prefetchedPresentors[indexPath] = presentor
         } else {
             var presentor = PresentorType.presentor()
             presentor.message = message
-            pretchedPresentors[indexPath] = presentor
+            prefetchedPresentors[indexPath] = presentor
         }
         
     }
@@ -319,7 +316,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
     fileprivate func debuggingPresentors(place: StaticString = #function) {
         print("===> \(place) usingPresentors: \(usingPresentors)")
         print("===> \(place) unusedPresentors: \(unusedPresentors)")
-        print("===> \(place) pretchedPresentors: \(pretchedPresentors)")
+        print("===> \(place) pretchedPresentors: \(prefetchedPresentors)")
         print("")
         print("")
     }
