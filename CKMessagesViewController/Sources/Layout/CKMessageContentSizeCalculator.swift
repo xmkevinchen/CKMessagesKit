@@ -37,25 +37,40 @@ class CKMessageContentSizeCalculator: CKMessageContentSizeCalculating {
         
         let avatarSize: CGSize = self.avatarSize(of: message, with: layout)
         
-        let textContainerInsets = layout.messageContentInsets
+        let messagenContentInsets = layout.messageContentInsets
         let contentInsets = layout.contentInsets
         
-        let hInsets = textContainerInsets.left + textContainerInsets.right + contentInsets.left + contentInsets.right
+        let hInsets = messagenContentInsets.left + messagenContentInsets.right + contentInsets.left + contentInsets.right
+        let vInsets = messagenContentInsets.top + messagenContentInsets.bottom + contentInsets.top + contentInsets.bottom
         
-        let maximumTextWidth = layout.itemWidth - avatarSize.width - layout.messageContainerMargin - hInsets
+        let contentSize = layout.messagesView.decorator?.contentSize(at: indexPath, of: layout.messagesView)
         
-        let stringRect = NSString(string: message.text)
-            .boundingRect(with: CGSize(width: maximumTextWidth, height: CGFloat.greatestFiniteMagnitude),
-                          options: [.usesLineFragmentOrigin, .usesFontLeading],
-                          attributes: [NSFontAttributeName: layout.messageFont],
-                          context: nil)
+        var width: CGFloat = 0
+        var height: CGFloat = 0
         
-        let stringSize = stringRect.integral.size
-                
-        let vInsets = textContainerInsets.top + textContainerInsets.bottom + contentInsets.top + contentInsets.bottom
+        if contentSize != nil && contentSize! != .zero {
+            
+            width = contentSize!.width + hInsets
+            height = contentSize!.height + vInsets
+            
+        } else {
+            
+            let maximumTextWidth = layout.itemWidth - avatarSize.width - layout.messageContainerMargin - hInsets
+            
+            let stringRect = NSString(string: message.text)
+                .boundingRect(with: CGSize(width: maximumTextWidth, height: CGFloat.greatestFiniteMagnitude),
+                              options: [.usesLineFragmentOrigin, .usesFontLeading],
+                              attributes: [NSFontAttributeName: layout.messageFont],
+                              context: nil)
+            
+            let stringSize = stringRect.integral.size
+                                    
+            width = stringSize.width + hInsets
+            height = stringSize.height + vInsets
+        }
         
-        let width = stringSize.width + hInsets
-        let height = stringSize.height + vInsets
+        
+        
         
         let size = CGSize(width: max(width, minimumWidth), height: height)
         

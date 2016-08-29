@@ -162,17 +162,9 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     
     public func sizeForItem(at indexPath: IndexPath) -> CGSize {
         
-        var height: CGFloat = 0
-        let contentSize = messagesView.decorator?.contentSize(at: indexPath, of: messagesView)
         
-        if contentSize != nil && contentSize! != .zero {
-            // TODO: Move logic to messageSizeCalculator.size(of:at:with)
-            height = contentSize!.height + contentInsets.top + contentInsets.bottom + messageContentInsets.top + messageContentInsets.bottom
-        } else {
-        
-            let messageSize = messageSizeForItem(at: indexPath)
-            height = messageSize.height
-        }
+        let messageSize = messageSizeForItem(at: indexPath)
+        var height = messageSize.height
         
         if let attributes = layoutAttributesForItem(at: indexPath) as? CKMessagesCollectionViewLayoutAttributes {
             
@@ -248,18 +240,9 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     }
     
     private func configure(attributes: CKMessagesCollectionViewLayoutAttributes) {
-        let indexPath = attributes.indexPath
-        
-        let contentSize = messagesView.decorator?.contentSize(at: indexPath, of: messagesView)
-        
-        if contentSize != nil && contentSize != .zero {
-            attributes.messageContainerWidth = contentSize!.width + contentInsets.left + contentInsets.right + messageContentInsets.left + messageContentInsets.right
-            
-        } else {
-            let messageSize = messageSizeForItem(at: indexPath)
-            attributes.messageContainerWidth = messageSize.width
-            
-        }
+        let indexPath = attributes.indexPath                
+        let messageSize = messageSizeForItem(at: indexPath)
+        attributes.messageContainerWidth = messageSize.width
         
         attributes.contentViewInsets = contentInsets
         attributes.messageContentInsets = messageContentInsets
