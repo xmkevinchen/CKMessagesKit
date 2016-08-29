@@ -29,6 +29,8 @@ class CKMessageView: UIView {
     
     @IBOutlet weak var accessoryContainerView: UIView!
     
+    @IBOutlet weak var avatarWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var avatarHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var messageContainerViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var contentViewTopConstraint: NSLayoutConstraint!
@@ -64,6 +66,8 @@ class CKMessageView: UIView {
         contentView.backgroundColor = UIColor.clear
         accessoryContainerView.backgroundColor = UIColor.clear
         
+        contentView.clipsToBounds = true
+        
     }
     
 //    @IBInspectable
@@ -85,50 +89,25 @@ class CKMessageView: UIView {
             switch direction {
             case .incoming:
                 
-                if #available(iOS 9, *) {
-                    
-                    avatarContainerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-                    avatarContainerView.trailingAnchor.constraint(equalTo: messageContainerView.leadingAnchor).isActive = true
-                    
-                    accessoryContainerView.leadingAnchor.constraint(equalTo: messageContainerView.trailingAnchor).isActive = true
-                    accessoryContainerView.trailingAnchor.constraint(greaterThanOrEqualTo: containerView.trailingAnchor).isActive = true
-
-                    
-                } else {
-                    
-                    containerView.addConstraints(
-                        NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[avatar][message(\(messageContainerViewWidthConstraint.constant))][accessory]-(>=0)-|",
-                                                       options: [],
-                                                       metrics: nil,
-                                                       views: [
-                                                        "avatar": avatarContainerView,
-                                                        "message": messageContainerView,
-                                                        "accessory": accessoryContainerView]))
-                    
-                }
+                containerView.addConstraints(
+                    NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[avatar][message][accessory]-(>=0)-|",
+                                                   options: [],
+                                                   metrics: nil,
+                                                   views: [
+                                                    "avatar": avatarContainerView,
+                                                    "message": messageContainerView,
+                                                    "accessory": accessoryContainerView]))
                 
             case .outgoing:
                 
-                if #available(iOS 9, *) {
-                    
-                    avatarContainerView.leadingAnchor.constraint(equalTo: messageContainerView.trailingAnchor).isActive = true
-                    avatarContainerView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-                    
-                    accessoryContainerView.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor).isActive = true
-                    accessoryContainerView.trailingAnchor.constraint(equalTo: messageContainerView.leadingAnchor).isActive = true
-
-                    
-                } else {
-                    
-                    containerView.addConstraints(
-                        NSLayoutConstraint.constraints(withVisualFormat: "H:|-(>=0)-[accessory][message(\(messageContainerViewWidthConstraint.constant))][avatar]|",
-                                                       options: [],
-                                                       metrics: nil,
-                                                       views: [
-                                                        "avatar": avatarContainerView,
-                                                        "message": messageContainerView,
-                                                        "accessory": accessoryContainerView]))
-                }
+                containerView.addConstraints(
+                    NSLayoutConstraint.constraints(withVisualFormat: "H:|-(>=0)-[accessory][message][avatar]|",
+                                                   options: [],
+                                                   metrics: nil,
+                                                   views: [
+                                                    "avatar": avatarContainerView,
+                                                    "message": messageContainerView,
+                                                    "accessory": accessoryContainerView]))
             }
             
             setNeedsLayout()
@@ -213,7 +192,7 @@ class CKMessageView: UIView {
         }
     }
     
-    @IBInspectable
+//    @IBInspectable
     var avatarSize: CGSize = CGSize(width: 36, height: 36) {
         
         didSet {
@@ -222,40 +201,8 @@ class CKMessageView: UIView {
                 return
             }
             
-            let removingAttributes: [NSLayoutAttribute] = [.width, .height]
-            avatarContainerView.removeConstraints(
-                avatarContainerView.constraints.filter {
-                    removingAttributes.contains($0.firstAttribute)
-                }
-            )
-            
-            if #available(iOS 9, *) {
-                
-                
-                avatarImageView.widthAnchor.constraint(equalToConstant: avatarSize.width).isActive = true
-                avatarImageView.heightAnchor.constraint(equalToConstant: avatarSize.width).isActive = true
-                
-            } else {
-                
-                avatarContainerView.addConstraint(
-                    NSLayoutConstraint(item: avatarContainerView,
-                                       attribute: .width,
-                                       relatedBy: .equal,
-                                       toItem: nil,
-                                       attribute: .notAnAttribute,
-                                       multiplier: 1.0,
-                                       constant: avatarSize.width))
-                
-                avatarContainerView.addConstraint(
-                    NSLayoutConstraint(item: avatarContainerView,
-                                       attribute: .height,
-                                       relatedBy: .equal,
-                                       toItem: nil,
-                                       attribute: .notAnAttribute,
-                                       multiplier: 1.0,
-                                       constant: avatarSize.height))
-                
-            }
+            avatarWidthConstraint.constant = avatarSize.width
+            avatarHeightConstraint.constant = avatarSize.height
         }
     }
     
@@ -268,7 +215,7 @@ class CKMessageView: UIView {
             contentViewTopConstraint.constant = contentInsets.top
             contentViewBottomConstraint.constant = contentInsets.bottom
 //            contentViewLeadingConstraint.constant = contentInsets.left
-//            contentViewLeadingConstraint.constant = contentInsets.right
+//            contentViewTrailingConstraint.constant = contentInsets.right
             contentViewLeadingConstraint.constant = direction == .incoming ? contentInsets.left : 0
             contentViewTrailingConstraint.constant = direction == .outgoing ? contentInsets.right : 0
             
@@ -278,6 +225,8 @@ class CKMessageView: UIView {
             
         }
     }
+    
+
     
     func prepareForReuse() {
         topLabel.text = nil

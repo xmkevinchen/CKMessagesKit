@@ -43,13 +43,15 @@ public class CKMessageViewCell: CKMessageDataViewCell {
         
         if let attributes = layoutAttributes as? CKMessagesCollectionViewLayoutAttributes {
             
-            if attributes.messageTextViewContainerInsetes != textView.textContainerInset {
-                textView.textContainerInset = attributes.messageTextViewContainerInsetes         
+            if attributes.messageContentInsets != textView.textContainerInset {
+                textView.textContainerInset = attributes.messageContentInsets         
             }
             
             if attributes.messageFont != textView.font {
                 textView.font = attributes.messageFont
             }
+            
+            
             
         }
     }

@@ -33,11 +33,11 @@ public class CKMessagesBubbleImageFactory {
     }
     
     func outgoingBubbleImage(with color: UIColor) -> CKMessageBubbleImage {
-        return bubbleImage(with: color, flipped: false)
+        return bubbleImage(with: color, flipped: false ^ isRTL)
     }
     
     func incomingBubbleImage(with color: UIColor) -> CKMessageBubbleImage {
-        return bubbleImage(with: color, flipped: true)
+        return bubbleImage(with: color, flipped: true ^ isRTL)
     }
     
     var isRTL: Bool {
@@ -49,8 +49,8 @@ public class CKMessagesBubbleImageFactory {
         var highlight = bubbleImage.with(mask: color.darken(with: 0.12))
         
         if flipped {
-            normal = normal.flippedHorizontally()
-            highlight = highlight.flippedHorizontally()
+            normal = normal.flippedHorizontal()
+            highlight = highlight.flippedHorizontal()
         }
         
         normal = normal.resizableImage(withCapInsets: capInsets, resizingMode: .stretch)
@@ -60,7 +60,15 @@ public class CKMessagesBubbleImageFactory {
         
     }
     
+    static var defaultIncomingBubbleImage: CKMessageBubbleImageData = {
+        let factory = CKMessagesBubbleImageFactory()
+        return factory.incomingBubbleImage(with: UIColor.messageBubbleBlue)
+    }()
     
+    static var defaultOutgoingBubbleImage: CKMessageBubbleImageData = {
+        let factory = CKMessagesBubbleImageFactory()
+        return factory.outgoingBubbleImage(with: UIColor.messageBubbleLightGray)
+    }()
     
 }
 

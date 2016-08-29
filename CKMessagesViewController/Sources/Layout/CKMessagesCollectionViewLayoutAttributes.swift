@@ -15,7 +15,7 @@ public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAtt
     public var incomingAvatarSize: CGSize
     public var outgoingAvatarSize: CGSize
     public var messageContainerWidth: CGFloat
-    public var messageTextViewContainerInsetes: UIEdgeInsets
+    public var messageContentInsets: UIEdgeInsets
     public var topLabelHeight: CGFloat
     public var messageTopLabelHeight: CGFloat
     public var bottomLabelHeight: CGFloat
@@ -26,7 +26,7 @@ public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAtt
         incomingAvatarSize = .zero
         outgoingAvatarSize = .zero
         messageContainerWidth = 320.0
-        messageTextViewContainerInsetes = .zero
+        messageContentInsets = .zero
         topLabelHeight = 0.0
         messageTopLabelHeight = 0.0
         bottomLabelHeight = 0.0
@@ -41,7 +41,7 @@ public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAtt
         copy.incomingAvatarSize = incomingAvatarSize
         copy.outgoingAvatarSize = outgoingAvatarSize
         copy.messageContainerWidth = messageContainerWidth
-        copy.messageTextViewContainerInsetes = messageTextViewContainerInsetes
+        copy.messageContentInsets = messageContentInsets
         
         return copy
     }
@@ -55,7 +55,7 @@ public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAtt
                     && incomingAvatarSize == attributes.incomingAvatarSize
                     && outgoingAvatarSize == attributes.outgoingAvatarSize
                     && messageContainerWidth == attributes.messageContainerWidth
-                    && messageTextViewContainerInsetes == attributes.messageTextViewContainerInsetes
+                    && messageContentInsets == attributes.messageContentInsets
                     && super.isEqual(attributes)
             } else {
                 return super.isEqual(attributes)

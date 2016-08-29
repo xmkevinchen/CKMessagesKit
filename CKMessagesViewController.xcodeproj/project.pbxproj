@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A194E601D748E3700E567F1 /* CKMessageHostedViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A194E5F1D748E3700E567F1 /* CKMessageHostedViewCell.swift */; };
 		0A1CD9211D73534E00D93EC6 /* UIImage+CKMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1CD9201D73534E00D93EC6 /* UIImage+CKMessages.swift */; };
 		0A1CD9241D73586D00D93EC6 /* CKMessagesBubbleImageFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1CD9231D73586D00D93EC6 /* CKMessagesBubbleImageFactory.swift */; };
 		0A1CD9261D73C48000D93EC6 /* CKMessageBubbleImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1CD9251D73C48000D93EC6 /* CKMessageBubbleImageData.swift */; };
@@ -76,6 +77,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0A194E5F1D748E3700E567F1 /* CKMessageHostedViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageHostedViewCell.swift; sourceTree = "<group>"; };
 		0A1CD9201D73534E00D93EC6 /* UIImage+CKMessages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+CKMessages.swift"; sourceTree = "<group>"; };
 		0A1CD9231D73586D00D93EC6 /* CKMessagesBubbleImageFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesBubbleImageFactory.swift; sourceTree = "<group>"; };
 		0A1CD9251D73C48000D93EC6 /* CKMessageBubbleImageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageBubbleImageData.swift; sourceTree = "<group>"; };
@@ -301,6 +303,7 @@
 			children = (
 				917D41581D72197B001E678D /* CKMessageDataViewCell.swift */,
 				917D415A1D7219FF001E678D /* CKMessageViewCell.swift */,
+				0A194E5F1D748E3700E567F1 /* CKMessageHostedViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -435,6 +438,7 @@
 				912224461D6E7BE300C5F3B4 /* CKMessagesViewController.swift in Sources */,
 				917D41541D72153B001E678D /* CKExtendMessageData.swift in Sources */,
 				0A327A871D6FF616008A88E8 /* CKUtils.swift in Sources */,
+				0A194E601D748E3700E567F1 /* CKMessageHostedViewCell.swift in Sources */,
 				0A1CD9241D73586D00D93EC6 /* CKMessagesBubbleImageFactory.swift in Sources */,
 				0A327A851D6FC4CE008A88E8 /* CKMessagePresenting.swift in Sources */,
 				0AAE43AD1D726771000DF0FD /* CKMessageContentSizeCalculator.swift in Sources */,

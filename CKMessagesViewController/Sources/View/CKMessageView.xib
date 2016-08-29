@@ -26,16 +26,19 @@
                     <subviews>
                         <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="6K8-w3-mkc">
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="7f3-jc-Pmm"/>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="7f3-jc-Pmm">
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="30" id="Gxo-9s-Mid"/>
+                                        <constraint firstAttribute="height" constant="30" id="P7d-ht-iwM"/>
+                                    </constraints>
+                                </imageView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="7f3-jc-Pmm" firstAttribute="leading" secondItem="6K8-w3-mkc" secondAttribute="leading" id="5fb-qs-fHf"/>
                                 <constraint firstAttribute="bottom" secondItem="7f3-jc-Pmm" secondAttribute="bottom" id="MCi-E1-vaJ"/>
                                 <constraint firstAttribute="trailing" secondItem="7f3-jc-Pmm" secondAttribute="trailing" id="O7S-FI-VRL"/>
-                                <constraint firstAttribute="width" constant="30" id="fWK-qx-uVo"/>
-                                <constraint firstItem="7f3-jc-Pmm" firstAttribute="top" secondItem="6K8-w3-mkc" secondAttribute="top" id="gcn-BC-VLO"/>
-                                <constraint firstAttribute="height" constant="30" id="ttr-gc-FgY"/>
+                                <constraint firstItem="7f3-jc-Pmm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6K8-w3-mkc" secondAttribute="top" priority="750" id="gcn-BC-VLO"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="irj-VC-Svg">
@@ -71,6 +74,7 @@
                         <constraint firstAttribute="bottom" secondItem="irj-VC-Svg" secondAttribute="bottom" id="3wG-Ke-DUD"/>
                         <constraint firstItem="6K8-w3-mkc" firstAttribute="leading" secondItem="1ZP-U4-d5W" secondAttribute="leading" id="4ch-WR-QyF"/>
                         <constraint firstItem="irj-VC-Svg" firstAttribute="leading" secondItem="6K8-w3-mkc" secondAttribute="trailing" id="6Bk-R3-wHa"/>
+                        <constraint firstItem="6K8-w3-mkc" firstAttribute="top" secondItem="1ZP-U4-d5W" secondAttribute="top" id="8ZR-8d-6ur"/>
                         <constraint firstItem="anD-40-m0y" firstAttribute="top" secondItem="1ZP-U4-d5W" secondAttribute="top" id="L1c-Gf-3Qc"/>
                         <constraint firstAttribute="bottom" secondItem="anD-40-m0y" secondAttribute="bottom" id="UDe-TE-Kps"/>
                         <constraint firstAttribute="bottom" secondItem="6K8-w3-mkc" secondAttribute="bottom" id="Zfi-tz-o2w"/>
@@ -105,7 +109,9 @@
             <connections>
                 <outlet property="accessoryContainerView" destination="anD-40-m0y" id="ioa-4D-cq2"/>
                 <outlet property="avatarContainerView" destination="6K8-w3-mkc" id="A6y-Pg-Kju"/>
+                <outlet property="avatarHeightConstraint" destination="P7d-ht-iwM" id="KzP-VX-xlp"/>
                 <outlet property="avatarImageView" destination="7f3-jc-Pmm" id="Ch2-O8-Qs0"/>
+                <outlet property="avatarWidthConstraint" destination="Gxo-9s-Mid" id="fAj-1a-CtQ"/>
                 <outlet property="bottomLabel" destination="lM5-XE-x1Y" id="nbS-5f-EdV"/>
                 <outlet property="containerView" destination="1ZP-U4-d5W" id="jD8-js-4WM"/>
                 <outlet property="contentView" destination="8a0-cB-LKA" id="AVF-jV-1Fi"/>

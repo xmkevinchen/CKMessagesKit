@@ -37,7 +37,7 @@ class CKMessageContentSizeCalculator: CKMessageContentSizeCalculating {
         
         let avatarSize: CGSize = self.avatarSize(of: message, with: layout)
         
-        let textContainerInsets = layout.messageTextViewContainerInsets
+        let textContainerInsets = layout.messageContentInsets
         let contentInsets = layout.contentInsets
         
         let hInsets = textContainerInsets.left + textContainerInsets.right + contentInsets.left + contentInsets.right
@@ -68,9 +68,9 @@ class CKMessageContentSizeCalculator: CKMessageContentSizeCalculating {
     }
     
     private func avatarSize(of message: CKMessageData, with layout: CKMessagesCollectionViewLayout) -> CGSize {
-        if let dataSource = layout.collectionView?.dataSource as? CKMessagesViewDataSource {
+        if let senderId = layout.messagesView.messenger?.senderId {
             
-            if message.senderId == dataSource.senderId {
+            if message.senderId == senderId {
                 return layout.outgoingAvatarSize
             } else {
                 return layout.incomingAvatarSize

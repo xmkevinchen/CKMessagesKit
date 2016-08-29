@@ -9,17 +9,21 @@
 import UIKit
 
 public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
-
+    
+    public var messagesView: CKMessagesCollectionView {
+        return collectionView! as! CKMessagesCollectionView
+    }
+    
     private let defaultAvatarSize: CGSize = CGSize(width: 30, height: 30)
     
     public var messageFont: UIFont = UIFont.preferredFont(forTextStyle: .body)
-    {
+        {
         didSet {
             if messageFont != oldValue {
                 invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
             }
         }
-
+        
     }
     
     public var incomingAvatarSize: CGSize = .zero {
@@ -37,7 +41,7 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
         }
     }
     
-    public var contentInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 6) {
+    public var contentInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8) {
         didSet {
             if contentInsets != oldValue {
                 invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
@@ -46,9 +50,9 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
         }
     }
     
-    public var messageTextViewContainerInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8) {
+    public var messageContentInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8) {
         didSet {
-            if messageTextViewContainerInsets != oldValue {
+            if messageContentInsets != oldValue {
                 invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
             }
         }
@@ -145,7 +149,7 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
                 context.invalidateFlowLayoutDelegateMetrics = true
             }
             
-
+            
             if context.invalidateLayoutMessagesCache {
                 reset()
             }
@@ -156,30 +160,35 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     
     // MARK:- Public
     
-    func sizeForItem(at indexPath: IndexPath) -> CGSize {
+    public func sizeForItem(at indexPath: IndexPath) -> CGSize {
         
-        let messageSize = messageSizeForItem(at: indexPath)
+        var height: CGFloat = 0
+        let contentSize = messagesView.decorator?.contentSize(at: indexPath, of: messagesView)
+        
+        if contentSize != nil && contentSize! != .zero {
+            // TODO: Move logic to messageSizeCalculator.size(of:at:with)
+            height = contentSize!.height + contentInsets.top + contentInsets.bottom + messageContentInsets.top + messageContentInsets.bottom
+        } else {
+        
+            let messageSize = messageSizeForItem(at: indexPath)
+            height = messageSize.height
+        }
         
         if let attributes = layoutAttributesForItem(at: indexPath) as? CKMessagesCollectionViewLayoutAttributes {
             
-            var height = messageSize.height
             height += attributes.topLabelHeight
             height += attributes.messageTopLabelHeight
             height += attributes.bottomLabelHeight
             
-            
-            return CGSize(width: itemWidth, height: ceil(height))
         }
         
-        return .zero
+        return CGSize(width: itemWidth, height: ceil(height))
         
     }
     
     private func messageSizeForItem(at indexPath: IndexPath) -> CGSize {
         
-        if let messagesView = collectionView as? CKMessagesCollectionView,
-            let dataSource = collectionView?.dataSource as? CKMessagesViewDataSource {
-            let message = dataSource.messageView(messagesView, messageForItemAt: indexPath)
+        if let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) {
             
             return messageSizeCalculator.size(of: message, at: indexPath, with: self)
         }
@@ -240,45 +249,49 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     
     private func configure(attributes: CKMessagesCollectionViewLayoutAttributes) {
         let indexPath = attributes.indexPath
-        let messageSize = messageSizeForItem(at: indexPath)
-        attributes.messageContainerWidth = messageSize.width
+        
+        let contentSize = messagesView.decorator?.contentSize(at: indexPath, of: messagesView)
+        
+        if contentSize != nil && contentSize != .zero {
+            attributes.messageContainerWidth = contentSize!.width + contentInsets.left + contentInsets.right + messageContentInsets.left + messageContentInsets.right
+            
+        } else {
+            let messageSize = messageSizeForItem(at: indexPath)
+            attributes.messageContainerWidth = messageSize.width
+            
+        }
+        
         attributes.contentViewInsets = contentInsets
-        attributes.messageTextViewContainerInsetes = messageTextViewContainerInsets
+        attributes.messageContentInsets = messageContentInsets
         attributes.messageFont = messageFont
         attributes.incomingAvatarSize = incomingAvatarSize
         attributes.outgoingAvatarSize = outgoingAvatarSize
         
-        if let messageView = collectionView as? CKMessagesCollectionView,
-            let delegate = collectionView?.delegate as? CKMessagesViewDelegate {
+        
+        
+        if let decorator = messagesView.decorator {
             
-            // Top Label
-            if let attributedText = delegate.messageView?(messageView, attributedTextForTopAt: indexPath) {
-                
+            if let attributedText = decorator.attributedTextForTop(at: indexPath, of: messagesView) {
                 attributes.topLabelHeight = size(of: attributedText).height
-                
-            } else if let text = delegate.messageView?(messageView, textForTopAt: indexPath) {
+            } else if let text = decorator.textForTop(at: indexPath, of:messagesView) {
                 attributes.topLabelHeight = size(of: text, attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption1)]).height
             }
             
-            // Message Top Label
-            if let attributedText = delegate.messageView?(messageView, attributedTextForMessageTopAt: indexPath) {
-                
+            if let attributedText = decorator.attributedTextForMessageTop(at: indexPath, of: messagesView) {
                 attributes.messageTopLabelHeight = size(of: attributedText).height
-                
-            } else if let text = delegate.messageView?(messageView, textForMessageTopAt: indexPath) {
-                attributes.topLabelHeight = size(of: text,attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption2)]).height
+            } else if let text = decorator.textForMessageTop(at: indexPath, of: messagesView) {
+                attributes.messageTopLabelHeight = size(of: text, attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption1)]).height
             }
             
-            // Top Label
-            if let attributedText = delegate.messageView?(messageView, attributedTextForBottom: indexPath) {
-                
+            if let attributedText = decorator.attributedTextForBottom(at: indexPath, of: messagesView) {
                 attributes.topLabelHeight = size(of: attributedText).height
-                
-            } else if let text = delegate.messageView?(messageView, textForBottomAt: indexPath) {
-                attributes.topLabelHeight = size(of: text,attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption2)]).height
+            } else if let text = decorator.textForBottom(at: indexPath, of: messagesView) {
+                attributes.topLabelHeight = size(of: text, attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption1)]).height
             }
             
         }
+        
+        
     }
     
     

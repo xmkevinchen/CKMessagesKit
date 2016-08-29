@@ -9,7 +9,7 @@
 import UIKit
 
 
-open class CKMessagesViewController: UIViewController, CKMessagesViewDataSource, CKMessagesViewDelegate {
+open class CKMessagesViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
     @IBOutlet open weak var messagesView: CKMessagesCollectionView!
     
@@ -21,11 +21,12 @@ open class CKMessagesViewController: UIViewController, CKMessagesViewDataSource,
         // Do any additional setup after loading the view, typically from a nib.
         
         configure()
+    }
+    
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-        let factory = CKMessagesBubbleImageFactory()
         
-        incomingBubbleImage = factory.incomingBubbleImage(with: UIColor.messageBubbleBlue)
-        outgoingBubbleImage = factory.outgoingBubbleImage(with: UIColor.messageBubbleLightGray)
     }
     
     static open func nib() -> UINib {
@@ -64,7 +65,7 @@ open class CKMessagesViewController: UIViewController, CKMessagesViewDataSource,
         return 1
     }
     
-    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {        
         return 0
     }
     
@@ -73,13 +74,14 @@ open class CKMessagesViewController: UIViewController, CKMessagesViewDataSource,
         
         var cellForItem: UICollectionViewCell!
         
-        if let dataSource = collectionView.dataSource as? CKMessagesViewDataSource {
+        if let messagesView = collectionView as? CKMessagesCollectionView,
+            let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) {
+            
             var messageCell: CKMessageDataViewCell!
             
-            let message = dataSource.messageView(messagesView, messageForItemAt: indexPath)
             
             if hasPresentor(of: message) {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CKMessageDataViewCell.self), for: indexPath) as! CKMessageDataViewCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CKMessageHostedViewCell.self), for: indexPath) as! CKMessageHostedViewCell
                 
                 if #available(iOS 10, *) {
                     
@@ -110,7 +112,7 @@ open class CKMessagesViewController: UIViewController, CKMessagesViewDataSource,
                 messageCell = cell
             }
             
-            let bubbleImageData = dataSource.messageView(collectionView as! CKMessagesCollectionView, messageBubbleImageAt: indexPath)
+            let bubbleImageData = messagesView.decorator?.messageBubbleImage(at: indexPath, of: messagesView)
             
             if isOutgoing(message: message) {
                 messageCell.direction = .outgoing
@@ -148,9 +150,8 @@ open class CKMessagesViewController: UIViewController, CKMessagesViewDataSource,
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         
-        if let dataSource = collectionView.dataSource as? CKMessagesViewDataSource {
-            
-            let message = dataSource.messageView(messagesView, messageForItemAt: indexPath)
+        if let messagesView = collectionView as? CKMessagesCollectionView,
+            let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) {
             
             if #available(iOS 10, *) {
                 
@@ -160,7 +161,7 @@ open class CKMessagesViewController: UIViewController, CKMessagesViewDataSource,
                  * So on iOS 10, at least, for now, process attaching hostedView in willDisplay could solve the issue
                  */
                 
-                if let cell = cell as? CKMessageDataViewCell,
+                if let cell = cell as? CKMessageHostedViewCell,
                     let presentor = presentor(of: message, at: indexPath) {
                     cell.attach(hostedView: presentor.messageView)
                     presentor.renderPresenting(with: message)
@@ -173,29 +174,8 @@ open class CKMessagesViewController: UIViewController, CKMessagesViewDataSource,
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         recyclePresentor(at: indexPath)
     }
-    
-    // MARK: - CKMessagesView
-    open func messageView(_ messageView: CKMessagesCollectionView, messageForItemAt indexPath: IndexPath) -> CKMessageData {
-        assert(false, "ERROR: required method not implemented: \(#function)")
-    }
-    
-    open var sender: String {
-        assert(false, "ERROR: required method not implemented: \(#function)")
-    }
-    
-    open var senderId: String {
-        assert(false, "ERROR: required method not implemented: \(#function)")
-    }
-    
-    open func messageView(_ messageView: CKMessagesCollectionView, messageBubbleImageAt indexPath: IndexPath) -> CKMessageBubbleImageData? {
-        let message = (messageView.dataSource as! CKMessagesViewDataSource).messageView(messageView, messageForItemAt: indexPath)
-        if isOutgoing(message: message) {
-            return outgoingBubbleImage
-        } else {
-            return incomingBubbleImage
-        }
-    }
-    
+
+            
     
     // MARK: - Private Properties
     
@@ -317,24 +297,23 @@ open class CKMessagesViewController: UIViewController, CKMessagesViewDataSource,
             
         }
         
-        messagesView.register(CKMessageDataViewCell.self, forCellWithReuseIdentifier: CKMessageDataViewCell.ReuseIdentifier)
+        messagesView.register(CKMessageHostedViewCell.self, forCellWithReuseIdentifier: CKMessageHostedViewCell.ReuseIdentifier)
         messagesView.register(CKMessageViewCell.self, forCellWithReuseIdentifier: CKMessageViewCell.ReuseIdentifier)
         
         
         messagesView.delegate = self
         messagesView.dataSource = self
+                
         
         if #available(iOS 10, *) {
             messagesView.prefetchDataSource = self
         }
         
-        messagesView.reloadData()
-        
         
     }
     
     private func isOutgoing(message: CKMessageData) -> Bool {
-        return message.senderId == senderId
+        return message.senderId == messagesView.messenger?.senderId
     }
     
     fileprivate func debuggingPresentors(place: StaticString = #function) {
@@ -350,12 +329,17 @@ open class CKMessagesViewController: UIViewController, CKMessagesViewDataSource,
 extension CKMessagesViewController: UICollectionViewDataSourcePrefetching {
     
     public func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        if let dataSource = collectionView.dataSource as? CKMessagesViewDataSource {
-            indexPaths.forEach { indexPath in
-                let message = dataSource.messageView(messagesView, messageForItemAt: indexPath)
+        
+        guard let messagesView = collectionView as? CKMessagesCollectionView else {
+            return
+        }
+        
+        indexPaths.forEach { indexPath in
+            if let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) {
                 prefetchPresentor(of: message, at: indexPath)
             }
         }
+        
         
     }
 }

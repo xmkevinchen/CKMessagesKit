@@ -36,7 +36,8 @@ public extension UIImage {
         return image
     }
     
-    func flippedHorizontally() -> UIImage {
+    
+    func flippedHorizontal() -> UIImage {
                 
         return UIImage(cgImage: cgImage!, scale: scale, orientation: .upMirrored )
         

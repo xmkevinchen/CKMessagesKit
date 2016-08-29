@@ -8,32 +8,91 @@
 
 import UIKit
 
-public protocol CKMessagesViewDataSource: UICollectionViewDataSource {
+public protocol CKMessagesViewMessaging: class {
     
     var senderId: String { get }
     var sender: String { get }
     
-    func messageView(_ messageView: CKMessagesCollectionView, messageForItemAt indexPath: IndexPath) -> CKMessageData
+    func messageForItem(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> CKMessageData
     
-    func messageView(_ messageView: CKMessagesCollectionView, messageBubbleImageAt indexPath: IndexPath) -> CKMessageBubbleImageData?
 }
 
-@objc public protocol CKMessagesViewDelegate: UICollectionViewDelegateFlowLayout {
+
+public protocol CKMessagesViewDecorating: NSObjectProtocol {
     
-    @objc optional func messageView(_ messageView: CKMessagesCollectionView, textForTopAt indexPath: IndexPath) -> String?
-    @objc optional func messageView(_ messageView: CKMessagesCollectionView, attributedTextForTopAt indexPath: IndexPath) -> NSAttributedString?
+    func textForTop(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> String?
+    func attributedTextForTop(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> NSAttributedString?
     
-    @objc optional func messageView(_ messageView: CKMessagesCollectionView, textForMessageTopAt indexPath: IndexPath) -> String?
-    @objc optional func messageView(_ messageView: CKMessagesCollectionView, attributedTextForMessageTopAt indexPath: IndexPath) -> NSAttributedString?
+    func textForMessageTop(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> String?
+    func attributedTextForMessageTop(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> NSAttributedString?
     
-    @objc optional func messageView(_ messageView: CKMessagesCollectionView, textForBottomAt indexPath: IndexPath) -> String?
-    @objc optional func messageView(_ messageView: CKMessagesCollectionView, attributedTextForBottom indexPath: IndexPath) -> NSAttributedString?
+    func textForBottom(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> String?
+    func attributedTextForBottom(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> NSAttributedString?
+    
+    func messageBubbleImage(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> CKMessageBubbleImageData?
+    
+    func contentSize(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> CGSize
+    
+}
+
+
+public extension CKMessagesViewDecorating {
+    
+    
+    func textForTop(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> String? {
+        return nil
+    }
+    
+    func attributedTextForTop(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> NSAttributedString? {
+        return nil
+    }
+    
+    func textForMessageTop(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> String? {
+        return nil
+    }
+    
+    func attributedTextForMessageTop(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> NSAttributedString? {
+        return nil
+    }
+    
+    func textForBottom(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> String? {
+        return nil
+    }
+    
+    func attributedTextForBottom(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> NSAttributedString? {
+        return nil
+    }
+    
+    func messageBubbleImage(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> CKMessageBubbleImageData? {
+        if let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView),
+            let senderId = messagesView.messenger?.senderId {
+            
+            if message.senderId == senderId  {
+                
+                return CKMessagesBubbleImageFactory.defaultOutgoingBubbleImage
+                
+            } else {
+                return CKMessagesBubbleImageFactory.defaultIncomingBubbleImage
+            }
+            
+        }
         
-    @objc optional func messageView(_ messageView: CKMessagesCollectionView, sizeForMessageContainerAt indexPath: IndexPath) -> CGSize
+        return nil
+    }
+    
+    func contentSize(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> CGSize {
+        return .zero
+    }
+    
+    
+    
+    
 }
-
 
 open class CKMessagesCollectionView: UICollectionView {
+    
+    open weak var decorator: CKMessagesViewDecorating?
+    open weak var messenger: CKMessagesViewMessaging?
     
     override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
