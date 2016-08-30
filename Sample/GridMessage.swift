@@ -9,7 +9,7 @@
 import Foundation
 import CKMessagesViewController
 
-struct CollectionMessage: CKExtendMessageData, Hashable {
+struct GridMessage: CKExtendMessageData, Hashable {
     
     public var senderId: String
     public var sender: String

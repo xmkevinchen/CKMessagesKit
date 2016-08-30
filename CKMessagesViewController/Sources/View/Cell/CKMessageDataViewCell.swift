@@ -10,6 +10,7 @@ import UIKit
 
 
 class CKMessagePresentingView: UIView {
+  
     
 }
 
@@ -17,7 +18,7 @@ class CKMessagePresentingView: UIView {
 open class CKMessageDataViewCell: UICollectionViewCell {
                 
     private weak var messageView: CKMessageView!
-    private weak var hostedView: UIView?
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,7 +40,6 @@ open class CKMessageDataViewCell: UICollectionViewCell {
     
     open override func prepareForReuse() {
         super.prepareForReuse()
-        hostedView = nil
         messageView.prepareForReuse()
                 
     }
@@ -57,14 +57,17 @@ open class CKMessageDataViewCell: UICollectionViewCell {
                 messageView.avatarSize = attributes.outgoingAvatarSize
             }
             
-            messageContainerViewWidthConstraint.constant = attributes.messageContainerWidth
+            messageView.messageContentInsets = attributes.messageContentInsets
+            messageView.messageContainerSize = attributes.messageContainerSize
+            messageView.messageContentSize = attributes.messageContentSize
+            
+            
         }
         
     }
     
-    public var messageContainerViewWidthConstraint: NSLayoutConstraint {
-        return messageView.messageContainerViewWidthConstraint
-    }
+    
+    
     
     private func configure() {
         
@@ -78,69 +81,22 @@ open class CKMessageDataViewCell: UICollectionViewCell {
         messageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(messageView)
         
-        if #available(iOS 9, *) {
-            
-            messageView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-            messageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-            messageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-            messageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
-            
-        } else {
-                        
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[m]-0-|", options: [], metrics: nil, views: ["m": messageView]))
-            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[m]-0-|", options: [], metrics: nil, views: ["m": messageView]))
-            
-        }
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[m]-0-|", options: [], metrics: nil, views: ["m": messageView]))
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[m]-0-|", options: [], metrics: nil, views: ["m": messageView]))
+        
+        
         
     }
     
     
-    var messageContentInsets: UIEdgeInsets = .zero {
-        didSet {
-            guard messageContentInsets != oldValue else {
-                return
-            }
-            
-            if let hostedView = self.hostedView {
-                
-                let metrics = [
-                    "t" : messageContentInsets.top,
-                    "l" : messageContentInsets.left,
-                    "b" : messageContentInsets.bottom,
-                    "r" : messageContentInsets.right
-                ]
-                
-                messageView.contentView.removeConstraints(messageView.contentView.constraints)
-                
-                messageView.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-l-[v]-r-|", options: [], metrics: metrics, views: ["v": hostedView]))
-                messageView.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-t-[v]-b-|", options: [], metrics: metrics, views: ["v": hostedView]))
-            }
 
-        }
-    }
+
     
     public func attach(hostedView: UIView) {
-        self.hostedView = hostedView
-        messageView.contentView.addSubview(hostedView)
-        
-        hostedView.translatesAutoresizingMaskIntoConstraints = false
-        
-        
-        
-        let metrics = [
-            "t" : messageContentInsets.top,
-            "l" : messageContentInsets.left,
-            "b" : messageContentInsets.bottom,
-            "r" : messageContentInsets.right
-        ]
-        
-        
-        messageView.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-l-[v]-r-|", options: [], metrics: metrics, views: ["v": hostedView]))
-        messageView.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-t-[v]-b-|", options: [], metrics: metrics, views: ["v": hostedView]))
-        
-        
-        
+        messageView.attach(hostedView: hostedView)
     }
+    
+    
     
     public var avatarSize: CGSize {
         get {

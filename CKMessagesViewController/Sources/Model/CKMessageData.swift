@@ -11,12 +11,15 @@ import Foundation
 
 public protocol CKMessageData {
     
+    
     var senderId: String { get }
     var sender: String { get }
     var timestamp: Date { get }
-    var text: String { get }    
+    var text: String { get }
     var hash: Int { get }
+    
 }
+
 
 extension CKMessageData where Self: Hashable {
     

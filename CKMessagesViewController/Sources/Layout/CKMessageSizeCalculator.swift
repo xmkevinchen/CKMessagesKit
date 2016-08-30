@@ -9,10 +9,13 @@
 import UIKit
 
 
-class CKMessageContentSizeCalculator: CKMessageContentSizeCalculating {
+class CKMessageSizeCalculator: CKMessageSizeCalculating {
+    
+
     
     private var cache: NSCache<AnyObject, AnyObject>
     private var minimumWidth: CGFloat
+    private var additionalInsets : CGFloat = 2
     
     init(cache: NSCache<AnyObject, AnyObject>, minimumWidth: CGFloat) {
         self.cache = cache
@@ -29,9 +32,11 @@ class CKMessageContentSizeCalculator: CKMessageContentSizeCalculating {
         self.init(cache: cache, minimumWidth: minimumWidth)
     }
     
-    func size(of message: CKMessageData, at indexPath: IndexPath, with layout: CKMessagesCollectionViewLayout) -> CGSize {
+    func size(of message: CKMessageData, at indexPath: IndexPath, with layout: CKMessagesCollectionViewLayout) -> CKMessageSize {
         
-        if let cachedSize = cache.object(forKey: message.hash as AnyObject) as? CGSize {
+        let key = String(message.hash) as NSString
+        
+        if let cachedSize = cache.object(forKey: key) as? CKMessageSize {
             return cachedSize
         }
         
@@ -43,7 +48,7 @@ class CKMessageContentSizeCalculator: CKMessageContentSizeCalculating {
         let hInsets = messagenContentInsets.left + messagenContentInsets.right + contentInsets.left + contentInsets.right
         let vInsets = messagenContentInsets.top + messagenContentInsets.bottom + contentInsets.top + contentInsets.bottom
         
-        let contentSize = layout.messagesView.decorator?.contentSize(at: indexPath, of: layout.messagesView)
+        var contentSize = layout.messagesView.decorator?.contentSize(at: indexPath, of: layout.messagesView)
         
         var width: CGFloat = 0
         var height: CGFloat = 0
@@ -64,17 +69,20 @@ class CKMessageContentSizeCalculator: CKMessageContentSizeCalculating {
                               context: nil)
             
             let stringSize = stringRect.integral.size
+            contentSize = stringSize
                                     
             width = stringSize.width + hInsets
-            height = stringSize.height + vInsets
+            height = stringSize.height + vInsets + additionalInsets
         }
         
         
         
         
-        let size = CGSize(width: max(width, minimumWidth), height: height)
+        let containerSize = CGSize(width: max(width, minimumWidth), height: height)
         
-        cache.setObject(size as AnyObject, forKey: message.hash as AnyObject)
+        let size = CKMessageSize(container: containerSize, content: contentSize!)
+        cache.setObject(size as AnyObject, forKey: key)
+        
         return size
     }
     

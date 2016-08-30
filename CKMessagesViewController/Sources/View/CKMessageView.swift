@@ -33,11 +33,14 @@ class CKMessageView: UIView {
     @IBOutlet weak var avatarHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var messageContainerViewWidthConstraint: NSLayoutConstraint!
+    
+    
     @IBOutlet weak var contentViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var contentViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var contentViewTrailingConstraint: NSLayoutConstraint!
     @IBOutlet weak var contentViewBottomConstraint: NSLayoutConstraint!
     
+    private weak var hostedView: UIView?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -68,6 +71,19 @@ class CKMessageView: UIView {
         
         contentView.clipsToBounds = true
         
+    }
+    
+    var messageContainerSize: CGSize {
+        get {
+            return messageContainerView.bounds.size
+        }
+        
+        set {
+            if newValue.width != messageContainerViewWidthConstraint.constant {
+                messageContainerViewWidthConstraint.constant = newValue.width
+            }
+            
+        }
     }
     
 //    @IBInspectable
@@ -226,6 +242,57 @@ class CKMessageView: UIView {
         }
     }
     
+    var messageContentInsets: UIEdgeInsets = .zero {
+        
+        didSet {
+            guard messageContentInsets != oldValue && hostedView != nil else {
+                return
+            }
+            
+            let metrics = [
+                "t" : messageContentInsets.top,
+                "l" : messageContentInsets.left,
+                "b" : messageContentInsets.bottom,
+                "r" : messageContentInsets.right,
+                "width": messageContentSize.width,
+                "height": messageContentSize.height
+            ]
+            
+            contentView.removeConstraints(contentView.constraints)
+            
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-l-[v(width)]-r-|", options: [], metrics: metrics, views: ["v": hostedView!]))
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-t-[v(height)]-b-|", options: [], metrics: metrics, views: ["v": hostedView!]))
+            
+            
+        }
+
+    }
+    
+    var messageContentSize: CGSize = .zero {
+        didSet {
+            
+            guard messageContentSize != oldValue && hostedView != nil else {
+                return
+            }
+            
+            let metrics = [
+                "t" : messageContentInsets.top,
+                "l" : messageContentInsets.left,
+                "b" : messageContentInsets.bottom,
+                "r" : messageContentInsets.right,
+                "width": messageContentSize.width,
+                "height": messageContentSize.height
+            ]
+            
+            contentView.removeConstraints(contentView.constraints)
+            
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-l-[v(width)]-r-|", options: [], metrics: metrics, views: ["v": hostedView!]))
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-t-[v(height)]-b-|", options: [], metrics: metrics, views: ["v": hostedView!]))
+
+            
+        }
+    }
+    
 
     
     func prepareForReuse() {
@@ -236,5 +303,24 @@ class CKMessageView: UIView {
         avatarImageView.highlightedImage = nil
         messageBubbleImageView.image = nil
         messageBubbleImageView.highlightedImage = nil
+    }
+    
+    func attach(hostedView: UIView) {
+        self.hostedView = hostedView
+        hostedView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(hostedView)
+        
+        let metrics = [
+            "t" : messageContentInsets.top,
+            "l" : messageContentInsets.left,
+            "b" : messageContentInsets.bottom,
+            "r" : messageContentInsets.right,
+        ]
+        
+        contentView.removeConstraints(contentView.constraints)
+        
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-l-[v]-r-|", options: [], metrics: metrics, views: ["v": hostedView]))
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-t-[v]-b-|", options: [], metrics: metrics, views: ["v": hostedView]))
+        
     }
 }

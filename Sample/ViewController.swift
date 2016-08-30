@@ -11,7 +11,7 @@ import CKMessagesViewController
 
 class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessagesViewDecorating {
     
-    
+    var messages = [CKMessageData]()
         
     override func viewDidLoad() {
         
@@ -24,8 +24,35 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
         messagesView.reloadData()
         
         // Do any additional setup after loading the view, typically from a nib.
-        register(presentor: GridViewController.self, for: CollectionMessage.self)
+        register(presentor: GridViewController.self, for: GridMessage.self)
+        register(presentor: ListViewController.self, for: ListMessage.self)
 //        (messagesView.collectionViewLayout as! CKMessagesCollectionViewLayout).messageFont = UIFont.systemFont(ofSize: 14)
+        
+        for i in 0..<100 {
+            var message: CKMessageData?
+            let value = i % 4
+            
+            switch value {
+            case 0:
+                message = CKMessage(senderId: senderId, sender: sender, text: "Your Apple ID must be associated with a paid Apple Developer Program or Apple Developer Enterprise Program to access certain software downloads.")
+                
+            case 1:
+                message = CKMessage(senderId: "incoming", sender: "Incoming", text: "Get the latest beta releases of Xcode, iOS, macOS, watchOS, tvOS, and more.")
+                
+            case 2:
+                message = GridMessage(senderId: "incoming", sender: "Incoming", text: String(i))
+                
+            case 3:
+                message = ListMessage(senderId: "incoming", sender: "Incoming", text: String(i))
+                
+            default:
+                break
+            }
+            
+            if message != nil {
+                messages.append(message!)
+            }
+        }
         
     }
     
@@ -36,31 +63,18 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 100
+        return 4
     }
     
     public func messageForItem(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> CKMessageData {
-        let value = indexPath.item % 3
+        return messages[indexPath.item]
         
-        switch value {
-        case 0:
-            return CKMessage(senderId: senderId, sender: sender, text: "Your Apple ID must be associated with a paid Apple Developer Program or Apple Developer Enterprise Program to access certain software downloads.")
-            
-        case 1:
-            return CKMessage(senderId: "fiona", sender: "Fiona", text: "Get the latest beta releases of Xcode, iOS, macOS, watchOS, tvOS, and more.")
-            
-        case 2:
-            return CollectionMessage(senderId: "fiona", sender: "Fiona", text: String(indexPath.item))
-            
-        default:
-            return CKMessage(senderId: senderId, sender: sender, text: "Send out message")
-        }
     }
     
     
     
     public var senderId: String {
-        return "kevin"
+        return "outgoing"
     }
     
     public var sender: String {
@@ -68,8 +82,12 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
     }
     
     func contentSize(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> CGSize {
-        if indexPath.item % 3 == 2 {
+                
+        let value = indexPath.item % 4
+        if value == 2 {
             return CGSize(width:240, height:50)
+        } else if value == 3 {
+            return CGSize(width:200, height:240)
         } else {
             return .zero
         }

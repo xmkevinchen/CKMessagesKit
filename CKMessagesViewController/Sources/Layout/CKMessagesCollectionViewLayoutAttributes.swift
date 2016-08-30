@@ -14,8 +14,9 @@ public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAtt
     public var contentViewInsets: UIEdgeInsets
     public var incomingAvatarSize: CGSize
     public var outgoingAvatarSize: CGSize
-    public var messageContainerWidth: CGFloat
+    public var messageContainerSize: CGSize
     public var messageContentInsets: UIEdgeInsets
+    public var messageContentSize: CGSize
     public var topLabelHeight: CGFloat
     public var messageTopLabelHeight: CGFloat
     public var bottomLabelHeight: CGFloat
@@ -25,8 +26,9 @@ public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAtt
         contentViewInsets = .zero
         incomingAvatarSize = .zero
         outgoingAvatarSize = .zero
-        messageContainerWidth = 320.0
+        messageContainerSize = .zero
         messageContentInsets = .zero
+        messageContentSize = .zero
         topLabelHeight = 0.0
         messageTopLabelHeight = 0.0
         bottomLabelHeight = 0.0
@@ -40,8 +42,9 @@ public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAtt
         copy.contentViewInsets = contentViewInsets
         copy.incomingAvatarSize = incomingAvatarSize
         copy.outgoingAvatarSize = outgoingAvatarSize
-        copy.messageContainerWidth = messageContainerWidth
         copy.messageContentInsets = messageContentInsets
+        copy.messageContainerSize = messageContainerSize
+        copy.messageContentSize = messageContentSize
         
         return copy
     }
@@ -54,8 +57,9 @@ public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAtt
                     && contentViewInsets == attributes.contentViewInsets
                     && incomingAvatarSize == attributes.incomingAvatarSize
                     && outgoingAvatarSize == attributes.outgoingAvatarSize
-                    && messageContainerWidth == attributes.messageContainerWidth
                     && messageContentInsets == attributes.messageContentInsets
+                    && messageContainerSize == attributes.messageContainerSize
+                    && messageContentSize == messageContentSize
                     && super.isEqual(attributes)
             } else {
                 return super.isEqual(attributes)

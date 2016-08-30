@@ -32,7 +32,7 @@ class GridViewController: UIViewController, CKMessagePresenting {
     }
     
     public var message: CKMessageData?
-    public var messageType: CKMessageData.Type = CollectionMessage.self
+    public var messageType: CKMessageData.Type = GridMessage.self
     
     public static func presentor() -> CKMessagePresenting {
         let viewControlelr = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "GridViewController") as! GridViewController        
@@ -40,17 +40,14 @@ class GridViewController: UIViewController, CKMessagePresenting {
     }
     
     func renderPresenting(with message: CKMessageData) {
-        if let message = message as? CollectionMessage, let collectionView = collectionView {
+        if let message = message as? GridMessage, let collectionView = collectionView {
             self.message = message
             collectionView.reloadData()
         }
     }
+
     
     
-    var messageView: UIView {
-        return view
-    }
-        
 }
 
 

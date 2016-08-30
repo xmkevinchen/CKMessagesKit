@@ -65,7 +65,7 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
         }
     }
     
-    public var messageSizeCalculator: CKMessageContentSizeCalculating = CKMessageContentSizeCalculator()
+    public var messageSizeCalculator: CKMessageSizeCalculating = CKMessageSizeCalculator()
     
     
     
@@ -164,7 +164,7 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
         
         
         let messageSize = messageSizeForItem(at: indexPath)
-        var height = messageSize.height
+        var height = messageSize.container.height
         
         if let attributes = layoutAttributesForItem(at: indexPath) as? CKMessagesCollectionViewLayoutAttributes {
             
@@ -178,10 +178,9 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
         
     }
     
-    private func messageSizeForItem(at indexPath: IndexPath) -> CGSize {
+    private func messageSizeForItem(at indexPath: IndexPath) -> CKMessageSize {
         
         if let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) {
-            
             return messageSizeCalculator.size(of: message, at: indexPath, with: self)
         }
         
@@ -240,9 +239,10 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     }
     
     private func configure(attributes: CKMessagesCollectionViewLayoutAttributes) {
-        let indexPath = attributes.indexPath                
+        let indexPath = attributes.indexPath
         let messageSize = messageSizeForItem(at: indexPath)
-        attributes.messageContainerWidth = messageSize.width
+        attributes.messageContainerSize = messageSize.container
+        attributes.messageContentSize = messageSize.content
         
         attributes.contentViewInsets = contentInsets
         attributes.messageContentInsets = messageContentInsets

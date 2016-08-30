@@ -78,7 +78,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
             
             
             if hasPresentor(of: message) {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CKMessageHostedViewCell.self), for: indexPath) as! CKMessageHostedViewCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CKMessageDataViewCell.ReuseIdentifier, for: indexPath) as! CKMessageDataViewCell
                 
                 if #available(iOS 10, *) {
                     
@@ -87,6 +87,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
                      * which makes some cells are empty.
                      * So on iOS 10, at least, for now, moving attaching hostedView process to @collectionView(_:willDisplay:forItemAt:) delegate could solve the issue
                      */
+                    prefetchPresentor(of: message, at: indexPath)
                     
                 } else {
                     if let presentor = presentor(of: message, at: indexPath) {
@@ -158,7 +159,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
                  * So on iOS 10, at least, for now, process attaching hostedView in willDisplay could solve the issue
                  */
                 
-                if let cell = cell as? CKMessageHostedViewCell,
+                if let cell = cell as? CKMessageDataViewCell,
                     let presentor = presentor(of: message, at: indexPath) {
                     cell.attach(hostedView: presentor.messageView)
                     presentor.renderPresenting(with: message)
@@ -294,7 +295,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
             
         }
         
-        messagesView.register(CKMessageHostedViewCell.self, forCellWithReuseIdentifier: CKMessageHostedViewCell.ReuseIdentifier)
+        messagesView.register(CKMessageDataViewCell.self, forCellWithReuseIdentifier: CKMessageDataViewCell.ReuseIdentifier)
         messagesView.register(CKMessageViewCell.self, forCellWithReuseIdentifier: CKMessageViewCell.ReuseIdentifier)
         
         
@@ -326,6 +327,8 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
 extension CKMessagesViewController: UICollectionViewDataSourcePrefetching {
     
     public func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        
+        print("====> indexPaths: \(indexPaths)")
         
         guard let messagesView = collectionView as? CKMessagesCollectionView else {
             return

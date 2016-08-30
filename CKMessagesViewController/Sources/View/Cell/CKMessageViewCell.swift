@@ -15,7 +15,7 @@ public class CKMessageViewCell: CKMessageDataViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
-        attach(hostedView: textView)
+        
         
     }
     
@@ -25,14 +25,11 @@ public class CKMessageViewCell: CKMessageDataViewCell {
     
     public override func awakeFromNib() {
         super.awakeFromNib()
-        
         configure()
-        attach(hostedView: textView)
     }
     
     override public func prepareForReuse() {
-        super.prepareForReuse()
-        textView.dataDetectorTypes = []
+        super.prepareForReuse()        
         textView.text = nil
         textView.attributedText = nil
     }
@@ -42,22 +39,17 @@ public class CKMessageViewCell: CKMessageDataViewCell {
         super.apply(layoutAttributes)
         
         if let attributes = layoutAttributes as? CKMessagesCollectionViewLayoutAttributes {
-            
-            if attributes.messageContentInsets != textView.textContainerInset {
-                textView.textContainerInset = attributes.messageContentInsets         
-            }
-            
+                        
             if attributes.messageFont != textView.font {
                 textView.font = attributes.messageFont
             }
-            
-            
-            
+                                    
         }
     }
     
     private func configure() {
         textView = CKMessageCellTextView(frame: frame)
+        attach(hostedView: textView)
     }
         
 }
