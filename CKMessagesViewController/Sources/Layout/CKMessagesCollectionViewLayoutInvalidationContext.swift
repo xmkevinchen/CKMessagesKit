@@ -16,6 +16,7 @@ public class CKMessagesCollectionViewLayoutInvalidationContext: UICollectionView
         let context = CKMessagesCollectionViewLayoutInvalidationContext()
         context.invalidateFlowLayoutDelegateMetrics = true
         context.invalidateFlowLayoutAttributes = true
+        context.invalidateLayoutMessagesCache = true
         return context
     }
 }

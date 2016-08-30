@@ -17,7 +17,7 @@ struct ListMessage: CKMessageData, Hashable {
     public var timestamp: Date
     
     public init(senderId: String, sender: String, text: String, timestamp: Date = Date()) {
-        self.senderId = sender
+        self.senderId = senderId
         self.sender = sender
         self.text = text
         self.timestamp = timestamp

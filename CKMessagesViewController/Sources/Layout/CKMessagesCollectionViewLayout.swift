@@ -221,9 +221,7 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     
     
     @objc private func didReceiveApplicationMemoryWarningNotification(_ notification: Notification) {
-        let context = CKMessagesCollectionViewLayoutInvalidationContext.context()
-        context.invalidateLayoutMessagesCache = true
-        invalidateLayout(with: context)
+        invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
     }
     
     @objc private func didReceiveDeviceOrientationDidChangeNotification(_ notification: Notification) {

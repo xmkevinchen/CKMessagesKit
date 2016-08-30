@@ -162,7 +162,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
                 if let cell = cell as? CKMessageDataViewCell,
                     let presentor = presentor(of: message, at: indexPath) {
                     cell.attach(hostedView: presentor.messageView)
-                    presentor.renderPresenting(with: message)
+                    presentor.renderPresenting(with: message)                    
                 }
             }
         }

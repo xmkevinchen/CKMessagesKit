@@ -40,7 +40,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
                 message = CKMessage(senderId: "incoming", sender: "Incoming", text: "Get the latest beta releases of Xcode, iOS, macOS, watchOS, tvOS, and more.")
                 
             case 2:
-                message = GridMessage(senderId: "incoming", sender: "Incoming", text: String(i))
+                message = GridMessage(senderId: senderId, sender: sender, text: String(i))
                 
             case 3:
                 message = ListMessage(senderId: "incoming", sender: "Incoming", text: String(i))
