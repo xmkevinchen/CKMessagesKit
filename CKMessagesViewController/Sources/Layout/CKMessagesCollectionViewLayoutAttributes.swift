@@ -11,10 +11,8 @@ import UIKit
 public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttributes {
     
     public var messageFont: UIFont
-    public var contentViewInsets: UIEdgeInsets
     public var incomingAvatarSize: CGSize
     public var outgoingAvatarSize: CGSize
-    public var messageContainerSize: CGSize
     public var messageContentInsets: UIEdgeInsets
     public var messageContentSize: CGSize
     public var topLabelHeight: CGFloat
@@ -23,10 +21,8 @@ public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAtt
     
     override init() {
         messageFont = UIFont.preferredFont(forTextStyle: .body)
-        contentViewInsets = .zero
         incomingAvatarSize = .zero
         outgoingAvatarSize = .zero
-        messageContainerSize = .zero
         messageContentInsets = .zero
         messageContentSize = .zero
         topLabelHeight = 0.0
@@ -39,12 +35,13 @@ public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAtt
         let copy = super.copy() as! CKMessagesCollectionViewLayoutAttributes
         
         copy.messageFont = messageFont
-        copy.contentViewInsets = contentViewInsets
         copy.incomingAvatarSize = incomingAvatarSize
         copy.outgoingAvatarSize = outgoingAvatarSize
         copy.messageContentInsets = messageContentInsets
-        copy.messageContainerSize = messageContainerSize
         copy.messageContentSize = messageContentSize
+        copy.topLabelHeight = topLabelHeight
+        copy.messageTopLabelHeight = messageTopLabelHeight
+        copy.bottomLabelHeight = bottomLabelHeight
         
         return copy
     }
@@ -53,13 +50,14 @@ public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAtt
         if let attributes = object as? CKMessagesCollectionViewLayoutAttributes {
             
             if attributes.representedElementCategory == .cell {
-                return messageFont == attributes.messageFont
-                    && contentViewInsets == attributes.contentViewInsets
+                return messageFont == attributes.messageFont                    
                     && incomingAvatarSize == attributes.incomingAvatarSize
                     && outgoingAvatarSize == attributes.outgoingAvatarSize
-                    && messageContentInsets == attributes.messageContentInsets
-                    && messageContainerSize == attributes.messageContainerSize
-                    && messageContentSize == messageContentSize
+                    && messageContentInsets == attributes.messageContentInsets                    
+                    && messageContentSize == attributes.messageContentSize
+                    && topLabelHeight == attributes.topLabelHeight
+                    && messageTopLabelHeight == attributes.messageTopLabelHeight
+                    && bottomLabelHeight == attributes.bottomLabelHeight
                     && super.isEqual(attributes)
             } else {
                 return super.isEqual(attributes)

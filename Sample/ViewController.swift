@@ -63,11 +63,12 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return 12
     }
     
     public func messageForItem(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> CKMessageData {
         return messages[indexPath.item]
+//        return GridMessage(senderId: "incoming", sender: "Incoming", text: String(1))
         
     }
     
@@ -84,6 +85,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
     func contentSize(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> CGSize {
                 
         let value = indexPath.item % 4
+        
         if value == 2 {
             return CGSize(width:240, height:50)
         } else if value == 3 {
@@ -91,7 +93,11 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
         } else {
             return .zero
         }
+        
+        
+//        return CGSize(width:240, height:50)
     }
+    
     
 }
 

@@ -10,6 +10,7 @@ import UIKit
 
 public class CKMessageCellTextView: UITextView {
     
+    
     override public init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
         configure()

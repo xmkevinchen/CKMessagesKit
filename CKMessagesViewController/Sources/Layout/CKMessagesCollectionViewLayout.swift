@@ -41,16 +41,8 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
         }
     }
     
-    public var contentInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8) {
-        didSet {
-            if contentInsets != oldValue {
-                invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
-            }
-            
-        }
-    }
     
-    public var messageContentInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8) {
+    public var messageContentInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16) {
         didSet {
             if messageContentInsets != oldValue {
                 invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
@@ -241,10 +233,8 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     private func configure(attributes: CKMessagesCollectionViewLayoutAttributes) {
         let indexPath = attributes.indexPath
         let messageSize = messageSizeForItem(at: indexPath)
-        attributes.messageContainerSize = messageSize.container
+                
         attributes.messageContentSize = messageSize.content
-        
-        attributes.contentViewInsets = contentInsets
         attributes.messageContentInsets = messageContentInsets
         attributes.messageFont = messageFont
         attributes.incomingAvatarSize = incomingAvatarSize

@@ -48,19 +48,15 @@ open class CKMessageDataViewCell: UICollectionViewCell {
         super.apply(layoutAttributes)
         
         if let attributes = layoutAttributes as? CKMessagesCollectionViewLayoutAttributes {
-            
-            messageView.contentInsets = attributes.contentViewInsets
-            
+                                    
             if messageView.direction == .incoming {
                 messageView.avatarSize = attributes.incomingAvatarSize
             } else {
                 messageView.avatarSize = attributes.outgoingAvatarSize
             }
             
-            messageView.messageContentInsets = attributes.messageContentInsets
-            messageView.messageContainerSize = attributes.messageContainerSize
-            messageView.messageContentSize = attributes.messageContentSize
-            
+            messageView.updateContentLayout(with: attributes.messageContentInsets,
+                                            size: attributes.messageContentSize)
             
         }
         
@@ -75,8 +71,7 @@ open class CKMessageDataViewCell: UICollectionViewCell {
                             bundle: Bundle(for: CKMessageView.self))
             .instantiate(withOwner: nil, options: nil).last as? CKMessageView
         
-        assert(messageView != nil)
-        messageView.prepareForReuse()
+        assert(messageView != nil)        
         
         messageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(messageView)

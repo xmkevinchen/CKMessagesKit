@@ -28,7 +28,7 @@ extension CKMessageData where Self: Hashable {
     }
     
     public var hashValue: Int {
-        return senderId.hashValue ^ timestamp.hashValue ^ text.hashValue
+        return "\(senderId).\(text).\(timestamp)".hashValue
     }
     
     public static func ==(lhs: Self, rhs: Self) -> Bool {
