@@ -47,7 +47,7 @@ open class CKMessageDataViewCell: UICollectionViewCell {
     open override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
         
-        if let attributes = layoutAttributes as? CKMessagesCollectionViewLayoutAttributes {
+        if let attributes = layoutAttributes as? CKMessagesViewLayoutAttributes {
                                     
             if messageView.direction == .incoming {
                 messageView.avatarSize = attributes.incomingAvatarSize

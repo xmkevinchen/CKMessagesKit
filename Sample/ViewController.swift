@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import CKMessagesViewController
+import CKMessagesKit
 
 class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessagesViewDecorating {
     
@@ -26,7 +26,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
         // Do any additional setup after loading the view, typically from a nib.
         register(presentor: GridViewController.self, for: GridMessage.self)
         register(presentor: ListViewController.self, for: ListMessage.self)
-//        (messagesView.collectionViewLayout as! CKMessagesCollectionViewLayout).messageFont = UIFont.systemFont(ofSize: 14)
+//        (messagesView.collectionViewLayout as! CKMessagesViewLayout).messageFont = UIFont.systemFont(ofSize: 14)
         
         for i in 0..<100 {
             var message: CKMessageData?
@@ -66,7 +66,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
         return 100
     }
     
-    public func messageForItem(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> CKMessageData {
+    public func messageForItem(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CKMessageData {
         return messages[indexPath.item]
 //        return GridMessage(senderId: "incoming", sender: "Incoming", text: String(1))
         
@@ -82,7 +82,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
         return "Kevin Chen"
     }
     
-    func contentSize(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> CGSize {
+    func contentSize(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CGSize {
                 
         let value = indexPath.item % 4
         

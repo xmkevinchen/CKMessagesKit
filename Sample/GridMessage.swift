@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CKMessagesViewController
+import CKMessagesKit
 
 struct GridMessage: CKExtendMessageData, Hashable {
     

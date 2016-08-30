@@ -1,5 +1,5 @@
 //
-//  CKMessagesCollectionViewLayoutInvalidationContext.swift
+//  CKMessagesViewLayoutInvalidationContext.swift
 //  CKCollectionViewForDataCard
 //
 //  Created by Kevin Chen on 8/24/16.
@@ -8,12 +8,12 @@
 
 import UIKit
 
-public class CKMessagesCollectionViewLayoutInvalidationContext: UICollectionViewFlowLayoutInvalidationContext {
+public class CKMessagesViewLayoutInvalidationContext: UICollectionViewFlowLayoutInvalidationContext {
     
     public var invalidateLayoutMessagesCache: Bool = false
 
-    static func context() -> CKMessagesCollectionViewLayoutInvalidationContext {
-        let context = CKMessagesCollectionViewLayoutInvalidationContext()
+    static func context() -> CKMessagesViewLayoutInvalidationContext {
+        let context = CKMessagesViewLayoutInvalidationContext()
         context.invalidateFlowLayoutDelegateMetrics = true
         context.invalidateFlowLayoutAttributes = true
         context.invalidateLayoutMessagesCache = true

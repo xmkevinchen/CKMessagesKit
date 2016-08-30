@@ -1,5 +1,5 @@
 //
-//  CKMessagesCollectionView.swift
+//  CKMessagesView.swift
 //  CKCollectionViewForDataCard
 //
 //  Created by Kevin Chen on 8/24/16.
@@ -13,25 +13,25 @@ public protocol CKMessagesViewMessaging: class {
     var senderId: String { get }
     var sender: String { get }
     
-    func messageForItem(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> CKMessageData
+    func messageForItem(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CKMessageData
     
 }
 
 
 public protocol CKMessagesViewDecorating: NSObjectProtocol {
     
-    func textForTop(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> String?
-    func attributedTextForTop(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> NSAttributedString?
+    func textForTop(at indexPath: IndexPath, of messagesView: CKMessagesView) -> String?
+    func attributedTextForTop(at indexPath: IndexPath, of messagesView: CKMessagesView) -> NSAttributedString?
     
-    func textForMessageTop(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> String?
-    func attributedTextForMessageTop(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> NSAttributedString?
+    func textForMessageTop(at indexPath: IndexPath, of messagesView: CKMessagesView) -> String?
+    func attributedTextForMessageTop(at indexPath: IndexPath, of messagesView: CKMessagesView) -> NSAttributedString?
     
-    func textForBottom(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> String?
-    func attributedTextForBottom(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> NSAttributedString?
+    func textForBottom(at indexPath: IndexPath, of messagesView: CKMessagesView) -> String?
+    func attributedTextForBottom(at indexPath: IndexPath, of messagesView: CKMessagesView) -> NSAttributedString?
     
-    func messageBubbleImage(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> CKMessageBubbleImageData?
+    func messageBubbleImage(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CKMessageBubbleImageData?
     
-    func contentSize(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> CGSize
+    func contentSize(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CGSize
     
 }
 
@@ -39,31 +39,31 @@ public protocol CKMessagesViewDecorating: NSObjectProtocol {
 public extension CKMessagesViewDecorating {
     
     
-    func textForTop(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> String? {
+    func textForTop(at indexPath: IndexPath, of messagesView: CKMessagesView) -> String? {
         return nil
     }
     
-    func attributedTextForTop(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> NSAttributedString? {
+    func attributedTextForTop(at indexPath: IndexPath, of messagesView: CKMessagesView) -> NSAttributedString? {
         return nil
     }
     
-    func textForMessageTop(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> String? {
+    func textForMessageTop(at indexPath: IndexPath, of messagesView: CKMessagesView) -> String? {
         return nil
     }
     
-    func attributedTextForMessageTop(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> NSAttributedString? {
+    func attributedTextForMessageTop(at indexPath: IndexPath, of messagesView: CKMessagesView) -> NSAttributedString? {
         return nil
     }
     
-    func textForBottom(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> String? {
+    func textForBottom(at indexPath: IndexPath, of messagesView: CKMessagesView) -> String? {
         return nil
     }
     
-    func attributedTextForBottom(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> NSAttributedString? {
+    func attributedTextForBottom(at indexPath: IndexPath, of messagesView: CKMessagesView) -> NSAttributedString? {
         return nil
     }
     
-    func messageBubbleImage(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> CKMessageBubbleImageData? {
+    func messageBubbleImage(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CKMessageBubbleImageData? {
         if let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView),
             let senderId = messagesView.messenger?.senderId {
             
@@ -80,7 +80,7 @@ public extension CKMessagesViewDecorating {
         return nil
     }
     
-    func contentSize(at indexPath: IndexPath, of messagesView: CKMessagesCollectionView) -> CGSize {
+    func contentSize(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CGSize {
         return .zero
     }
     
@@ -89,7 +89,7 @@ public extension CKMessagesViewDecorating {
     
 }
 
-open class CKMessagesCollectionView: UICollectionView {
+open class CKMessagesView: UICollectionView {
     
     open weak var decorator: CKMessagesViewDecorating?
     open weak var messenger: CKMessagesViewMessaging?

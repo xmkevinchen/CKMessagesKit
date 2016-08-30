@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import CKMessagesViewController
+import CKMessagesKit
 
 struct ListMessage: CKMessageData, Hashable {
     

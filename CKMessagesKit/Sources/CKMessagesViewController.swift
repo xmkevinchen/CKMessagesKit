@@ -11,7 +11,7 @@ import UIKit
 
 open class CKMessagesViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
-    @IBOutlet open weak var messagesView: CKMessagesCollectionView!
+    @IBOutlet open weak var messagesView: CKMessagesView!
     
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +71,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
         
         var cellForItem: UICollectionViewCell!
         
-        if let messagesView = collectionView as? CKMessagesCollectionView,
+        if let messagesView = collectionView as? CKMessagesView,
             let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) {
             
             var messageCell: CKMessageDataViewCell!
@@ -137,7 +137,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        if let layout = collectionViewLayout as? CKMessagesCollectionViewLayout {
+        if let layout = collectionViewLayout as? CKMessagesViewLayout {
             
             return layout.sizeForItem(at: indexPath)
         } else {
@@ -148,7 +148,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
         
-        if let messagesView = collectionView as? CKMessagesCollectionView,
+        if let messagesView = collectionView as? CKMessagesView,
             let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) {
             
             if #available(iOS 10, *) {
@@ -330,7 +330,7 @@ extension CKMessagesViewController: UICollectionViewDataSourcePrefetching {
         
         print("====> indexPaths: \(indexPaths)")
         
-        guard let messagesView = collectionView as? CKMessagesCollectionView else {
+        guard let messagesView = collectionView as? CKMessagesView else {
             return
         }
         

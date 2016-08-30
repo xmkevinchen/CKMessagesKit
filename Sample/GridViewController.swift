@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import CKMessagesViewController
+import CKMessagesKit
 
 class GridViewController: UIViewController, CKMessagePresenting {
     

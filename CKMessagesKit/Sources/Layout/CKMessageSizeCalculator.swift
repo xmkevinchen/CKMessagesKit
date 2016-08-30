@@ -32,7 +32,7 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
         self.init(cache: cache, minimumWidth: minimumWidth)
     }
     
-    func size(of message: CKMessageData, at indexPath: IndexPath, with layout: CKMessagesCollectionViewLayout) -> CKMessageSize {
+    func size(of message: CKMessageData, at indexPath: IndexPath, with layout: CKMessagesViewLayout) -> CKMessageSize {
         
         let key = message.hash as AnyObject
         
@@ -100,11 +100,11 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
         return size
     }
     
-    func prepareForResetting(layout: CKMessagesCollectionViewLayout) {
+    func prepareForResetting(layout: CKMessagesViewLayout) {
         cache.removeAllObjects()
     }
     
-    private func avatarSize(of message: CKMessageData, with layout: CKMessagesCollectionViewLayout) -> CGSize {
+    private func avatarSize(of message: CKMessageData, with layout: CKMessagesViewLayout) -> CGSize {
         if let senderId = layout.messagesView.messenger?.senderId {
             
             if message.senderId == senderId {

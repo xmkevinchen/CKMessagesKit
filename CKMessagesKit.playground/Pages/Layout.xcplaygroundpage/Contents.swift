@@ -1,6 +1,6 @@
 //: [Previous](@previous)
 
-import CKMessagesViewController
+import CKMessagesKit
 import PlaygroundSupport
 
 let text = "Your Apple ID must be associated with a paid Apple Developer Program or Apple Developer Enterprise Program to access certain software downloads."
@@ -16,6 +16,7 @@ context.totalBounds
 
 let textView = UITextView(frame: rect)
 textView.text = text
+textView.font = font
 textView.sizeThatFits(CGSize(width: 253, height: CGFloat.greatestFiniteMagnitude))
 
 

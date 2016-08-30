@@ -1,5 +1,5 @@
 //
-//  CKMessagesCollectionViewLayoutAttributes.swift
+//  CKMessagesViewLayoutAttributes.swift
 //  CKCollectionViewForDataCard
 //
 //  Created by Kevin Chen on 8/24/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttributes {
+public class CKMessagesViewLayoutAttributes: UICollectionViewLayoutAttributes {
     
     public var messageFont: UIFont
     public var incomingAvatarSize: CGSize
@@ -32,7 +32,7 @@ public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAtt
     }
 
     override public func copy() -> Any {
-        let copy = super.copy() as! CKMessagesCollectionViewLayoutAttributes
+        let copy = super.copy() as! CKMessagesViewLayoutAttributes
         
         copy.messageFont = messageFont
         copy.incomingAvatarSize = incomingAvatarSize
@@ -47,7 +47,7 @@ public class CKMessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAtt
     }
     
     override public func isEqual(_ object: Any?) -> Bool {
-        if let attributes = object as? CKMessagesCollectionViewLayoutAttributes {
+        if let attributes = object as? CKMessagesViewLayoutAttributes {
             
             if attributes.representedElementCategory == .cell {
                 return messageFont == attributes.messageFont                    

@@ -19,8 +19,8 @@ public struct CKMessageSize {
 
 public protocol CKMessageSizeCalculating {
     
-    func size(of message: CKMessageData, at indexPath: IndexPath, with layout: CKMessagesCollectionViewLayout) -> CKMessageSize
+    func size(of message: CKMessageData, at indexPath: IndexPath, with layout: CKMessagesViewLayout) -> CKMessageSize
     
-    func prepareForResetting(layout: CKMessagesCollectionViewLayout)
+    func prepareForResetting(layout: CKMessagesViewLayout)
     
 }

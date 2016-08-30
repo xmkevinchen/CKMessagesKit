@@ -38,7 +38,7 @@ public class CKMessageViewCell: CKMessageDataViewCell {
     override public func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
         super.apply(layoutAttributes)
         
-        if let attributes = layoutAttributes as? CKMessagesCollectionViewLayoutAttributes {
+        if let attributes = layoutAttributes as? CKMessagesViewLayoutAttributes {
                         
             if attributes.messageFont != textView.font {
                 textView.font = attributes.messageFont

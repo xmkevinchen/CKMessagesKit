@@ -1,5 +1,5 @@
 //
-//  CKMessagesCollectionViewLayout.swift
+//  CKMessagesViewLayout.swift
 //  CKCollectionViewForDataCard
 //
 //  Created by Kevin Chen on 8/24/16.
@@ -8,10 +8,10 @@
 
 import UIKit
 
-public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
+public class CKMessagesViewLayout: UICollectionViewFlowLayout {
     
-    public var messagesView: CKMessagesCollectionView {
-        return collectionView! as! CKMessagesCollectionView
+    public var messagesView: CKMessagesView {
+        return collectionView! as! CKMessagesView
     }
     
     private let defaultAvatarSize: CGSize = CGSize(width: 30, height: 30)
@@ -20,7 +20,7 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
         {
         didSet {
             if messageFont != oldValue {
-                invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
+                invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
             }
         }
         
@@ -29,14 +29,14 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     public var incomingAvatarSize: CGSize = .zero {
         didSet {
             if incomingAvatarSize != oldValue {
-                invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
+                invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
             }
         }
     }
     public var outgoingAvatarSize: CGSize = .zero {
         didSet {
             if outgoingAvatarSize != oldValue {
-                invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
+                invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
             }
         }
     }
@@ -45,14 +45,14 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     public var messageContentInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16) {
         didSet {
             if messageContentInsets != oldValue {
-                invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
+                invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
             }
         }
     }
     public var messageContainerMargin: CGFloat = 0.0 {
         didSet {
             if messageContainerMargin != oldValue {
-                invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
+                invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
             }
         }
     }
@@ -63,11 +63,11 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     
     // MARK: - Override
     override public class var layoutAttributesClass: Swift.AnyClass {
-        return CKMessagesCollectionViewLayoutAttributes.self
+        return CKMessagesViewLayoutAttributes.self
     }
     
     override public class var invalidationContextClass: Swift.AnyClass {
-        return CKMessagesCollectionViewLayoutInvalidationContext.self
+        return CKMessagesViewLayoutInvalidationContext.self
     }
     
     override init() {
@@ -94,7 +94,7 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     }
     
     override public func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        if let attributesForElements = super.layoutAttributesForElements(in: rect) as? [CKMessagesCollectionViewLayoutAttributes] {
+        if let attributesForElements = super.layoutAttributesForElements(in: rect) as? [CKMessagesViewLayoutAttributes] {
             
             attributesForElements.forEach { attributes in
                 
@@ -113,7 +113,7 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     }
     
     override public func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        if let attributes = super.layoutAttributesForItem(at: indexPath)?.copy() as? CKMessagesCollectionViewLayoutAttributes {
+        if let attributes = super.layoutAttributesForItem(at: indexPath)?.copy() as? CKMessagesViewLayoutAttributes {
             if attributes.representedElementCategory == .cell {
                 configure(attributes: attributes)
             }
@@ -135,7 +135,7 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     
     public override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
         
-        if let context = context as? CKMessagesCollectionViewLayoutInvalidationContext {
+        if let context = context as? CKMessagesViewLayoutInvalidationContext {
             if context.invalidateDataSourceCounts {
                 context.invalidateFlowLayoutAttributes = true
                 context.invalidateFlowLayoutDelegateMetrics = true
@@ -158,7 +158,7 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
         let messageSize = messageSizeForItem(at: indexPath)
         var height = messageSize.container.height
         
-        if let attributes = layoutAttributesForItem(at: indexPath) as? CKMessagesCollectionViewLayoutAttributes {
+        if let attributes = layoutAttributesForItem(at: indexPath) as? CKMessagesViewLayoutAttributes {
             
             height += attributes.topLabelHeight
             height += attributes.messageTopLabelHeight
@@ -221,14 +221,14 @@ public class CKMessagesCollectionViewLayout: UICollectionViewFlowLayout {
     
     
     @objc private func didReceiveApplicationMemoryWarningNotification(_ notification: Notification) {
-        invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
+        invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
     }
     
     @objc private func didReceiveDeviceOrientationDidChangeNotification(_ notification: Notification) {
-        invalidateLayout(with: CKMessagesCollectionViewLayoutInvalidationContext.context())
+        invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
     }
     
-    private func configure(attributes: CKMessagesCollectionViewLayoutAttributes) {
+    private func configure(attributes: CKMessagesViewLayoutAttributes) {
         let indexPath = attributes.indexPath
         let messageSize = messageSizeForItem(at: indexPath)
                 
