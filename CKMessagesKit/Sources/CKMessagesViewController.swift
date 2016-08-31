@@ -78,7 +78,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
             
             
             if hasPresentor(of: message) {
-                let cell = collectionView.dequeueReusable(at: indexPath) as CKMessageDataViewCell
+                let cell: CKMessageDataViewCell = collectionView.dequeueReusable(at: indexPath)
 //                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CKMessageDataViewCell.ReuseIdentifier, for: indexPath) as! CKMessageDataViewCell
                 
                 if #available(iOS 10, *) {
@@ -105,7 +105,7 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
                 
                 // Just for CKMessage now
                 
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CKMessageViewCell.ReuseIdentifier, for: indexPath) as! CKMessageViewCell
+                let cell: CKMessageViewCell = collectionView.dequeueReusable(at: indexPath)
                 cell.textView.text = message.text
                 
                 messageCell = cell
@@ -283,22 +283,11 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
         
         messagesView.translatesAutoresizingMaskIntoConstraints = false
         
-        if #available(iOS 9, *) {
-            
-            messagesView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-            messagesView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            messagesView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-            messagesView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-            
-        } else {
-            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[m]|", options: [], metrics: nil, views: ["m": self.messagesView]))
-            view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[m]|", options: [], metrics: nil, views: ["m": self.messagesView]))
-            
-        }
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[m]|", options: [], metrics: nil, views: ["m": self.messagesView]))
+        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[m]|", options: [], metrics: nil, views: ["m": self.messagesView]))
         
-        messagesView.register(CKMessageDataViewCell.self, forCellWithReuseIdentifier: CKMessageDataViewCell.ReuseIdentifier)
-        messagesView.register(CKMessageViewCell.self, forCellWithReuseIdentifier: CKMessageViewCell.ReuseIdentifier)
-        
+        messagesView.register(for: CKMessageDataViewCell.self)
+        messagesView.register(for: CKMessageViewCell.self)
         
         messagesView.delegate = self
         messagesView.dataSource = self
@@ -328,8 +317,6 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
 extension CKMessagesViewController: UICollectionViewDataSourcePrefetching {
     
     public func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        
-        print("====> indexPaths: \(indexPaths)")
         
         guard let messagesView = collectionView as? CKMessagesView else {
             return

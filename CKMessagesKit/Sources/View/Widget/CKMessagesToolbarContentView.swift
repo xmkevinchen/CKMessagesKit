@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Reusable
 
 class CKMessagesToolbarContentView: UIView {
 
@@ -22,6 +23,4 @@ class CKMessagesToolbarContentView: UIView {
     
 }
 
-extension CKMessagesToolbarContentView: CKNibLoadable {
-    
-}
+extension CKMessagesToolbarContentView: NibLoadable {}

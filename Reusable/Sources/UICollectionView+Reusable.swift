@@ -30,4 +30,27 @@ public extension UICollectionView {
         return cell
     }
     
+    
+    final func register<T: UICollectionReusableView>(forSupplementaryView ofKind : String, for type: T.Type = T.self) where T: NibReusable {
+        register(T.self, forSupplementaryViewOfKind: ofKind, withReuseIdentifier: T.reuseIdentifier)
+    }
+    
+    final func register<T: UICollectionReusableView>(forSupplementaryView ofKind : String, for type: T.Type = T.self)
+        where T: Reusable {
+        register(T.self, forSupplementaryViewOfKind: ofKind, withReuseIdentifier: T.reuseIdentifier)
+    }
+    
+    final func dequeueReusable<T: UICollectionReusableView>(forSupplementaryView ofKind: String, at indexPath: IndexPath, for type: T.Type = T.self) -> T where T: Reusable {
+        guard let view = dequeueReusableSupplementaryView(ofKind: ofKind, withReuseIdentifier: T.reuseIdentifier, for: indexPath) as? T else {
+            fatalError(
+                "Failed to dequeue a supplementary view with identifier \(type.reuseIdentifier) matching type \(type.self). "
+                    + "Check that the reuseIdentifier is set properly in your XIB/Storyboard "
+                    + "and that you registered the supplementary view beforehand"
+            )
+        }
+        
+        return view
+    }
+    
 }
+

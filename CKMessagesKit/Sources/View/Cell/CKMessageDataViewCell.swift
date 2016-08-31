@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Reusable
 
 class CKMessagePresentingView: UIView {
   
@@ -15,7 +15,7 @@ class CKMessagePresentingView: UIView {
 }
 
 
-open class CKMessageDataViewCell: UICollectionViewCell {
+open class CKMessageDataViewCell: UICollectionViewCell, Reusable {
                 
     private weak var messageView: CKMessageView!
     
