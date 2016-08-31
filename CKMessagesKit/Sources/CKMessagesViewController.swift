@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Reusable
 
 open class CKMessagesViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
@@ -78,7 +78,8 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
             
             
             if hasPresentor(of: message) {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CKMessageDataViewCell.ReuseIdentifier, for: indexPath) as! CKMessageDataViewCell
+                let cell = collectionView.dequeueReusable(at: indexPath) as CKMessageDataViewCell
+//                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CKMessageDataViewCell.ReuseIdentifier, for: indexPath) as! CKMessageDataViewCell
                 
                 if #available(iOS 10, *) {
                     
