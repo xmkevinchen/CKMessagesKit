@@ -8,14 +8,17 @@
 
 import Foundation
 
-public protocol Reusable: class {
+public protocol Reusable: class, Identifiable {
     static var reuseIdentifier: String { get }
 }
 
 public extension Reusable {
     static var reuseIdentifier: String {
-        return String(describing: self)
+        return identifier
     }
 }
 
+
 public protocol NibReusable: Reusable, NibLoadable {}
+
+

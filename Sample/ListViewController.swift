@@ -8,6 +8,7 @@
 
 import UIKit
 import CKMessagesKit
+import Reusable
 
 struct ListMessage: CKMessageData, Hashable {
     
@@ -25,7 +26,7 @@ struct ListMessage: CKMessageData, Hashable {
     
 }
 
-class ListViewController: UIViewController, CKMessagePresenting, UITableViewDataSource, UITableViewDelegate {
+class ListViewController: UIViewController, CKMessagePresenting, UITableViewDataSource, UITableViewDelegate, Identifiable {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -53,8 +54,9 @@ class ListViewController: UIViewController, CKMessagePresenting, UITableViewData
     public var messageType: CKMessageData.Type = ListMessage.self
     
     public static func presentor() -> CKMessagePresenting {
-        let viewControlelr = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ListViewController") as! ListViewController
-        return viewControlelr
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        let viewController: ListViewController = storyboard.instantiate()
+        return viewController
     }
     
     func renderPresenting(with message: CKMessageData) {

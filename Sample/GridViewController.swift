@@ -8,8 +8,9 @@
 
 import UIKit
 import CKMessagesKit
+import Reusable
 
-class GridViewController: UIViewController, CKMessagePresenting {
+class GridViewController: UIViewController, CKMessagePresenting, Identifiable {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -35,8 +36,10 @@ class GridViewController: UIViewController, CKMessagePresenting {
     public var messageType: CKMessageData.Type = GridMessage.self
     
     public static func presentor() -> CKMessagePresenting {
-        let viewControlelr = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "GridViewController") as! GridViewController        
-        return viewControlelr
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        let viewController: GridViewController = storyboard.instantiate()
+        return viewController
     }
     
     func renderPresenting(with message: CKMessageData) {

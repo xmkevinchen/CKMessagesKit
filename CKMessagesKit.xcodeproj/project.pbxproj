@@ -10,7 +10,6 @@
 		0A076AA01D75CE2B0028383B /* CKMessagesKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A076A731D75CE2B0028383B /* CKMessagesKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A076AA31D75CE2B0028383B /* CKMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A781D75CE2B0028383B /* CKMessagesViewController.swift */; };
 		0A076AA41D75CE2B0028383B /* CKMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A076A791D75CE2B0028383B /* CKMessagesViewController.xib */; };
-		0A076AA51D75CE2B0028383B /* CKUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A7A1D75CE2B0028383B /* CKUtils.swift */; };
 		0A076AA61D75CE2B0028383B /* Bool+BitOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A7C1D75CE2B0028383B /* Bool+BitOperators.swift */; };
 		0A076AA71D75CE2B0028383B /* Bundle+CKMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A7D1D75CE2B0028383B /* Bundle+CKMessages.swift */; };
 		0A076AA81D75CE2B0028383B /* UIColor+CKMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A7E1D75CE2B0028383B /* UIColor+CKMessages.swift */; };
@@ -61,6 +60,9 @@
 		917D41561D721704001E678D /* GridMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917D41551D721704001E678D /* GridMessage.swift */; };
 		91A092B01D74E3BF0018AC08 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A092AF1D74E3BF0018AC08 /* ListViewController.swift */; };
 		91A6CBA61D775B6E00695657 /* UITableView+Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A6CBA51D775B6E00695657 /* UITableView+Reusable.swift */; };
+		91A6CBA81D775E9600695657 /* NibOwnerLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A6CBA71D775E9600695657 /* NibOwnerLoadable.swift */; };
+		91A6CBAA1D777C2F00695657 /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A6CBA91D777C2F00695657 /* Identifiable.swift */; };
+		91A6CBAC1D777D5E00695657 /* UIStoryboard+Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A6CBAB1D777D5E00695657 /* UIStoryboard+Identifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,7 +109,6 @@
 		0A076A741D75CE2B0028383B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A076A781D75CE2B0028383B /* CKMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesViewController.swift; sourceTree = "<group>"; };
 		0A076A791D75CE2B0028383B /* CKMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKMessagesViewController.xib; sourceTree = "<group>"; };
-		0A076A7A1D75CE2B0028383B /* CKUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKUtils.swift; sourceTree = "<group>"; };
 		0A076A7C1D75CE2B0028383B /* Bool+BitOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bool+BitOperators.swift"; sourceTree = "<group>"; };
 		0A076A7D1D75CE2B0028383B /* Bundle+CKMessages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+CKMessages.swift"; sourceTree = "<group>"; };
 		0A076A7E1D75CE2B0028383B /* UIColor+CKMessages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+CKMessages.swift"; sourceTree = "<group>"; };
@@ -150,7 +151,7 @@
 		0AFD7D471D6E9E2D000367B2 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridViewController.swift; sourceTree = "<group>"; };
 		0AFD7D4E1D6F2F0E000367B2 /* CKMessagesKit.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = CKMessagesKit.playground; sourceTree = "<group>"; };
 		912224041D6E6D0E00C5F3B4 /* CKMessagesKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CKMessagesKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		912224131D6E6D3300C5F3B4 /* Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		912224131D6E6D3300C5F3B4 /* CKMessages.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CKMessages.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		912224151D6E6D3300C5F3B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		912224171D6E6D3300C5F3B4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		9122241A1D6E6D3300C5F3B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -160,6 +161,9 @@
 		917D41551D721704001E678D /* GridMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridMessage.swift; sourceTree = "<group>"; };
 		91A092AF1D74E3BF0018AC08 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		91A6CBA51D775B6E00695657 /* UITableView+Reusable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Reusable.swift"; sourceTree = "<group>"; };
+		91A6CBA71D775E9600695657 /* NibOwnerLoadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NibOwnerLoadable.swift; sourceTree = "<group>"; };
+		91A6CBA91D777C2F00695657 /* Identifiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
+		91A6CBAB1D777D5E00695657 /* UIStoryboard+Identifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Identifier.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,7 +217,6 @@
 			children = (
 				0A076A781D75CE2B0028383B /* CKMessagesViewController.swift */,
 				0A076A791D75CE2B0028383B /* CKMessagesViewController.xib */,
-				0A076A7A1D75CE2B0028383B /* CKUtils.swift */,
 				0A076A7B1D75CE2B0028383B /* Extensions */,
 				0A076A801D75CE2B0028383B /* Factories */,
 				0A076A821D75CE2B0028383B /* Layout */,
@@ -335,10 +338,13 @@
 		0A1280961D773F690052759C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				91A6CBA91D777C2F00695657 /* Identifiable.swift */,
 				0A1280971D773F770052759C /* Reusable.swift */,
 				0A1280991D773FF00052759C /* NibLoadable.swift */,
+				91A6CBA71D775E9600695657 /* NibOwnerLoadable.swift */,
 				0A12809B1D7740B20052759C /* UICollectionView+Reusable.swift */,
 				91A6CBA51D775B6E00695657 /* UITableView+Reusable.swift */,
+				91A6CBAB1D777D5E00695657 /* UIStoryboard+Identifier.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -358,7 +364,7 @@
 			isa = PBXGroup;
 			children = (
 				912224041D6E6D0E00C5F3B4 /* CKMessagesKit.framework */,
-				912224131D6E6D3300C5F3B4 /* Sample.app */,
+				912224131D6E6D3300C5F3B4 /* CKMessages.app */,
 				0A1280881D773C120052759C /* Reusable.framework */,
 			);
 			name = Products;
@@ -439,9 +445,9 @@
 			productReference = 912224041D6E6D0E00C5F3B4 /* CKMessagesKit.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		912224121D6E6D3300C5F3B4 /* Sample */ = {
+		912224121D6E6D3300C5F3B4 /* CKMessages */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 912224221D6E6D3300C5F3B4 /* Build configuration list for PBXNativeTarget "Sample" */;
+			buildConfigurationList = 912224221D6E6D3300C5F3B4 /* Build configuration list for PBXNativeTarget "CKMessages" */;
 			buildPhases = (
 				9122240F1D6E6D3300C5F3B4 /* Sources */,
 				912224101D6E6D3300C5F3B4 /* Frameworks */,
@@ -454,9 +460,9 @@
 				912224371D6E725600C5F3B4 /* PBXTargetDependency */,
 				0A12808E1D773C120052759C /* PBXTargetDependency */,
 			);
-			name = Sample;
+			name = CKMessages;
 			productName = Sample;
-			productReference = 912224131D6E6D3300C5F3B4 /* Sample.app */;
+			productReference = 912224131D6E6D3300C5F3B4 /* CKMessages.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -499,7 +505,7 @@
 			targets = (
 				0A1280871D773C120052759C /* Reusable */,
 				912224031D6E6D0E00C5F3B4 /* CKMessagesKit */,
-				912224121D6E6D3300C5F3B4 /* Sample */,
+				912224121D6E6D3300C5F3B4 /* CKMessages */,
 			);
 		};
 /* End PBXProject section */
@@ -540,10 +546,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91A6CBAC1D777D5E00695657 /* UIStoryboard+Identifier.swift in Sources */,
 				91A6CBA61D775B6E00695657 /* UITableView+Reusable.swift in Sources */,
+				91A6CBAA1D777C2F00695657 /* Identifiable.swift in Sources */,
 				0A12809C1D7740B20052759C /* UICollectionView+Reusable.swift in Sources */,
 				0A1280981D773F770052759C /* Reusable.swift in Sources */,
 				0A12809A1D773FF00052759C /* NibLoadable.swift in Sources */,
+				91A6CBA81D775E9600695657 /* NibOwnerLoadable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -579,7 +588,6 @@
 				0A076AB51D75CE2B0028383B /* CKMessagePresenting.swift in Sources */,
 				0A076AC01D75CE2B0028383B /* CKInsetsLabel.swift in Sources */,
 				0A076AB91D75CE2B0028383B /* CKMessageView.swift in Sources */,
-				0A076AA51D75CE2B0028383B /* CKUtils.swift in Sources */,
 				0A076AAA1D75CE2B0028383B /* CKMessagesBubbleImageFactory.swift in Sources */,
 				0A076AB21D75CE2B0028383B /* CKMessageBubbleImage.swift in Sources */,
 				0A076ABD1D75CE2B0028383B /* CKInsetsLayout.swift in Sources */,
@@ -876,7 +884,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		912224221D6E6D3300C5F3B4 /* Build configuration list for PBXNativeTarget "Sample" */ = {
+		912224221D6E6D3300C5F3B4 /* Build configuration list for PBXNativeTarget "CKMessages" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				912224231D6E6D3300C5F3B4 /* Debug */,
