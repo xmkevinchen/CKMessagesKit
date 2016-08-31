@@ -11,8 +11,8 @@ import Reusable
 
 
 
-open class CKMessagesViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-
+open class CKMessagesViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, NibLoadable {
+    
     @IBOutlet open weak var messagesView: CKMessagesView!
     
     override open func viewDidLoad() {
@@ -28,13 +28,14 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
         
     }
     
-    static open func nib() -> UINib {
+    public static var nib: UINib {
         #if swift(>=3.0)
-           return UINib(nibName: String(describing:CKMessagesViewController.self), bundle: Bundle(for: CKMessagesViewController.self))
+            return UINib(nibName: String(describing:CKMessagesViewController.self), bundle: Bundle(for: CKMessagesViewController.self))
         #else
             return UINib(nibName: String(CKMessagesViewController.self), bundle: Bundle(for: CKMessagesViewController.self))
         #endif
     }
+    
     
     open override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -277,9 +278,9 @@ open class CKMessagesViewController: UIViewController, UICollectionViewDelegateF
     private func configure() {
         
         #if swift(>=3.0)
-            type(of:self).nib().instantiate(withOwner: self, options: nil)
+            type(of:self).nib.instantiate(withOwner: self, options: nil)
         #else
-            self.dynamicType.nib().instantiate(withOwner: self, options: nil)
+            self.dynamicType.nib.instantiate(withOwner: self, options: nil)
         #endif
         
         messagesView.translatesAutoresizingMaskIntoConstraints = false
