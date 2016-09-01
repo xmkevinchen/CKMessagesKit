@@ -23,7 +23,8 @@ public class CKMessagesToolbarContentView: UIView {
     @IBOutlet weak var leftContainerWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var rightContainerWidthConstraint: NSLayoutConstraint!
     
-    
+    var leftBarButtonItemDidUpdateHandler: ((UIButton?) -> Void)?
+    var rightBarButtonItemDidUpdateHandler: ((UIButton?) -> Void)?
     
     override public func awakeFromNib() {
         super.awakeFromNib()
@@ -34,6 +35,15 @@ public class CKMessagesToolbarContentView: UIView {
         
         backgroundColor = UIColor.clear
     }
+    
+    override public func setNeedsDisplay() {
+        super.setNeedsDisplay()
+        if textView != nil {
+            textView.setNeedsDisplay()
+        }
+    }
+    
+    // MARK: - Getter & Setter
     
     override public var backgroundColor: UIColor? {
         didSet {
@@ -48,16 +58,7 @@ public class CKMessagesToolbarContentView: UIView {
         }
     }
     
-    override public func setNeedsDisplay() {
-        super.setNeedsDisplay()
-        if textView != nil {
-            textView.setNeedsDisplay()
-        }
-    }
-    
-    // MARK: - Getter & Setter
-    
-    public var leftViewWidth: CGFloat {
+    public var leftBarItemWidth: CGFloat {
         get {
             return leftContainerWidthConstraint.constant
         }
@@ -68,7 +69,7 @@ public class CKMessagesToolbarContentView: UIView {
         }
     }
     
-    public var rightViewWidth: CGFloat {
+    public var rightBarItemWidth: CGFloat {
         get {
             return rightContainerWidthConstraint.constant
         }
@@ -88,64 +89,76 @@ public class CKMessagesToolbarContentView: UIView {
     }
     
     
-    public var leftView: UIView? {
+    public var leftBarButtonItem: UIButton? {
         
         willSet {
-            if leftView != nil {
-                leftView?.removeFromSuperview()
+            if leftBarButtonItem != nil {
+                leftBarButtonItem?.removeFromSuperview()
             }
         }
         
         didSet {
-            guard let view = leftView else {
+            
+            defer {
+                leftBarButtonItemDidUpdateHandler?(leftBarButtonItem)
+            }
+            
+            guard let item = leftBarButtonItem else {
                 leftHorizontalSpacingConstraint.constant = 0.0
                 leftContainerView.isHidden = true
-                leftViewWidth = 0.0
+                leftBarItemWidth = 0.0
                 return
             }
             
-            if view.frame == .zero {
-                view.frame = leftContainerView.bounds
+            if item.frame == .zero {
+                item.frame = leftContainerView.bounds
             }
             
             leftContainerView.isHidden = false
             leftHorizontalSpacingConstraint.constant = defaultHorizontalSpacing
-            leftViewWidth = view.frame.width
+            leftBarItemWidth = item.frame.width
             
-            view.translatesAutoresizingMaskIntoConstraints = false
-            leftContainerView.addSubview(view)
-            leftContainerView.pinSubview(view)
+            item.translatesAutoresizingMaskIntoConstraints = false
+            leftContainerView.addSubview(item)
+            leftContainerView.pinSubview(item)
             setNeedsUpdateConstraints()
+            
+            
         }
     }
     
-    public var rightView: UIView? {
+    public var rightBarButtonItem: UIButton? {
         
         willSet {
-            if rightView != nil {
-                rightView?.removeFromSuperview()
+            if rightBarButtonItem != nil {
+                rightBarButtonItem?.removeFromSuperview()
             }
         }
         
         didSet {
-            guard let view = rightView else {
+            
+            defer {
+                rightBarButtonItemDidUpdateHandler?(rightBarButtonItem)
+            }
+            
+            guard let item = rightBarButtonItem else {
                 rightHorizontalSpacingConstraint.constant = 0.0
                 rightContainerView.isHidden = true
-                rightViewWidth = 0.0
+                rightBarItemWidth = 0.0
                 return
             }
             
-            if view.frame == .zero {
-                view.frame = rightContainerView.bounds
+            if item.frame == .zero {
+                item.frame = rightContainerView.bounds
             }
             
             rightContainerView.isHidden = false
             rightHorizontalSpacingConstraint.constant = defaultHorizontalSpacing
-            rightViewWidth = view.frame.width
+            rightBarItemWidth = item.frame.width
             
-            view.translatesAutoresizingMaskIntoConstraints = false
-            rightContainerView.addSubview(view)
-            rightContainerView.pinSubview(view)
+            item.translatesAutoresizingMaskIntoConstraints = false
+            rightContainerView.addSubview(item)
+            rightContainerView.pinSubview(item)
             setNeedsUpdateConstraints()
         }
         

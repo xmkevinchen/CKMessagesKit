@@ -105,7 +105,7 @@ public class CKMessagesComposerTextView: UITextView {
         isUserInteractionEnabled = true
         
         font = UIFont.preferredFont(forTextStyle: .body)
-        textColor = UIColor.white
+        textColor = UIColor.black
         textAlignment = .natural
         
         contentMode = .redraw

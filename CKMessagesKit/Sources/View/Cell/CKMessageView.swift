@@ -15,7 +15,7 @@ public enum CKMessageDirection: String {
 class CKMessageView: UIView {
     
     @IBOutlet weak var topLabel: UILabel!
-    @IBOutlet weak var messageTopLabel: UILabel!
+    @IBOutlet weak var messageTopLabel: CKInsetsLabel!
     @IBOutlet weak var bottomLabel: UILabel!
     
     @IBOutlet weak var containerView: UIView!

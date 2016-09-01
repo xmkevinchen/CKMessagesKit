@@ -36,7 +36,7 @@ public class CKInsetsLabel: UILabel {
     
     private var _textInsets: UIEdgeInsets = .zero
     
-//    @IBInspectable
+    @IBInspectable
     public var textInsets: UIEdgeInsets {
         get {
             return _textInsets

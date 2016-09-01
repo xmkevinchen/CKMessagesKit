@@ -107,7 +107,7 @@ open class CKMessageDataViewCell: UICollectionViewCell, Reusable {
         return messageView.topLabel
     }
     
-    public var messageTopLabel: UILabel {
+    public var messageTopLabel: CKInsetsLabel {
         return messageView.messageTopLabel
     }
     

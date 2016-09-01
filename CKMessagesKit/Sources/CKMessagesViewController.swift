@@ -17,6 +17,15 @@ open class CKMessagesViewController: UIViewController, NibLoadable {
     @IBOutlet weak var inputToolbar: CKMessagesInputToolbar!
     private var toolbarHeight: CGFloat = 44.0
     
+    public var automaticallyScrollsToMostRecentMessage: Bool = true {
+        didSet {
+            guard automaticallyScrollsToMostRecentMessage else {
+                return
+            }
+            
+            scrollToBottom(animated: true)
+        }
+    }
     
     // MARK: - Life Cycle
     
@@ -35,6 +44,13 @@ open class CKMessagesViewController: UIViewController, NibLoadable {
         toolbarHeight = inputToolbar.preferredDefaultHeight
         view.layoutIfNeeded()
         messagesView.collectionViewLayout.invalidateLayout()
+        
+        if automaticallyScrollsToMostRecentMessage {
+            DispatchQueue.main.async {
+                self.scrollToBottom(animated: false)
+                self.messagesView.messagesViewLayout.invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
+            }
+        }
         
     }
     
@@ -145,6 +161,49 @@ open class CKMessagesViewController: UIViewController, NibLoadable {
     }
     
     
+    // MARK: - Scrolling
+    
+    private func scrollToBottom(animated: Bool) {
+        let numberOfItems = messagesView.numberOfItems(inSection: 0)
+        guard messagesView.numberOfSections == 1 && numberOfItems >= 1 else {
+            return
+        }
+        
+        let indexPath = IndexPath(item: numberOfItems - 1, section: 0)
+        scroll(to: indexPath, animated: animated)
+        
+    }
+    
+    private func scroll(to indexPath: IndexPath, animated: Bool) {
+        if messagesView.numberOfSections <= indexPath.section {
+            return
+        }
+        
+        let numberOfItems = messagesView.numberOfItems(inSection: 0)
+        if numberOfItems == 0 {
+            return
+        }
+        
+        let contentHeight = messagesView.messagesViewLayout.collectionViewContentSize.height
+        
+        if contentHeight < messagesView.bounds.height {
+            messagesView.scrollRectToVisible(CGRect(x: 0.0, y: contentHeight - 1.0, width: 1.0, height: 1.0), animated: animated)
+            return
+        }
+        
+        let item = max(min(indexPath.item, numberOfItems - 1), 0)
+        let indexPath = IndexPath(item: item, section: 0)
+        let size = messagesView.messagesViewLayout.sizeForItem(at: indexPath)
+        let heightForVisibleMessage = messagesView.bounds.height
+            - messagesView.contentInset.top
+            - messagesView.contentInset.bottom
+            - inputToolbar.bounds.height
+        
+        let scrollPosition: UICollectionViewScrollPosition = size.height > heightForVisibleMessage ? .bottom : .top
+        
+        messagesView.scrollToItem(at: indexPath, at: scrollPosition, animated: animated)
+        
+    }
 }
 
 
@@ -334,17 +393,46 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
                 messageCell = cell
             }
             
-            let bubbleImageData = messagesView.decorator?.messageBubbleImage(at: indexPath, of: messagesView)
             
-            if isOutgoing(message: message) {
+            var needsAvatar: Bool = true
+            let isOutgoing = self.isOutgoing(message: message)
+            if isOutgoing {
                 messageCell.direction = .outgoing
+                if messagesView.messagesViewLayout.outgoingAvatarSize == .zero {
+                    needsAvatar = false
+                }
                 
             } else {
                 messageCell.direction = .incoming
+                if messagesView.messagesViewLayout.incomingAvatarSize == .zero {
+                    needsAvatar = false
+                }
+            }
+            var bubbleImageData: CKMessageBubbleImageData?
+            
+            if needsAvatar {
+                bubbleImageData = messagesView.decorator?.messageBubbleImage(at: indexPath, of: messagesView)
+                messageCell.messageBubbleImageView.image = bubbleImageData?.image
+                messageCell.messageBubbleImageView.highlightedImage = bubbleImageData?.highlightedImage
             }
             
-            messageCell.messageBubbleImageView.image = bubbleImageData?.image
-            messageCell.messageBubbleImageView.highlightedImage = bubbleImageData?.highlightedImage
+            
+            messageCell.topLabel.text = messagesView.decorator?.textForTop(at: indexPath, of: messagesView)
+            messageCell.topLabel.attributedText = messagesView.decorator?.attributedTextForTop(at: indexPath, of: messagesView)
+            
+            messageCell.messageTopLabel.text = messagesView.decorator?.textForMessageTop(at: indexPath, of: messagesView)
+            messageCell.messageTopLabel.attributedText = messagesView.decorator?.attributedTextForMessageTop(at: indexPath, of: messagesView)
+            
+            let messageTopLabelInset: CGFloat = (bubbleImageData != nil) ? 60: 15
+            
+            if isOutgoing {
+                messageCell.messageTopLabel.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: messageTopLabelInset)
+            } else {
+                messageCell.messageTopLabel.textInsets = UIEdgeInsets(top: 0, left: messageTopLabelInset, bottom: 0, right: 0)
+            }
+            
+            messageCell.bottomLabel.text = messagesView.decorator?.textForBottom(at: indexPath, of: messagesView)
+            messageCell.bottomLabel.attributedText = messagesView.decorator?.attributedTextForBottom(at: indexPath, of: messagesView)
             
             cellForItem = messageCell
             
