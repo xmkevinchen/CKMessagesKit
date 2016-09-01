@@ -15,8 +15,7 @@ public class CKMessagesViewLayoutInvalidationContext: UICollectionViewFlowLayout
     static func context() -> CKMessagesViewLayoutInvalidationContext {
         let context = CKMessagesViewLayoutInvalidationContext()
         context.invalidateFlowLayoutDelegateMetrics = true
-        context.invalidateFlowLayoutAttributes = true
-        context.invalidateLayoutMessagesCache = true
+        context.invalidateFlowLayoutAttributes = true        
         return context
     }
 }

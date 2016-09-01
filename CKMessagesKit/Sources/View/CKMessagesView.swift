@@ -36,6 +36,54 @@ public protocol CKMessagesViewDecorating: NSObjectProtocol {
 }
 
 
+
+
+open class CKMessagesView: UICollectionView {
+    
+    open weak var decorator: CKMessagesViewDecorating?
+    open weak var messenger: CKMessagesViewMessaging?
+    
+    var messagesViewLayout: CKMessagesViewLayout {
+        guard let layout = collectionViewLayout as? CKMessagesViewLayout else {
+            fatalError("The layout of messagesView must be \(CKMessagesViewLayout.self)")
+        }
+        
+        return layout
+    }
+    
+    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
+        super.init(frame: frame, collectionViewLayout: layout)
+        configure()
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        configure()
+    }
+    
+    override open func awakeFromNib() {
+        super.awakeFromNib()
+        configure()
+    }
+    
+    
+    private func configure() {
+        
+        translatesAutoresizingMaskIntoConstraints = false
+        showsHorizontalScrollIndicator = false
+        showsVerticalScrollIndicator = false
+        keyboardDismissMode = .interactive
+        alwaysBounceVertical = true
+        bounces = true
+        
+        if #available(iOS 10, *) {
+            isPrefetchingEnabled = true
+        }
+    }
+    
+}
+
+
 public extension CKMessagesViewDecorating {
     
     
@@ -88,41 +136,3 @@ public extension CKMessagesViewDecorating {
     
     
 }
-
-open class CKMessagesView: UICollectionView {
-    
-    open weak var decorator: CKMessagesViewDecorating?
-    open weak var messenger: CKMessagesViewMessaging?
-    
-    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
-        super.init(frame: frame, collectionViewLayout: layout)
-        configure()
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        configure()
-    }
-    
-    override open func awakeFromNib() {
-        super.awakeFromNib()
-        configure()
-    }
-    
-    
-    private func configure() {
-        
-        translatesAutoresizingMaskIntoConstraints = false
-        showsHorizontalScrollIndicator = false
-        showsVerticalScrollIndicator = false
-        keyboardDismissMode = .interactive
-        alwaysBounceVertical = true
-        bounces = true
-        
-        if #available(iOS 10, *) {
-            isPrefetchingEnabled = true
-        }
-    }
-    
-}
-

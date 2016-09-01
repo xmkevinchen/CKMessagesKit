@@ -10,13 +10,40 @@ import UIKit
 
 class CKMessagesInputToolbar: UIToolbar {
     
-    let preferredDefaultHeight: CGFloat = 44.0
-    var contentView: CKMessagesToolbarContentView?
+    var preferredDefaultHeight: CGFloat = 44.0 {
+        willSet {
+            assert(newValue > 0)
+        }
+    }
+    var maximumHeight = CGFloat.greatestFiniteMagnitude
+    private(set) var contentView: CKMessagesToolbarContentView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        contentView = CKMessagesToolbarContentView.viewFromNib()
+        self.contentView = CKMessagesToolbarContentView.viewFromNib()
+        contentView.frame = frame
+        addSubview(contentView)
+        pinSubview(contentView)
+        setNeedsUpdateConstraints()
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(textViewDidChange(_:)),
+                                               name: Notification.Name.UITextViewTextDidChange,
+                                               object: contentView.textView)
+        
+        contentView.leftView = nil
+        contentView.rightView = nil
+        
+    }
+    
+    
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc private func textViewDidChange(_ notification: Notification) {
         
     }
     
