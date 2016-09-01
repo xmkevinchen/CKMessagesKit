@@ -24,7 +24,7 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
     
     convenience init() {
         let cache = NSCache<AnyObject, AnyObject>()
-        let minimumWidth = UIImage.bubbleCompatImage.size.width
+        let minimumWidth = UIImage.bubbleCompat.size.width
         
         cache.countLimit = 200
         cache.name = "CKMessagesContainerSizeCalculator.cache"

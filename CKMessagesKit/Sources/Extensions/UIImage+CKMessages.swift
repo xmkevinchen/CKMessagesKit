@@ -47,8 +47,12 @@ public extension UIImage {
 
 public extension UIImage {
     
-    public static var bubbleCompatImage: UIImage {
+    public static var bubbleCompat: UIImage {
         return UIImage(named: "bubble_min", in: Bundle.messages, compatibleWith: nil)!
+    }
+    
+    public static var accessory: UIImage {
+        return UIImage(named: "clip", in: Bundle.messages, compatibleWith: nil)!
     }
     
 }

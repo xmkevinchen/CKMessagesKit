@@ -27,7 +27,7 @@ public class CKMessagesBubbleImageFactory {
     
     public convenience init() {
         
-        self.init(bubbleImage: UIImage.bubbleCompatImage,
+        self.init(bubbleImage: UIImage.bubbleCompat,
                   capInsets: .zero,
                   direction: UIApplication.shared.userInterfaceLayoutDirection)
     }

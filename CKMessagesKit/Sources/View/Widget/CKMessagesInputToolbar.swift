@@ -56,8 +56,10 @@ public class CKMessagesInputToolbar: UIToolbar {
         
         let factory = CKMessagesToolbarButtonFactory()
         
-        contentView.leftBarButtonItem = nil
+        contentView.leftBarButtonItem = factory.accessoryButton
         contentView.rightBarButtonItem = factory.sendButton
+        
+        updateSendButtonEnabledState()
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(textViewDidChange(_:)),
@@ -110,6 +112,23 @@ public final class CKMessagesToolbarButtonFactory {
     
     convenience init() {
         self.init(font: UIFont.preferredFont(forTextStyle: .headline))
+    }
+    
+    public var accessoryButton: UIButton {
+        let accessory = UIImage.accessory
+        let normal = accessory.with(mask: UIColor.lightGray)
+        let highlighted = accessory.with(mask: UIColor.darkGray)
+        let accessoryButton = UIButton(frame: CGRect(x: 0, y: 0, width: accessory.size.width, height: 32.0))
+        accessoryButton.setImage(normal, for: .normal)
+        accessoryButton.setImage(highlighted, for: .highlighted)
+        
+        accessoryButton.contentMode = .scaleAspectFit
+        accessoryButton.backgroundColor = UIColor.clear
+        accessoryButton.tintColor = UIColor.lightGray
+        accessoryButton.titleLabel?.font = font
+        
+        
+        return accessoryButton
     }
     
     public var sendButton: UIButton {
