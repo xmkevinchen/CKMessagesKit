@@ -69,7 +69,7 @@ class ListViewController: UIViewController, CKMessagePresenting, UITableViewData
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let _ = message as? ListMessage {
-            return 5
+            return 10
         } else {
             return 0
         }

@@ -130,7 +130,7 @@ open class CKMessagesViewController: UIViewController {
             messagesView.prefetchDataSource = self
         }
         
-
+        automaticallyAdjustsScrollViewInsets = false
         automaticallyScrollsToMostRecentMessage = true
         
         toolbarHeight = inputToolbar.preferredDefaultHeight
@@ -296,28 +296,42 @@ extension CKMessagesViewController {
 // MARK: - Scrolling & Insets
 
 extension CKMessagesViewController {
+
+//    open override func viewWillLayoutSubviews() {
+//        super.viewWillLayoutSubviews()
+//        
+//        print("====> \(#function) messagesView.contentInset = \(messagesView.contentInset) messagesView.contentOffset = \(messagesView.contentOffset)")
+//    }
+//    
+//    open override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        
+//        print("====> \(#function) messagesView.contentInset = \(messagesView.contentInset) messagesView.contentOffset = \(messagesView.contentOffset)")
+//        
+//    }
     
-    fileprivate func updateMessagesViewInsets() {
+    fileprivate func updateMessagesViewInsets(with keyboradFrame: CGRect = .zero) {
         
-        let top = additionalContentInsets.top
-        let bottom = inputToolbar.frame.minY + additionalContentInsets.bottom
+        let keyboardHeight = (keyboradFrame == .zero) ? toolbarHeight : keyboradFrame.size.height
         
-        setMessagesViewInsets(UIEdgeInsets(top: top, left: 0.0, bottom: bottom, right: 0.0))
-        
-    }
-    
-    fileprivate func setMessagesViewInsets(_ insets: UIEdgeInsets) {
-        
-        var insets = insets
+        var top = additionalContentInsets.top
+        var bottom = additionalContentInsets.bottom + keyboardHeight
         if !automaticallyAdjustsScrollViewInsets {
-            insets.top += topLayoutGuide.length
-            insets.bottom += bottomLayoutGuide.length
+            top += topLayoutGuide.length
+            bottom += bottomLayoutGuide.length
         }
+        
+        
+        let insets = UIEdgeInsets(top: top,
+                                  left: additionalContentInsets.left,
+                                  bottom: bottom,
+                                  right: additionalContentInsets.right)
         
         messagesView.contentInset = insets
         messagesView.scrollIndicatorInsets = insets
         
     }
+    
     
     fileprivate func scrollToBottom(animated: Bool) {
         let numberOfItems = messagesView.numberOfItems(inSection: 0)
@@ -371,13 +385,10 @@ extension CKMessagesViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardWillChangeFrame(_:)), name: Notification.Name.UIKeyboardWillChangeFrame, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceivePreferredContentSizeChanged(_:)), name: Notification.Name.UIContentSizeCategoryDidChange, object: nil)
         
-        
     }
     
     fileprivate func unregisterObservers() {
         NotificationCenter.default.removeObserver(self)
-
-        
     }
     
     @objc private func didReceiveKeyboardWillChangeFrame(_ notification: Notification) {
@@ -392,6 +403,7 @@ extension CKMessagesViewController {
                 return
             }
             
+            
             let animationOption = UIViewAnimationOptions(rawValue: UInt(animationCurve << 16))
             
             UIView.animate(withDuration: animationDuration,
@@ -399,15 +411,15 @@ extension CKMessagesViewController {
                            options: [animationOption],
                            animations:
                 {
+                    self.updateMessagesViewInsets(with: keyboardEndFrame)
                     
-                    var insets = self.additionalContentInsets
-                    insets.bottom += keyboardEndFrame.height
-                    self.setMessagesViewInsets(insets)
-                    
-                }, completion: nil)
+            }, completion: nil)
         }
         
     }
+    
+    
+
     
     @objc private func didReceivePreferredContentSizeChanged(_ notification: Notification) {
         messagesView.messagesViewLayout.invalidateLayout()

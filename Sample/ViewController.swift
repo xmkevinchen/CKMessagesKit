@@ -17,6 +17,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
         
         
         super.viewDidLoad()
+        title = "Messages"
         
         messagesView.messenger = self
         messagesView.decorator = self
