@@ -65,9 +65,7 @@ public class CKMessagesInputToolbar: UIToolbar {
                                                selector: #selector(textViewDidChange(_:)),
                                                name: Notification.Name.UITextViewTextDidChange,
                                                object: contentView.textView)
-        
-
-        
+                
     }
     
     

@@ -11,13 +11,23 @@ import Reusable
 
 
 
-open class CKMessagesViewController: UIViewController, NibLoadable {
+open class CKMessagesViewController: UIViewController {
     
-    @IBOutlet open weak var messagesView: CKMessagesView!
-    @IBOutlet weak var inputToolbar: CKMessagesInputToolbar!
-    private var toolbarHeight: CGFloat = 44.0
+    // MARK: - Public Properties
+    
+    @IBOutlet public weak var messagesView: CKMessagesView!
+    @IBOutlet public weak var inputToolbar: CKMessagesInputToolbar!
+    
+    public static var nib: UINib {
+        #if swift(>=3.0)
+            return UINib(nibName: String(describing:CKMessagesViewController.self), bundle: Bundle(for: CKMessagesViewController.self))
+        #else
+            return UINib(nibName: String(CKMessagesViewController.self), bundle: Bundle(for: CKMessagesViewController.self))
+        #endif
+    }
     
     public var automaticallyScrollsToMostRecentMessage: Bool = true {
+        
         didSet {
             guard automaticallyScrollsToMostRecentMessage else {
                 return
@@ -27,15 +37,34 @@ open class CKMessagesViewController: UIViewController, NibLoadable {
         }
     }
     
+    public var additionalContentInsets: UIEdgeInsets = .zero {
+        didSet {
+            updateMessagesViewInsets()
+        }
+    }
+    
+    // MARK: - Private Properties
+    
+    fileprivate var toolbarHeight: CGFloat = 44.0
+    fileprivate var registeredPresentors = [String: CKMessagePresenting.Type]()
+    fileprivate var usingPresentors = [IndexPath: CKMessagePresenting]()
+    fileprivate var unusedPresentors = [String: [CKMessagePresenting]]()
+    fileprivate var prefetchedPresentors = [IndexPath: CKMessagePresenting]()
+    
+    
     // MARK: - Life Cycle
+    
+    deinit {
+        unregisterObservers()
+    }
     
     override open func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
         configure()
-        toolbarHeight = inputToolbar.preferredDefaultHeight
-        additionalContentInsets = .zero
+        registerObservers()
+        
     }
     
     open override func viewWillAppear(_ animated: Bool) {
@@ -51,14 +80,13 @@ open class CKMessagesViewController: UIViewController, NibLoadable {
                 self.messagesView.messagesViewLayout.invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
             }
         }
-        
     }
     
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
     }
-    
+        
     open override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
@@ -67,24 +95,11 @@ open class CKMessagesViewController: UIViewController, NibLoadable {
         usingPresentors.removeAll()
         
         messagesView.collectionViewLayout.invalidateLayout()
+        messagesView.setNeedsLayout()
         
     }
     
-    public static var nib: UINib {
-        #if swift(>=3.0)
-            return UINib(nibName: String(describing:CKMessagesViewController.self), bundle: Bundle(for: CKMessagesViewController.self))
-        #else
-            return UINib(nibName: String(CKMessagesViewController.self), bundle: Bundle(for: CKMessagesViewController.self))
-        #endif
-    }
-    
 
-    
-
-    
-    
-
-    
     // MARK:- Public functions
     
     public func register(presentor: CKMessagePresenting.Type, for message: CKMessageData.Type) {
@@ -92,13 +107,6 @@ open class CKMessagesViewController: UIViewController, NibLoadable {
         registeredPresentors[String(describing: message)] = presentor
         
     }
-    
-    // MARK: - Private Properties
-    
-    fileprivate var registeredPresentors = [String: CKMessagePresenting.Type]()
-    fileprivate var usingPresentors = [IndexPath: CKMessagePresenting]()
-    fileprivate var unusedPresentors = [String: [CKMessagePresenting]]()
-    fileprivate var prefetchedPresentors = [IndexPath: CKMessagePresenting]()
     
     
     private func configure() {
@@ -110,10 +118,7 @@ open class CKMessagesViewController: UIViewController, NibLoadable {
         #endif
         
         messagesView.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[m]|", options: [], metrics: nil, views: ["m": self.messagesView]))
-        view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[m]|", options: [], metrics: nil, views: ["m": self.messagesView]))
-        
+                
         messagesView.register(for: CKMessageDataViewCell.self)
         messagesView.register(for: CKMessageViewCell.self)
         
@@ -125,85 +130,22 @@ open class CKMessagesViewController: UIViewController, NibLoadable {
             messagesView.prefetchDataSource = self
         }
         
-        
-    }
-    
-    // MARK: - ContentInsets
-    
-    public var additionalContentInsets: UIEdgeInsets = .zero {
-        
-        didSet {
-             
-            let top = additionalContentInsets.top
-            let bottom = toolbarHeight + additionalContentInsets.bottom
-            
-            let insets = UIEdgeInsets(top: topLayoutGuide.length + top,
-                                      left: 0.0,
-                                      bottom: bottomLayoutGuide.length + bottom,
-                                      right: 0.0)
 
-            
-            contentInsets = insets
-        }
-    }
-    
-    private var contentInsets: UIEdgeInsets = .zero {
+        automaticallyScrollsToMostRecentMessage = true
         
-        didSet {
-            if messagesView.contentInset != contentInsets {
-                messagesView.contentInset = contentInsets
-            }
-            
-            if messagesView.scrollIndicatorInsets != contentInsets {
-                messagesView.scrollIndicatorInsets = contentInsets
-            }
-        }
+        toolbarHeight = inputToolbar.preferredDefaultHeight
+        
+        inputToolbar.delegate = self
+        inputToolbar.contentView.textView.placeHolder = "New Message"
+        inputToolbar.contentView.textView.delegate = self
+        inputToolbar.removeFromSuperview()
+        
+        
+        additionalContentInsets = .zero
+        updateMessagesViewInsets()
     }
     
     
-    // MARK: - Scrolling
-    
-    private func scrollToBottom(animated: Bool) {
-        let numberOfItems = messagesView.numberOfItems(inSection: 0)
-        guard messagesView.numberOfSections == 1 && numberOfItems >= 1 else {
-            return
-        }
-        
-        let indexPath = IndexPath(item: numberOfItems - 1, section: 0)
-        scroll(to: indexPath, animated: animated)
-        
-    }
-    
-    private func scroll(to indexPath: IndexPath, animated: Bool) {
-        if messagesView.numberOfSections <= indexPath.section {
-            return
-        }
-        
-        let numberOfItems = messagesView.numberOfItems(inSection: 0)
-        if numberOfItems == 0 {
-            return
-        }
-        
-        let contentHeight = messagesView.messagesViewLayout.collectionViewContentSize.height
-        
-        if contentHeight < messagesView.bounds.height {
-            messagesView.scrollRectToVisible(CGRect(x: 0.0, y: contentHeight - 1.0, width: 1.0, height: 1.0), animated: animated)
-            return
-        }
-        
-        let item = max(min(indexPath.item, numberOfItems - 1), 0)
-        let indexPath = IndexPath(item: item, section: 0)
-        let size = messagesView.messagesViewLayout.sizeForItem(at: indexPath)
-        let heightForVisibleMessage = messagesView.bounds.height
-            - messagesView.contentInset.top
-            - messagesView.contentInset.bottom
-            - inputToolbar.bounds.height
-        
-        let scrollPosition: UICollectionViewScrollPosition = size.height > heightForVisibleMessage ? .bottom : .top
-        
-        messagesView.scrollToItem(at: indexPath, at: scrollPosition, animated: animated)
-        
-    }
 }
 
 
@@ -337,6 +279,144 @@ extension CKMessagesViewController {
     }
 }
 
+// MARK: - Input
+
+extension CKMessagesViewController {
+    
+    open override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    
+    open override var inputAccessoryView: UIView? {
+        return self.inputToolbar
+    }
+    
+}
+
+// MARK: - Scrolling & Insets
+
+extension CKMessagesViewController {
+    
+    fileprivate func updateMessagesViewInsets() {
+        
+        let top = additionalContentInsets.top
+        let bottom = inputToolbar.frame.minY + additionalContentInsets.bottom
+        
+        setMessagesViewInsets(UIEdgeInsets(top: top, left: 0.0, bottom: bottom, right: 0.0))
+        
+    }
+    
+    fileprivate func setMessagesViewInsets(_ insets: UIEdgeInsets) {
+        
+        var insets = insets
+        if !automaticallyAdjustsScrollViewInsets {
+            insets.top += topLayoutGuide.length
+            insets.bottom += bottomLayoutGuide.length
+        }
+        
+        messagesView.contentInset = insets
+        messagesView.scrollIndicatorInsets = insets
+        
+    }
+    
+    fileprivate func scrollToBottom(animated: Bool) {
+        let numberOfItems = messagesView.numberOfItems(inSection: 0)
+        guard messagesView.numberOfSections == 1 && numberOfItems >= 1 else {
+            return
+        }
+        
+        let indexPath = IndexPath(item: numberOfItems - 1, section: 0)
+        scroll(to: indexPath, animated: animated)
+        
+    }
+    
+    fileprivate func scroll(to indexPath: IndexPath, animated: Bool) {
+        if messagesView.numberOfSections <= indexPath.section {
+            return
+        }
+        
+        let numberOfItems = messagesView.numberOfItems(inSection: 0)
+        if numberOfItems == 0 {
+            return
+        }
+        
+        let contentHeight = messagesView.messagesViewLayout.collectionViewContentSize.height
+        
+        if contentHeight < messagesView.bounds.height {
+            messagesView.scrollRectToVisible(CGRect(x: 0.0, y: contentHeight - 1.0, width: 1.0, height: 1.0), animated: animated)
+            return
+        }
+        
+        let item = max(min(indexPath.item, numberOfItems - 1), 0)
+        let indexPath = IndexPath(item: item, section: 0)
+        let size = messagesView.messagesViewLayout.sizeForItem(at: indexPath)
+        let heightForVisibleMessage = messagesView.bounds.height
+            - messagesView.contentInset.top
+            - messagesView.contentInset.bottom
+            - inputToolbar.bounds.height
+        
+        let scrollPosition: UICollectionViewScrollPosition = size.height > heightForVisibleMessage ? .bottom : .top
+        
+        messagesView.scrollToItem(at: indexPath, at: scrollPosition, animated: animated)
+        
+    }
+}
+
+// MARK: - Notification
+
+extension CKMessagesViewController {
+    
+    fileprivate func registerObservers() {
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardWillChangeFrame(_:)), name: Notification.Name.UIKeyboardWillChangeFrame, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceivePreferredContentSizeChanged(_:)), name: Notification.Name.UIContentSizeCategoryDidChange, object: nil)
+        
+        
+    }
+    
+    fileprivate func unregisterObservers() {
+        NotificationCenter.default.removeObserver(self)
+
+        
+    }
+    
+    @objc private func didReceiveKeyboardWillChangeFrame(_ notification: Notification) {
+        
+        if let userInfo = notification.userInfo,
+            let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
+            let animationCurve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? Int,
+            let animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double {
+            
+            
+            guard !keyboardEndFrame.isNull else {
+                return
+            }
+            
+            let animationOption = UIViewAnimationOptions(rawValue: UInt(animationCurve << 16))
+            
+            UIView.animate(withDuration: animationDuration,
+                           delay: 0.0,
+                           options: [animationOption],
+                           animations:
+                {
+                    
+                    var insets = self.additionalContentInsets
+                    insets.bottom += keyboardEndFrame.height
+                    self.setMessagesViewInsets(insets)
+                    
+                }, completion: nil)
+        }
+        
+    }
+    
+    @objc private func didReceivePreferredContentSizeChanged(_ notification: Notification) {
+        messagesView.messagesViewLayout.invalidateLayout()
+        messagesView.setNeedsLayout()
+    }
+    
+    
+}
+
 // MARK: - UICollectionView
 
 extension CKMessagesViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -449,15 +529,8 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
     
     open func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        
         return messagesView.messagesViewLayout.sizeForItem(at: indexPath)
         
-//        if let layout = collectionViewLayout as? CKMessagesViewLayout {
-//            
-//            return layout.sizeForItem(at: indexPath)
-//        } else {
-//            return CGSize.zero
-//        }
     }
     
     public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -509,6 +582,53 @@ extension CKMessagesViewController: UICollectionViewDataSourcePrefetching {
         }
         
         
+    }
+}
+
+// MARK: - Input Toolbar Delegate
+extension CKMessagesViewController: CKMessagesInputToolbarDelegate {
+    
+    public func toolbar(_ toolbar: CKMessagesInputToolbar, didClickLeftBarButton sender: UIButton) {
+        
+    }
+    
+    public func toolbar(_ toolbar: CKMessagesInputToolbar, didClickRightBarButton sender: UIButton) {
+        
+    }
+    
+}
+
+// MARK: - TextView Delegate
+
+extension CKMessagesViewController: UITextViewDelegate {
+    
+    public func textViewDidBeginEditing(_ textView: UITextView) {
+        
+        guard textView == inputToolbar.contentView.textView else {
+            return
+        }
+        
+        textView.becomeFirstResponder()
+        
+        if automaticallyScrollsToMostRecentMessage {
+            scrollToBottom(animated: true)
+        }
+    }
+    
+    public func textViewDidEndEditing(_ textView: UITextView) {
+        
+        guard textView == inputToolbar.contentView.textView else {
+            return
+        }
+    }
+    
+    public func textViewDidChange(_ textView: UITextView) {
+        
+        guard textView == inputToolbar.contentView.textView else {
+            return
+        }
+        
+        textView.resignFirstResponder()
     }
 }
 

@@ -18,9 +18,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="nEj-ac-bud" customClass="CKMessagesView" customModule="CKMessagesKit" customModuleProvider="target">
-                    <frame key="frameInset" width="375" height="667"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="nEj-ac-bud" customClass="CKMessagesView" customModule="CKMessagesKit" customModuleProvider="target">
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="hVR-66-Pqd" customClass="CKMessagesViewLayout" customModule="CKMessagesKit" customModuleProvider="target">
                         <size key="itemSize" width="50" height="50"/>
@@ -35,7 +33,11 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="nEj-ac-bud" secondAttribute="bottom" id="JEe-up-TxK"/>
                 <constraint firstAttribute="bottom" secondItem="OsF-kT-qT1" secondAttribute="bottom" id="Kdh-Ub-jZc"/>
+                <constraint firstItem="nEj-ac-bud" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="dTY-yf-Y9x"/>
+                <constraint firstAttribute="trailing" secondItem="nEj-ac-bud" secondAttribute="trailing" id="fcS-wG-vgg"/>
+                <constraint firstItem="nEj-ac-bud" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pcj-ii-1vP"/>
                 <constraint firstAttribute="trailing" secondItem="OsF-kT-qT1" secondAttribute="trailing" id="rwH-TG-Af3"/>
                 <constraint firstItem="OsF-kT-qT1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="szV-jq-fLJ"/>
             </constraints>

@@ -9,7 +9,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Sample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="CKMessages" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -23,12 +23,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="924" y="-544"/>
+            <point key="canvasLocation" x="1863.2" y="-544.67766116941539"/>
         </scene>
         <!--Grid View Controller-->
         <scene sceneID="3SA-7j-gZp">
             <objects>
-                <viewController storyboardIdentifier="GridViewController" id="zoH-uq-i4B" customClass="GridViewController" customModule="Sample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GridViewController" id="zoH-uq-i4B" customClass="GridViewController" customModule="CKMessages" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cSX-Zn-GN8"/>
                         <viewControllerLayoutGuide type="bottom" id="qPm-wW-EL6"/>
@@ -46,7 +46,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GridCell" id="hQi-1e-USj" customClass="GridCell" customModule="Sample" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GridCell" id="hQi-1e-USj" customClass="GridCell" customModule="CKMessages" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -100,12 +100,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gPw-u0-nhv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1863" y="-544"/>
+            <point key="canvasLocation" x="2800.8000000000002" y="-544.67766116941539"/>
         </scene>
         <!--List View Controller-->
         <scene sceneID="Uia-1m-ybL">
             <objects>
-                <viewController storyboardIdentifier="ListViewController" id="Q8y-7B-4k4" customClass="ListViewController" customModule="Sample" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ListViewController" id="Q8y-7B-4k4" customClass="ListViewController" customModule="CKMessages" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="roa-ay-73s"/>
                         <viewControllerLayoutGuide type="bottom" id="caz-s6-fbw"/>
@@ -152,12 +152,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7rW-hQ-7Yc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2564" y="-936"/>
+            <point key="canvasLocation" x="3503.1999999999998" y="-936.88155922038993"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Messages-->
         <scene sceneID="JTb-40-yMS">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Z2O-76-85Y" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Messages" image="typing" id="eJU-sl-AQE"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="pSt-nr-6dH">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -170,7 +171,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7ZD-V3-k35" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136.80000000000001" y="-543.77811094452773"/>
+            <point key="canvasLocation" x="1076" y="-543.77811094452773"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="typing" width="34" height="8"/>
+    </resources>
 </document>
