@@ -81,7 +81,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return 8
     }
     
     public func messageForItem(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CKMessageData {
