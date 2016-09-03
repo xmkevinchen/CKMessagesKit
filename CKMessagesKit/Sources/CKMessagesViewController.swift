@@ -627,6 +627,8 @@ extension CKMessagesViewController: UITextViewDelegate {
         guard textView == inputToolbar.contentView.textView else {
             return
         }
+        
+        textView.resignFirstResponder()
     }
     
     public func textViewDidChange(_ textView: UITextView) {
@@ -635,7 +637,7 @@ extension CKMessagesViewController: UITextViewDelegate {
             return
         }
         
-        textView.resignFirstResponder()
+        
     }
 }
 
