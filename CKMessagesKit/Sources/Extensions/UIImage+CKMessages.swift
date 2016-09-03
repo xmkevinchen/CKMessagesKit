@@ -31,15 +31,35 @@ public extension UIImage {
         return image!
     }
     
-    func stretchable(withCapInsets: UIEdgeInsets) -> UIImage {
-        let image = resizableImage(withCapInsets: capInsets, resizingMode: .stretch)
-        return image
+    func stretchable(with capInsets: UIEdgeInsets? = nil) -> UIImage {
+        return resizableImage(withCapInsets: capInsets ?? size.centerInsets() ,
+                              resizingMode: .stretch)
     }
     
-    
     func flippedHorizontal() -> UIImage {
-                
         return UIImage(cgImage: cgImage!, scale: scale, orientation: .upMirrored )
+    }
+    
+    func circular(diameter: UInt, highlighted color: UIColor? = nil) -> UIImage {
+        let frame = CGRect(x: 0, y: 0, width: Int(diameter), height: Int(diameter))
+        
+        UIGraphicsBeginImageContextWithOptions(frame.size, false, 0)
+        
+        let context = UIGraphicsGetCurrentContext()!
+        let path = UIBezierPath(ovalIn: frame)
+        path.addClip()
+        draw(in: frame)
+        
+        if color != nil {
+            context.setFillColor(color!.cgColor)
+            context.fillEllipse(in: frame)
+        }
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
+        
+        return image!
         
     }
     

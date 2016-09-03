@@ -10,6 +10,12 @@ import UIKit
 
 public class CKMessagesViewLayoutAttributes: UICollectionViewLayoutAttributes {
     
+    
+    public enum CKMessagesViewAvatarPosition {
+        case left
+        case right
+    }
+    
     public var messageFont: UIFont
     public var incomingAvatarSize: CGSize
     public var outgoingAvatarSize: CGSize
@@ -18,6 +24,7 @@ public class CKMessagesViewLayoutAttributes: UICollectionViewLayoutAttributes {
     public var topLabelHeight: CGFloat
     public var messageTopLabelHeight: CGFloat
     public var bottomLabelHeight: CGFloat
+    public var avatarPosition: CKMessagesViewAvatarPosition
     
     override init() {
         messageFont = UIFont.preferredFont(forTextStyle: .body)
@@ -28,6 +35,7 @@ public class CKMessagesViewLayoutAttributes: UICollectionViewLayoutAttributes {
         topLabelHeight = 0.0
         messageTopLabelHeight = 0.0
         bottomLabelHeight = 0.0
+        avatarPosition = .left
         super.init()
     }
 
@@ -42,6 +50,7 @@ public class CKMessagesViewLayoutAttributes: UICollectionViewLayoutAttributes {
         copy.topLabelHeight = topLabelHeight
         copy.messageTopLabelHeight = messageTopLabelHeight
         copy.bottomLabelHeight = bottomLabelHeight
+        copy.avatarPosition = avatarPosition
         
         return copy
     }
@@ -58,6 +67,7 @@ public class CKMessagesViewLayoutAttributes: UICollectionViewLayoutAttributes {
                     && topLabelHeight == attributes.topLabelHeight
                     && messageTopLabelHeight == attributes.messageTopLabelHeight
                     && bottomLabelHeight == attributes.bottomLabelHeight
+                    && avatarPosition == attributes.avatarPosition
                     && super.isEqual(attributes)
             } else {
                 return super.isEqual(attributes)

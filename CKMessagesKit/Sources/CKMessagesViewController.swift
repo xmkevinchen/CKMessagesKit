@@ -296,19 +296,6 @@ extension CKMessagesViewController {
 // MARK: - Scrolling & Insets
 
 extension CKMessagesViewController {
-
-//    open override func viewWillLayoutSubviews() {
-//        super.viewWillLayoutSubviews()
-//        
-//        print("====> \(#function) messagesView.contentInset = \(messagesView.contentInset) messagesView.contentOffset = \(messagesView.contentOffset)")
-//    }
-//    
-//    open override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        
-//        print("====> \(#function) messagesView.contentInset = \(messagesView.contentInset) messagesView.contentOffset = \(messagesView.contentOffset)")
-//        
-//    }
     
     fileprivate func updateMessagesViewInsets(with keyboradFrame: CGRect = .zero) {
         
@@ -481,6 +468,8 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
                 
                 let cell: CKMessageViewCell = collectionView.dequeueReusable(at: indexPath)
                 cell.textView.text = message.text
+                cell.textView.dataDetectorTypes = .all
+                
                 
                 messageCell = cell
             }
@@ -500,15 +489,19 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
                     needsAvatar = false
                 }
             }
-            var bubbleImageData: CKMessageBubbleImageData?
+            
+            
+            var avatarImageData: CKMessagesAvatarImageData?
             
             if needsAvatar {
-                bubbleImageData = messagesView.decorator?.messageBubbleImage(at: indexPath, of: messagesView)
-                messageCell.messageBubbleImageView.image = bubbleImageData?.image
-                messageCell.messageBubbleImageView.highlightedImage = bubbleImageData?.highlightedImage
+                avatarImageData = messagesView.decorator?.avatarImage(at: indexPath, of: messagesView)
+                messageCell.avatarImageView.image = avatarImageData?.avatar
+                messageCell.avatarImageView.highlightedImage = avatarImageData?.highlighted                
             }
             
-            
+            let bubbleImageData = messagesView.decorator?.messageBubbleImage(at: indexPath, of: messagesView)
+            messageCell.messageBubbleImageView.image = bubbleImageData?.image
+            messageCell.messageBubbleImageView.highlightedImage = bubbleImageData?.highlightedImage
             messageCell.topLabel.text = messagesView.decorator?.textForTop(at: indexPath, of: messagesView)
             messageCell.topLabel.attributedText = messagesView.decorator?.attributedTextForTop(at: indexPath, of: messagesView)
             
@@ -527,11 +520,13 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
             messageCell.bottomLabel.attributedText = messagesView.decorator?.attributedTextForBottom(at: indexPath, of: messagesView)
             
             cellForItem = messageCell
-            
+                        
         }
         
-        
         assert(cellForItem != nil)
+        
+        cellForItem.layer.rasterizationScale = UIScreen.main.scale
+        cellForItem.layer.shouldRasterize = true
         
         return cellForItem
         

@@ -6,7 +6,7 @@
 //  Copyright © 2016 Kevin Chen. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public protocol CKMessageBubbleImageData {
     var image: UIImage { get }

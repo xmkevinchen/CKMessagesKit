@@ -154,8 +154,8 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
     
     public func sizeForItem(at indexPath: IndexPath) -> CGSize {
         
-        
-        let messageSize = messageSizeForItem(at: indexPath)
+        let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView)
+        let messageSize = size(of: message, at: indexPath)
         var height = messageSize.container.height
         
         if let attributes = layoutAttributesForItem(at: indexPath) as? CKMessagesViewLayoutAttributes {
@@ -170,9 +170,9 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
         
     }
     
-    private func messageSizeForItem(at indexPath: IndexPath) -> CKMessageSize {
+    private func size(of message:CKMessageData?, at indexPath: IndexPath) -> CKMessageSize {
         
-        if let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) {
+        if let message = message {
             return messageSizeCalculator.size(of: message, at: indexPath, with: self)
         }
         
@@ -230,7 +230,9 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
     
     private func configure(attributes: CKMessagesViewLayoutAttributes) {
         let indexPath = attributes.indexPath
-        let messageSize = messageSizeForItem(at: indexPath)
+        let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView)
+        
+        let messageSize = size(of: message, at: indexPath)
                 
         attributes.messageContentSize = messageSize.content
         attributes.messageContentInsets = messageContentInsets
@@ -238,6 +240,11 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
         attributes.incomingAvatarSize = incomingAvatarSize
         attributes.outgoingAvatarSize = outgoingAvatarSize
         
+        if message?.senderId == messagesView.messenger?.senderId {
+            attributes.avatarPosition = .right
+        } else {
+            attributes.avatarPosition = .left
+        }
         
         
         if let decorator = messagesView.decorator {

@@ -53,16 +53,14 @@ public class CKMessagesBubbleImageFactory {
             highlight = highlight.flippedHorizontal()
         }
         
-        normal = normal.resizableImage(withCapInsets: capInsets, resizingMode: .stretch)
-        highlight = highlight.resizableImage(withCapInsets: capInsets, resizingMode: .stretch)
-        
-        return CKMessageBubbleImage(image: normal, highlightedImage: highlight)
+        return CKMessageBubbleImage(image: normal.stretchable(with: capInsets),
+                                    highlightedImage: highlight.stretchable(with: capInsets))
         
     }
     
     static var defaultIncomingBubbleImage: CKMessageBubbleImageData = {
         let factory = CKMessagesBubbleImageFactory()
-        return factory.incomingBubbleImage(with: UIColor.messageBubbleGreen)
+        return factory.incomingBubbleImage(with: UIColor.messageBubbleBlue)
     }()
     
     static var defaultOutgoingBubbleImage: CKMessageBubbleImageData = {
@@ -74,7 +72,7 @@ public class CKMessagesBubbleImageFactory {
 
 
 
-extension CGSize {
+public extension CGSize {
     
     func centerInsets() -> UIEdgeInsets {
         let center = CGPoint(x: width / 2.0, y: height / 2.0)

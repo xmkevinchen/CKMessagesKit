@@ -46,6 +46,10 @@
 		0A1280981D773F770052759C /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1280971D773F770052759C /* Reusable.swift */; };
 		0A12809A1D773FF00052759C /* NibLoadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1280991D773FF00052759C /* NibLoadable.swift */; };
 		0A12809C1D7740B20052759C /* UICollectionView+Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A12809B1D7740B20052759C /* UICollectionView+Reusable.swift */; };
+		0A5A48CF1D7A319A00BFC790 /* UIView+CKMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5A48CE1D7A319A00BFC790 /* UIView+CKMessages.swift */; };
+		0A5A48D11D7A375300BFC790 /* CKMessagesAvatarImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5A48D01D7A375300BFC790 /* CKMessagesAvatarImageData.swift */; };
+		0A5A48D31D7A379C00BFC790 /* CKMessagesAvatarImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5A48D21D7A379C00BFC790 /* CKMessagesAvatarImage.swift */; };
+		0A5A48D51D7A478500BFC790 /* CKMessagesAvatarImageFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5A48D41D7A478500BFC790 /* CKMessagesAvatarImageFactory.swift */; };
 		0AFD7D481D6E9E2D000367B2 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFD7D471D6E9E2D000367B2 /* GridViewController.swift */; };
 		912224161D6E6D3300C5F3B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224151D6E6D3300C5F3B4 /* AppDelegate.swift */; };
 		912224181D6E6D3300C5F3B4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224171D6E6D3300C5F3B4 /* ViewController.swift */; };
@@ -145,6 +149,10 @@
 		0A1280971D773F770052759C /* Reusable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
 		0A1280991D773FF00052759C /* NibLoadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NibLoadable.swift; sourceTree = "<group>"; };
 		0A12809B1D7740B20052759C /* UICollectionView+Reusable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Reusable.swift"; sourceTree = "<group>"; };
+		0A5A48CE1D7A319A00BFC790 /* UIView+CKMessages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+CKMessages.swift"; sourceTree = "<group>"; };
+		0A5A48D01D7A375300BFC790 /* CKMessagesAvatarImageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesAvatarImageData.swift; sourceTree = "<group>"; };
+		0A5A48D21D7A379C00BFC790 /* CKMessagesAvatarImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesAvatarImage.swift; sourceTree = "<group>"; };
+		0A5A48D41D7A478500BFC790 /* CKMessagesAvatarImageFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesAvatarImageFactory.swift; sourceTree = "<group>"; };
 		0AFD7D471D6E9E2D000367B2 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridViewController.swift; sourceTree = "<group>"; };
 		0AFD7D4E1D6F2F0E000367B2 /* CKMessagesKit.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = CKMessagesKit.playground; sourceTree = "<group>"; };
 		912224041D6E6D0E00C5F3B4 /* CKMessagesKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CKMessagesKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -234,6 +242,7 @@
 				0A076A7D1D75CE2B0028383B /* Bundle+CKMessages.swift */,
 				0A076A7E1D75CE2B0028383B /* UIColor+CKMessages.swift */,
 				0A076A7F1D75CE2B0028383B /* UIImage+CKMessages.swift */,
+				0A5A48CE1D7A319A00BFC790 /* UIView+CKMessages.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -242,6 +251,7 @@
 			isa = PBXGroup;
 			children = (
 				0A076A811D75CE2B0028383B /* CKMessagesBubbleImageFactory.swift */,
+				0A5A48D41D7A478500BFC790 /* CKMessagesAvatarImageFactory.swift */,
 			);
 			path = Factories;
 			sourceTree = "<group>";
@@ -263,9 +273,11 @@
 			children = (
 				0A076A891D75CE2B0028383B /* CKExtendMessageData.swift */,
 				0A076A8A1D75CE2B0028383B /* CKMessage.swift */,
-				0A076A8B1D75CE2B0028383B /* CKMessageBubbleImage.swift */,
-				0A076A8C1D75CE2B0028383B /* CKMessageBubbleImageData.swift */,
 				0A076A8D1D75CE2B0028383B /* CKMessageData.swift */,
+				0A076A8C1D75CE2B0028383B /* CKMessageBubbleImageData.swift */,
+				0A076A8B1D75CE2B0028383B /* CKMessageBubbleImage.swift */,
+				0A5A48D01D7A375300BFC790 /* CKMessagesAvatarImageData.swift */,
+				0A5A48D21D7A379C00BFC790 /* CKMessagesAvatarImage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -565,6 +577,8 @@
 				0A076AA91D75CE2B0028383B /* UIImage+CKMessages.swift in Sources */,
 				0A076AAB1D75CE2B0028383B /* CKMessagesViewLayout.swift in Sources */,
 				0A076AB41D75CE2B0028383B /* CKMessageData.swift in Sources */,
+				0A5A48D51D7A478500BFC790 /* CKMessagesAvatarImageFactory.swift in Sources */,
+				0A5A48D31D7A379C00BFC790 /* CKMessagesAvatarImage.swift in Sources */,
 				0A076AC11D75CE2B0028383B /* CKMessageCellTextView.swift in Sources */,
 				0A076AB71D75CE2B0028383B /* CKMessageViewCell.swift in Sources */,
 				0A076ABF1D75CE2B0028383B /* UIView+CKViewLayout.swift in Sources */,
@@ -579,6 +593,7 @@
 				0A076AA71D75CE2B0028383B /* Bundle+CKMessages.swift in Sources */,
 				0A076AA81D75CE2B0028383B /* UIColor+CKMessages.swift in Sources */,
 				0A076AB01D75CE2B0028383B /* CKExtendMessageData.swift in Sources */,
+				0A5A48D11D7A375300BFC790 /* CKMessagesAvatarImageData.swift in Sources */,
 				0A076AAC1D75CE2B0028383B /* CKMessagesViewLayoutAttributes.swift in Sources */,
 				0A076AB61D75CE2B0028383B /* CKMessageDataViewCell.swift in Sources */,
 				0A10BECD1D7685120010E892 /* CKMessagesComposerTextView.swift in Sources */,
@@ -589,6 +604,7 @@
 				0A076AA31D75CE2B0028383B /* CKMessagesViewController.swift in Sources */,
 				0A076AB51D75CE2B0028383B /* CKMessagePresenting.swift in Sources */,
 				0A076AC01D75CE2B0028383B /* CKInsetsLabel.swift in Sources */,
+				0A5A48CF1D7A319A00BFC790 /* UIView+CKMessages.swift in Sources */,
 				0A076AAA1D75CE2B0028383B /* CKMessagesBubbleImageFactory.swift in Sources */,
 				0A076AB21D75CE2B0028383B /* CKMessageBubbleImage.swift in Sources */,
 				0A076ABD1D75CE2B0028383B /* CKInsetsLayout.swift in Sources */,

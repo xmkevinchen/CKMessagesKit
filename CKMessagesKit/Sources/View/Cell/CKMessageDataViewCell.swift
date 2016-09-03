@@ -49,7 +49,7 @@ open class CKMessageDataViewCell: UICollectionViewCell, Reusable {
         
         if let attributes = layoutAttributes as? CKMessagesViewLayoutAttributes {
                                     
-            if messageView.direction == .incoming {
+            if attributes.avatarPosition == .left {
                 messageView.avatarSize = attributes.incomingAvatarSize
             } else {
                 messageView.avatarSize = attributes.outgoingAvatarSize
@@ -101,6 +101,10 @@ open class CKMessageDataViewCell: UICollectionViewCell, Reusable {
         set {
             messageView.avatarSize = newValue
         }
+    }
+    
+    public var avatarImageView: UIImageView {
+        return messageView.avatarImageView
     }
     
     public var topLabel: UILabel {

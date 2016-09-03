@@ -202,7 +202,7 @@ class CKMessageView: UIView {
     }
     
 //    @IBInspectable
-    var avatarSize: CGSize = CGSize(width: 36, height: 36) {
+    var avatarSize: CGSize = CGSize(width: 30, height: 30) {
         
         didSet {
             
@@ -211,7 +211,7 @@ class CKMessageView: UIView {
             }
             
             avatarWidthConstraint.constant = avatarSize.width
-            avatarHeightConstraint.constant = avatarSize.height
+            avatarHeightConstraint.constant = avatarSize.height            
         }
     }
     

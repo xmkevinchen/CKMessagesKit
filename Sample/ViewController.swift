@@ -9,9 +9,21 @@
 import UIKit
 import CKMessagesKit
 
+extension String {
+    
+    var initials: String {
+        return capitalized
+            .components(separatedBy: " ")
+            .flatMap { $0.substring(to: $0.index(after: $0.startIndex)) }
+            .joined()
+    }
+    
+}
+
 class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessagesViewDecorating {
     
     var messages = [CKMessageData]()
+    var avatarFactory = CKMessagesAvatarImageFactory()
         
     override func viewDidLoad() {
         
@@ -19,14 +31,17 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
         super.viewDidLoad()
         title = "Messages"
         
-        messagesView.messenger = self
-        messagesView.decorator = self
         
-        messagesView.reloadData()
         
         // Do any additional setup after loading the view, typically from a nib.
         register(presentor: GridViewController.self, for: GridMessage.self)
         register(presentor: ListViewController.self, for: ListMessage.self)
+        
+        messagesView.messenger = self
+        messagesView.decorator = self
+        
+        
+        messagesView.messagesViewLayout.outgoingAvatarSize = .zero
 //        (messagesView.collectionViewLayout as! CKMessagesViewLayout).messageFont = UIFont.systemFont(ofSize: 14)
         
         for i in 0..<100 {
@@ -55,6 +70,8 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
             }
         }
         
+        messagesView.reloadData()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -71,6 +88,18 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
         return messages[indexPath.item]
 //        return GridMessage(senderId: "incoming", sender: "Incoming", text: String(1))
         
+    }
+    
+    
+    func avatarImage(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CKMessagesAvatarImageData? {
+        
+        let message = messages[indexPath.item]
+        
+        return avatarFactory.avater(initials: message.sender.initials,
+                                    backgroundColor: UIColor.darkGray,
+                                    textColor: UIColor.white,
+                                    font: UIFont.preferredFont(forTextStyle: .headline))
+
     }
     
     

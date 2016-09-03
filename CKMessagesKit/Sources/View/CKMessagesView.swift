@@ -30,6 +30,7 @@ public protocol CKMessagesViewDecorating: NSObjectProtocol {
     func attributedTextForBottom(at indexPath: IndexPath, of messagesView: CKMessagesView) -> NSAttributedString?
     
     func messageBubbleImage(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CKMessageBubbleImageData?
+    func avatarImage(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CKMessagesAvatarImageData?
     
     func contentSize(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CGSize
     
@@ -43,7 +44,7 @@ open class CKMessagesView: UICollectionView {
     open weak var decorator: CKMessagesViewDecorating?
     open weak var messenger: CKMessagesViewMessaging?
     
-    var messagesViewLayout: CKMessagesViewLayout {
+    public var messagesViewLayout: CKMessagesViewLayout {
         guard let layout = collectionViewLayout as? CKMessagesViewLayout else {
             fatalError("The layout of messagesView must be \(CKMessagesViewLayout.self)")
         }
@@ -111,6 +112,7 @@ public extension CKMessagesViewDecorating {
         return nil
     }
     
+    
     func messageBubbleImage(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CKMessageBubbleImageData? {
         if let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView),
             let senderId = messagesView.messenger?.senderId {
@@ -127,6 +129,11 @@ public extension CKMessagesViewDecorating {
         
         return nil
     }
+    
+    func avatarImage(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CKMessagesAvatarImageData? {
+        return nil
+    }
+    
     
     func contentSize(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CGSize {
         return .zero
