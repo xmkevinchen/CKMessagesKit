@@ -38,50 +38,27 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
         register(presentor: ListViewController.self, for: ListMessage.self)
         
         messagesView.messenger = self
-        messagesView.decorator = self
+        messagesView.decorator = self        
         
         
         messagesView.messagesViewLayout.outgoingAvatarSize = .zero
 //        (messagesView.collectionViewLayout as! CKMessagesViewLayout).messageFont = UIFont.systemFont(ofSize: 14)
         
-        for i in 0..<100 {
-            var message: CKMessageData?
-            let value = i % 4
-            
-            switch value {
-            case 0:
-                message = CKMessage(senderId: senderId, sender: sender, text: "Your Apple ID must be associated with a paid Apple Developer Program or Apple Developer Enterprise Program to access certain software downloads.")
-                
-            case 1:
-                message = CKMessage(senderId: "incoming", sender: "Incoming", text: "Get the latest beta releases of Xcode, iOS, macOS, watchOS, tvOS, and more.")
-                
-            case 2:
-                message = GridMessage(senderId: senderId, sender: sender, text: String(i))
-                
-            case 3:
-                message = ListMessage(senderId: "incoming", sender: "Incoming", text: String(i))
-                
-            default:
-                break
-            }
-            
-            if message != nil {
-                messages.append(message!)
-            }
+        for _ in 0..<8 {
+            insertNewMessage()
         }
         
         messagesView.reloadData()
         
     }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
+        return messages.count
     }
     
     public func messageForItem(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CKMessageData {
@@ -99,13 +76,12 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
                                     backgroundColor: UIColor.darkGray,
                                     textColor: UIColor.white,
                                     font: UIFont.preferredFont(forTextStyle: .headline))
-
     }
     
     
     
     public var senderId: String {
-        return "outgoing"
+        return "kevin"
     }
     
     public var sender: String {
@@ -113,21 +89,86 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
     }
     
     func contentSize(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CGSize {
-                
-        let value = indexPath.item % 4
         
-        if value == 2 {
-            return CGSize(width:240, height:50)
-        } else if value == 3 {
-            return CGSize(width:200, height:240)
-        } else {
+        let message = messages[indexPath.item]
+        if message is CKMessage {
             return .zero
         }
         
+        return CGSize(width:Int(100 + arc4random_uniform(50)), height:Int(50 + arc4random_uniform(100)))
         
-//        return CGSize(width:240, height:50)
+        
+//        let value = indexPath.item % 4
+//        
+//        if value == 2 {
+//            return CGSize(width:240, height:50)
+//        } else if value == 3 {
+//            return CGSize(width:200, height:240)
+//        } else {
+//            return .zero
+//        }
+        
     }
     
+    override func didClickSendButton(_ button: UIButton, messageText: String) {
+        
+        let message = CKMessage(senderId: arc4random() % 2 == 0 ? senderId: "incoming", sender: sender, text: messageText)
+//        var message: CKMessageData
+//        let rand = arc4random_uniform(10)
+//        if rand % 2 == 0 {
+//            message = GridMessage(senderId: senderId, sender: sender, text: String(rand))
+//        } else {
+//            message = ListMessage(senderId: "incoming", sender: "Incoming", text: String(rand))
+//        }
+        messages.append(message)
+        finishSendingMessage()
+    }
+    
+    
+    
+    func viewController(_ viewController: CKMessagesViewController, didClickAccessoryButton button: UIButton) {
+        
+    }
+    
+    
+    private func generateMessage(at index: Int) -> CKMessageData? {
+        
+        var message: CKMessageData?
+        let value = index % 4
+        
+        switch value {
+        case 0:
+            message = CKMessage(senderId: senderId, sender: sender, text: "Your Apple ID must be associated with a paid Apple Developer Program or Apple Developer Enterprise Program to access certain software downloads.")
+            
+        case 1:
+            message = CKMessage(senderId: "incoming", sender: "Incoming", text: "Get the latest beta releases of Xcode, iOS, macOS, watchOS, tvOS, and more.")
+            
+        case 2:
+            message = GridMessage(senderId: senderId, sender: sender, text: String(index))
+            
+        case 3:
+            message = ListMessage(senderId: "incoming", sender: "Incoming", text: String(index))
+            
+        default:
+            break
+        }
+        
+//        if index % 2 == 0 {
+//            return CKMessage(senderId: senderId, sender: sender, text: "Your Apple ID must be associated with a paid Apple Developer Program or Apple Developer Enterprise Program to access certain software downloads.")
+//        } else {
+//            return CKMessage(senderId: "incoming", sender: "Incoming", text: "Get the latest beta releases of Xcode, iOS, macOS, watchOS, tvOS, and more.")
+//        }
+        
+        return message
+    }
+    
+    private func insertNewMessage() {
+        let message = generateMessage(at: messages.count)
+        if message != nil {
+            messages.append(message!)
+        }
+        
+    }
     
 }
 

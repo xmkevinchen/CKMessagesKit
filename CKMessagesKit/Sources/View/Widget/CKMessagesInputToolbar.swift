@@ -17,6 +17,11 @@ public protocol CKMessagesInputToolbarDelegate: UIToolbarDelegate {
 
 public class CKMessagesInputToolbar: UIToolbar {
     
+    public enum SendButtonPosition {
+        case left
+        case right
+    }
+    
     public var preferredDefaultHeight: CGFloat = 44.0 {
         willSet {
             assert(newValue > 0)
@@ -26,6 +31,12 @@ public class CKMessagesInputToolbar: UIToolbar {
     public var enableSendButtonAutomatically: Bool = true {
         didSet {
             updateSendButtonEnabledState()
+        }
+    }
+    public var sendButtonPosition: SendButtonPosition = .right {
+        
+        didSet {
+            
         }
     }
             
@@ -94,7 +105,14 @@ public class CKMessagesInputToolbar: UIToolbar {
             return
         }
         
-        contentView.rightBarButtonItem?.isEnabled = contentView.textView.hasText
+        let hasText = contentView.textView.hasText
+        switch sendButtonPosition {
+        case .left:
+            contentView.leftBarButtonItem?.isEnabled = hasText
+        case .right:
+            contentView.rightBarButtonItem?.isEnabled = hasText
+        }
+        
     }
     
 }

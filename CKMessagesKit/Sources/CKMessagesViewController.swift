@@ -9,8 +9,6 @@
 import UIKit
 import Reusable
 
-
-
 open class CKMessagesViewController: UIViewController {
     
     // MARK: - Public Properties
@@ -143,6 +141,8 @@ open class CKMessagesViewController: UIViewController {
         
         additionalContentInsets = .zero
         updateMessagesViewInsets()
+        
+        
     }
     
     
@@ -380,9 +380,9 @@ extension CKMessagesViewController {
     @objc private func didReceiveKeyboardWillChangeFrame(_ notification: Notification) {
         
         if let userInfo = notification.userInfo,
-            let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-//            let animationCurve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? Int,
-//            let animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double 
+            let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
+            let animationCurve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? Int,
+            let animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double 
         {
         
             
@@ -390,23 +390,18 @@ extension CKMessagesViewController {
                 return
             }
             
-//            print("====> \(#function) keyboard frame begin: \(keyboardBeginFrame), end: \(keyboardEndFrame) contentOffset = \(messagesView.contentOffset)")
             
-//            let animationOption = UIViewAnimationOptions(rawValue: UInt(animationCurve << 16))
-            self.updateMessagesViewInsets(with: keyboardEndFrame)
-            scrollToBottom(animated: false)
-            
-            
-            
-//            UIView.animate(withDuration: animationDuration,
-//                           delay: 0.0,
-//                           options: [animationOption],
-//                           animations:
-//                {
-//                    self.updateMessagesViewInsets(with: keyboardEndFrame)
-//                    self.scrollToBottom(animated: false)
-//                    
-//                }, completion: { _ in })
+            let animationOption = UIViewAnimationOptions(rawValue: UInt(animationCurve << 16))
+
+            UIView.animate(withDuration: animationDuration,
+                           delay: 0.0,
+                           options: [animationOption],
+                           animations:
+                {
+                    self.updateMessagesViewInsets(with: keyboardEndFrame)
+
+                    
+                }, completion: { _ in })
         }
         
     }
@@ -603,10 +598,72 @@ extension CKMessagesViewController: CKMessagesInputToolbarDelegate {
     
     public func toolbar(_ toolbar: CKMessagesInputToolbar, didClickLeftBarButton sender: UIButton) {
         
+        switch toolbar.sendButtonPosition {
+        case .left:
+            didClickSendButton(sender, messageText: currentlyComposedMessageText())
+        case .right:
+            didClickAccessoryButton(sender)
+        }
+        
     }
     
     public func toolbar(_ toolbar: CKMessagesInputToolbar, didClickRightBarButton sender: UIButton) {
         
+        switch toolbar.sendButtonPosition {
+        case .left:
+            didClickAccessoryButton(sender)
+        case .right:
+            didClickSendButton(sender, messageText: currentlyComposedMessageText())
+            
+        }
+    }
+    
+    fileprivate func currentlyComposedMessageText() -> String {
+        
+        let textView = inputToolbar.contentView.textView!
+        textView.inputDelegate?.selectionWillChange(textView)
+        textView.inputDelegate?.selectionDidChange(textView)
+        
+        return textView.text.trimmingCharacters(in: .whitespaces)
+    }
+    
+    open func didClickSendButton(_ button: UIButton, messageText: String) {
+        
+    }
+    
+    open func didClickAccessoryButton(_ button: UIButton) {
+        
+    }
+}
+
+// MARK: - Receive & Send Message
+extension CKMessagesViewController {
+    
+    public func finishSendingMessage(animated: Bool = true) {
+        let textView = inputToolbar.contentView.textView!
+        textView.text = nil
+        textView.undoManager?.removeAllActions()
+        
+        NotificationCenter.default.post(name: Notification.Name.UITextViewTextDidChange, object: textView)
+        messagesView.messagesViewLayout.invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
+        messagesView.reloadData()
+        
+        if automaticallyScrollsToMostRecentMessage {
+            scrollToBottom(animated: animated)
+        }
+        
+    }
+    
+    public func finishReceivingMessage(animated: Bool = true) {
+        
+        
+        
+        messagesView.messagesViewLayout.invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
+        messagesView.reloadData()
+        
+        if automaticallyScrollsToMostRecentMessage {
+            scrollToBottom(animated: animated)
+        }
     }
     
 }

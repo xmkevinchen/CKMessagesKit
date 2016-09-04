@@ -10,7 +10,11 @@ import UIKit
 import Reusable
 
 class CKMessagePresentingView: UIView {
-  
+    
+    override func willRemoveSubview(_ subview: UIView) {
+        super.willRemoveSubview(subview)
+        removeConstraints(constraints)
+    }
     
 }
 
@@ -48,14 +52,15 @@ open class CKMessageDataViewCell: UICollectionViewCell, Reusable {
         super.apply(layoutAttributes)
         
         if let attributes = layoutAttributes as? CKMessagesViewLayoutAttributes {
-                                    
+                        
             if attributes.avatarPosition == .left {
                 messageView.avatarSize = attributes.incomingAvatarSize
             } else {
                 messageView.avatarSize = attributes.outgoingAvatarSize
             }
             
-            messageView.updateContentLayout(with: attributes.messageContentInsets,
+            
+            messageView.updateContentLayout(insets: attributes.messageContentInsets,
                                             size: attributes.messageContentSize)
             
         }
@@ -73,14 +78,12 @@ open class CKMessageDataViewCell: UICollectionViewCell, Reusable {
         
         assert(messageView != nil)        
         
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        pinSubview(contentView)
         messageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(messageView)
-        
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[m]-0-|", options: [], metrics: nil, views: ["m": messageView]))
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[m]-0-|", options: [], metrics: nil, views: ["m": messageView]))
-        
-        
-        
+        contentView.pinSubview(messageView)
+                        
     }
     
     

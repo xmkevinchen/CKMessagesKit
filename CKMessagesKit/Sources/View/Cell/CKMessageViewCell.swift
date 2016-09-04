@@ -48,7 +48,7 @@ public class CKMessageViewCell: CKMessageDataViewCell {
     }
     
     private func configure() {
-        textView = CKMessageCellTextView(frame: frame)
+        textView = CKMessageCellTextView(frame: .zero)                
         attach(hostedView: textView)
     }
         
