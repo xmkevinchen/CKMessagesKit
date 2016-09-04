@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11198.2" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11198.2" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -22,6 +22,7 @@
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="afO-ue-cnW" customClass="CKMessagesComposerTextView" customModule="CKMessagesKit" customModuleProvider="target">
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="height" constant="32" id="H3a-Gk-Fuo"/>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="Iey-mZ-UEF"/>
                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="150" id="VSA-0g-rBi"/>
                     </constraints>
@@ -40,7 +41,6 @@
             <constraints>
                 <constraint firstItem="qC1-de-qcP" firstAttribute="leading" secondItem="afO-ue-cnW" secondAttribute="trailing" constant="8" id="5Gw-Se-RUj"/>
                 <constraint firstItem="afO-ue-cnW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="6" id="Arq-BB-qx0"/>
-                <constraint firstItem="qC1-de-qcP" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="6" id="CBq-JU-iwx"/>
                 <constraint firstAttribute="trailing" secondItem="qC1-de-qcP" secondAttribute="trailing" constant="8" id="cKh-06-O5J"/>
                 <constraint firstItem="afO-ue-cnW" firstAttribute="leading" secondItem="brC-Ky-39d" secondAttribute="trailing" constant="8" id="cXR-ap-Ne2"/>
                 <constraint firstAttribute="bottom" secondItem="brC-Ky-39d" secondAttribute="bottom" constant="6" id="fNN-d5-Kqf"/>
