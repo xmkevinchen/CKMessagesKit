@@ -41,6 +41,18 @@ open class CKMessagesViewController: UIViewController {
         }
     }
     
+    public var isShowingIndicator: Bool = false {
+        
+        didSet {
+            guard isShowingIndicator != oldValue else {
+                return
+            }
+            
+            messagesView.messagesViewLayout.invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
+            messagesView.messagesViewLayout.invalidateLayout()
+        }
+    }
+    
     // MARK: - Private Properties
     
     fileprivate var toolbarHeight: CGFloat = 44.0
@@ -119,6 +131,7 @@ open class CKMessagesViewController: UIViewController {
                 
         messagesView.register(for: CKMessageDataViewCell.self)
         messagesView.register(for: CKMessageViewCell.self)
+        messagesView.register(forSupplementaryView: UICollectionElementKindSectionFooter, for: CKMessagesIndicatorFooterView.self)
         
         messagesView.delegate = self
         messagesView.dataSource = self
@@ -318,7 +331,7 @@ extension CKMessagesViewController {
     }
     
     
-    fileprivate func scrollToBottom(animated: Bool) {
+    public func scrollToBottom(animated: Bool) {
         let numberOfItems = messagesView.numberOfItems(inSection: 0)
         guard messagesView.numberOfSections == 1 && numberOfItems >= 1 else {
             return
@@ -329,7 +342,7 @@ extension CKMessagesViewController {
         
     }
     
-    fileprivate func scroll(to indexPath: IndexPath, animated: Bool) {
+    public func scroll(to indexPath: IndexPath, animated: Bool) {
         if messagesView.numberOfSections <= indexPath.section {
             return
         }
@@ -567,6 +580,24 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
     
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         recyclePresentor(at: indexPath)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        switch kind {
+        case UICollectionElementKindSectionFooter:
+            
+            let indicator: CKMessagesIndicatorFooterView = collectionView.dequeueReusable(forSupplementaryView: UICollectionElementKindSectionFooter, at: indexPath)
+            return indicator
+            
+        default:
+            fatalError()
+        }
+        
+    }
+        
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return isShowingIndicator ? CGSize(width: messagesView.messagesViewLayout.itemWidth, height: 30) : .zero
     }
     
     fileprivate func isOutgoing(message: CKMessageData) -> Bool {

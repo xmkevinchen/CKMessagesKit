@@ -75,4 +75,8 @@ public extension UIImage {
         return UIImage(named: "clip", in: Bundle.messages, compatibleWith: nil)!
     }
     
+    public static var typing: UIImage {
+        return UIImage(named: "typing", in: Bundle.messages, compatibleWith: nil)!
+    }
+    
 }

@@ -32,7 +32,7 @@ public extension UICollectionView {
     
     
     final func register<T: UICollectionReusableView>(forSupplementaryView ofKind : String, for type: T.Type = T.self) where T: NibReusable {
-        register(T.self, forSupplementaryViewOfKind: ofKind, withReuseIdentifier: T.reuseIdentifier)
+        register(T.nib, forSupplementaryViewOfKind: ofKind, withReuseIdentifier: T.reuseIdentifier)
     }
     
     final func register<T: UICollectionReusableView>(forSupplementaryView ofKind : String, for type: T.Type = T.self)

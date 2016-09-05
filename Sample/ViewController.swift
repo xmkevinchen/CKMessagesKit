@@ -32,6 +32,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
         title = "Messages"
         
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.typing, style: .plain, target: self, action: #selector(showTypingIndicator(_:)))
         
         // Do any additional setup after loading the view, typically from a nib.
         register(presentor: GridViewController.self, for: GridMessage.self)
@@ -76,6 +77,15 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
                                     backgroundColor: UIColor.darkGray,
                                     textColor: UIColor.white,
                                     font: UIFont.preferredFont(forTextStyle: .headline))
+    }
+    
+    func showTypingIndicator(_ sender: AnyObject) {
+        isShowingIndicator = true
+        scrollToBottom(animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.isShowingIndicator = false
+            self.messagesView.reloadData()
+        }
     }
     
     

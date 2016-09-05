@@ -50,6 +50,9 @@
 		0A5A48D11D7A375300BFC790 /* CKMessagesAvatarImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5A48D01D7A375300BFC790 /* CKMessagesAvatarImageData.swift */; };
 		0A5A48D31D7A379C00BFC790 /* CKMessagesAvatarImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5A48D21D7A379C00BFC790 /* CKMessagesAvatarImage.swift */; };
 		0A5A48D51D7A478500BFC790 /* CKMessagesAvatarImageFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5A48D41D7A478500BFC790 /* CKMessagesAvatarImageFactory.swift */; };
+		0ACA6B451D7C8D89004C541F /* CKMessagesIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ACA6B441D7C8D89004C541F /* CKMessagesIndicatorView.swift */; };
+		0ADD57BE1D7C94B400370D5A /* CKMessagesIndicatorFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ADD57BC1D7C94B400370D5A /* CKMessagesIndicatorFooterView.swift */; };
+		0ADD57BF1D7C94B400370D5A /* CKMessagesIndicatorFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0ADD57BD1D7C94B400370D5A /* CKMessagesIndicatorFooterView.xib */; };
 		0AFD7D481D6E9E2D000367B2 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFD7D471D6E9E2D000367B2 /* GridViewController.swift */; };
 		912224161D6E6D3300C5F3B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224151D6E6D3300C5F3B4 /* AppDelegate.swift */; };
 		912224181D6E6D3300C5F3B4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224171D6E6D3300C5F3B4 /* ViewController.swift */; };
@@ -153,6 +156,9 @@
 		0A5A48D01D7A375300BFC790 /* CKMessagesAvatarImageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesAvatarImageData.swift; sourceTree = "<group>"; };
 		0A5A48D21D7A379C00BFC790 /* CKMessagesAvatarImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesAvatarImage.swift; sourceTree = "<group>"; };
 		0A5A48D41D7A478500BFC790 /* CKMessagesAvatarImageFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesAvatarImageFactory.swift; sourceTree = "<group>"; };
+		0ACA6B441D7C8D89004C541F /* CKMessagesIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesIndicatorView.swift; sourceTree = "<group>"; };
+		0ADD57BC1D7C94B400370D5A /* CKMessagesIndicatorFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesIndicatorFooterView.swift; sourceTree = "<group>"; };
+		0ADD57BD1D7C94B400370D5A /* CKMessagesIndicatorFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKMessagesIndicatorFooterView.xib; sourceTree = "<group>"; };
 		0AFD7D471D6E9E2D000367B2 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridViewController.swift; sourceTree = "<group>"; };
 		0AFD7D4E1D6F2F0E000367B2 /* CKMessagesKit.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = CKMessagesKit.playground; sourceTree = "<group>"; };
 		912224041D6E6D0E00C5F3B4 /* CKMessagesKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CKMessagesKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -333,6 +339,9 @@
 				0A10BEC81D76839E0010E892 /* CKMessagesToolbarContentView.swift */,
 				0A10BECA1D7683AC0010E892 /* CKMessagesToolbarContentView.xib */,
 				0A10BECC1D7685120010E892 /* CKMessagesComposerTextView.swift */,
+				0ACA6B441D7C8D89004C541F /* CKMessagesIndicatorView.swift */,
+				0ADD57BC1D7C94B400370D5A /* CKMessagesIndicatorFooterView.swift */,
+				0ADD57BD1D7C94B400370D5A /* CKMessagesIndicatorFooterView.xib */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
@@ -537,6 +546,7 @@
 			files = (
 				91A6CBB01D77A52F00695657 /* CKMessageView.xib in Resources */,
 				0A10BECB1D7683AC0010E892 /* CKMessagesToolbarContentView.xib in Resources */,
+				0ADD57BF1D7C94B400370D5A /* CKMessagesIndicatorFooterView.xib in Resources */,
 				0A076AC31D75CF250028383B /* Images.xcassets in Resources */,
 				0A076AA41D75CE2B0028383B /* CKMessagesViewController.xib in Resources */,
 			);
@@ -599,6 +609,7 @@
 				0A10BECD1D7685120010E892 /* CKMessagesComposerTextView.swift in Sources */,
 				0A076ABE1D75CE2B0028383B /* CKViewLayout.swift in Sources */,
 				0A076AAD1D75CE2B0028383B /* CKMessagesViewLayoutInvalidationContext.swift in Sources */,
+				0ADD57BE1D7C94B400370D5A /* CKMessagesIndicatorFooterView.swift in Sources */,
 				0A076AAF1D75CE2B0028383B /* CKMessageSizeCalculator.swift in Sources */,
 				0A076AB81D75CE2B0028383B /* CKMessagesView.swift in Sources */,
 				0A076AA31D75CE2B0028383B /* CKMessagesViewController.swift in Sources */,
@@ -607,6 +618,7 @@
 				0A5A48CF1D7A319A00BFC790 /* UIView+CKMessages.swift in Sources */,
 				0A076AAA1D75CE2B0028383B /* CKMessagesBubbleImageFactory.swift in Sources */,
 				0A076AB21D75CE2B0028383B /* CKMessageBubbleImage.swift in Sources */,
+				0ACA6B451D7C8D89004C541F /* CKMessagesIndicatorView.swift in Sources */,
 				0A076ABD1D75CE2B0028383B /* CKInsetsLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

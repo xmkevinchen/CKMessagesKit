@@ -2,5 +2,17 @@
 <Timeline
    version = "3.0">
    <TimelineItems>
+      <LoggerValueHistoryTimelineItem
+         documentLocation = "file:///Users/kevin/Programmings/iOS/Projects/CKMessagesViewController/CKMessagesKit.playground/Pages/Layout.xcplaygroundpage#CharacterRangeLen=0&amp;CharacterRangeLoc=783&amp;EndingLineNumber=14&amp;StartingLineNumber=13&amp;Timestamp=494725891.047551"
+         lockedSize = "{981, 378}"
+         selectedRepresentationIndex = "0"
+         shouldTrackSuperviewWidth = "NO">
+      </LoggerValueHistoryTimelineItem>
+      <LoggerValueHistoryTimelineItem
+         documentLocation = "file:///Users/kevin/Programmings/iOS/Projects/CKMessagesViewController/CKMessagesKit.playground/Pages/Layout.xcplaygroundpage#CharacterRangeLen=358&amp;CharacterRangeLoc=398&amp;EndingLineNumber=19&amp;StartingLineNumber=18&amp;Timestamp=494725891.047797"
+         lockedSize = "{694, 486}"
+         selectedRepresentationIndex = "0"
+         shouldTrackSuperviewWidth = "NO">
+      </LoggerValueHistoryTimelineItem>
    </TimelineItems>
 </Timeline>
