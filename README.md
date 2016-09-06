@@ -61,6 +61,7 @@ Use Carthage to download the dependencies of the Sample project
 2. Adopt `CKViewLayout` protocol to layout message cell
 3. Add more built-in message type cell
 4. Solve async content loading problem, especially when presenting multiple styles of collection data in the messages
+5. Submit CKMessagesKit to Cocoapods when Swift 3 is supported officially
 
 ## Why recreate the wheel    
 First of all, CKMessagesKit is strongly inspired by [JSQMessagesViewController](https://github.com/jessesquires/JSQMessagesViewController) and [LayerKit](https://layer.com/). 
