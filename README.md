@@ -27,7 +27,7 @@ target 'Messages' do
   # Comment this line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
-  pod 'CKMessagesKit', :git => 'https://github.com/xmkevinchen/CKMessagesKit.git', :branch => 'develop'
+  pod 'CKMessagesKit', :git => 'https://github.com/xmkevinchen/CKMessagesKit.git', :branch => 'master'
   
 
 end
@@ -42,7 +42,7 @@ end
 
 ```
 
-### Carthage
+### [Carthage](https://github.com/Carthage/Carthage)
 
 ```
 github "xmkevinchen/CKMessagesKit"
@@ -51,6 +51,10 @@ github "xmkevinchen/CKMessagesKit"
 ## Getting Started
 
 Checkout the **Sample** project in the repository
+
+Use Carthage to download the dependencies of the Sample project
+
+
 
 ## TODO
 1. Re-design the CKMessageDataViewCell to make more following the SOLID principle
