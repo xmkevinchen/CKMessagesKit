@@ -45,7 +45,7 @@ end
 ### Carthage
 
 ```
-github "xmkevinchen/CKMessagesKit" "develop"
+github "xmkevinchen/CKMessagesKit"
 ```
 
 ## Getting Started
