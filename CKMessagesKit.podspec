@@ -13,8 +13,9 @@ Pod::Spec.new do |spec|
   spec.platform       = :ios, '8.0'
 
   spec.source_files   = 'CKMessagesKit/Sources/**/*.swift',
-  spec.resources      = ['CKMessagesKit/Resources/**/*', 'CKMessagesKit/Sources/**/*.xib']
+  spec.resources      = 'CKMessagesKit/Resources/**/*.xcassets', 'CKMessagesKit/Sources/**/*.xib'
   spec.frameworks     = 'UIKit', 'QuartzCore'
   spec.dependency     'CKReusable'
+
 
 end

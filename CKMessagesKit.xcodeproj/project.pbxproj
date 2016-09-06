@@ -41,7 +41,6 @@
 		0A10BECB1D7683AC0010E892 /* CKMessagesToolbarContentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A10BECA1D7683AC0010E892 /* CKMessagesToolbarContentView.xib */; };
 		0A10BECD1D7685120010E892 /* CKMessagesComposerTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A10BECC1D7685120010E892 /* CKMessagesComposerTextView.swift */; };
 		0A5797C81D7D42990061DBAE /* Reusable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A5797C71D7D42990061DBAE /* Reusable.framework */; };
-		0A5797CD1D7D45CA0061DBAE /* Reusable.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A5797C71D7D42990061DBAE /* Reusable.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0A5A48CF1D7A319A00BFC790 /* UIView+CKMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5A48CE1D7A319A00BFC790 /* UIView+CKMessages.swift */; };
 		0A5A48D11D7A375300BFC790 /* CKMessagesAvatarImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5A48D01D7A375300BFC790 /* CKMessagesAvatarImageData.swift */; };
 		0A5A48D31D7A379C00BFC790 /* CKMessagesAvatarImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5A48D21D7A379C00BFC790 /* CKMessagesAvatarImage.swift */; };
@@ -81,7 +80,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0A5797CD1D7D45CA0061DBAE /* Reusable.framework in Embed Frameworks */,
 				912224351D6E725600C5F3B4 /* CKMessagesKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
