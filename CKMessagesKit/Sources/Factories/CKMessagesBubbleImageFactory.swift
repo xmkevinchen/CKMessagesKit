@@ -32,11 +32,11 @@ public class CKMessagesBubbleImageFactory {
                   direction: UIApplication.shared.userInterfaceLayoutDirection)
     }
     
-    func outgoingBubbleImage(with color: UIColor) -> CKMessageBubbleImage {
+    public func outgoingBubbleImage(with color: UIColor) -> CKMessageBubbleImage {
         return bubbleImage(with: color, flipped: false ^ isRTL)
     }
     
-    func incomingBubbleImage(with color: UIColor) -> CKMessageBubbleImage {
+    public func incomingBubbleImage(with color: UIColor) -> CKMessageBubbleImage {
         return bubbleImage(with: color, flipped: true ^ isRTL)
     }
     
@@ -58,12 +58,12 @@ public class CKMessagesBubbleImageFactory {
         
     }
     
-    static var defaultIncomingBubbleImage: CKMessageBubbleImageData = {
+    public static var defaultIncomingBubbleImage: CKMessageBubbleImageData = {
         let factory = CKMessagesBubbleImageFactory()
         return factory.incomingBubbleImage(with: UIColor.messageBubbleBlue)
     }()
     
-    static var defaultOutgoingBubbleImage: CKMessageBubbleImageData = {
+    public static var defaultOutgoingBubbleImage: CKMessageBubbleImageData = {
         let factory = CKMessagesBubbleImageFactory()
         return factory.outgoingBubbleImage(with: UIColor.messageBubbleLightGray)
     }()
