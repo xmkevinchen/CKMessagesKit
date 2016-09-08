@@ -21,14 +21,14 @@ public class CKMessagesAvatarImageFactory {
         return CKMessagesAvatarImage.avater(placeholder: image)
     }
     
-    public func avater(image: UIImage) -> CKMessagesAvatarImage {
+    public func avatar(image: UIImage) -> CKMessagesAvatarImage {
         let normal = image.circular(diameter: diameter)
         let highlighted = image.circular(diameter: diameter, highlighted: UIColor(white: 0.1, alpha: 0.3))
         
         return CKMessagesAvatarImage(avatar: normal, highlighted: highlighted, placeholder: normal)
     }
     
-    public func avater(initials: String, backgroundColor: UIColor, textColor: UIColor, font: UIFont) -> CKMessagesAvatarImage {
+    public func avatar(initials: String, backgroundColor: UIColor, textColor: UIColor, font: UIFont) -> CKMessagesAvatarImage {
         
         let image = self.image(initials: initials, backgroundColor: backgroundColor, textColor: textColor, font: font)
         let normal = image.circular(diameter: diameter)

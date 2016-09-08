@@ -40,7 +40,7 @@ public class CKMessagesInputToolbar: UIToolbar {
         }
     }
             
-    private(set) var contentView: CKMessagesToolbarContentView!
+    public private(set) var contentView: CKMessagesToolbarContentView!
     
     override public func awakeFromNib() {
         super.awakeFromNib()

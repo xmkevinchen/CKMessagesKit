@@ -58,6 +58,7 @@
 		912224351D6E725600C5F3B4 /* CKMessagesKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 912224041D6E6D0E00C5F3B4 /* CKMessagesKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		917D41561D721704001E678D /* GridMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917D41551D721704001E678D /* GridMessage.swift */; };
 		91A092B01D74E3BF0018AC08 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A092AF1D74E3BF0018AC08 /* ListViewController.swift */; };
+		91A556921D80E2F800ACF4B3 /* CGSize+CKMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A556911D80E2F800ACF4B3 /* CGSize+CKMessages.swift */; };
 		91A6CBAF1D77A52F00695657 /* CKMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A6CBAD1D77A52F00695657 /* CKMessageView.swift */; };
 		91A6CBB01D77A52F00695657 /* CKMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91A6CBAE1D77A52F00695657 /* CKMessageView.xib */; };
 		91A6CBB21D77A7B400695657 /* UIView+NSLayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A6CBB11D77A7B400695657 /* UIView+NSLayoutConstraint.swift */; };
@@ -142,6 +143,7 @@
 		912224211D6E6D3300C5F3B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		917D41551D721704001E678D /* GridMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridMessage.swift; sourceTree = "<group>"; };
 		91A092AF1D74E3BF0018AC08 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		91A556911D80E2F800ACF4B3 /* CGSize+CKMessages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+CKMessages.swift"; sourceTree = "<group>"; };
 		91A6CBAD1D77A52F00695657 /* CKMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageView.swift; sourceTree = "<group>"; };
 		91A6CBAE1D77A52F00695657 /* CKMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKMessageView.xib; sourceTree = "<group>"; };
 		91A6CBB11D77A7B400695657 /* UIView+NSLayoutConstraint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+NSLayoutConstraint.swift"; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 				0A076A7E1D75CE2B0028383B /* UIColor+CKMessages.swift */,
 				0A076A7F1D75CE2B0028383B /* UIImage+CKMessages.swift */,
 				0A5A48CE1D7A319A00BFC790 /* UIView+CKMessages.swift */,
+				91A556911D80E2F800ACF4B3 /* CGSize+CKMessages.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -501,6 +504,7 @@
 				91A6CBB21D77A7B400695657 /* UIView+NSLayoutConstraint.swift in Sources */,
 				0A076AB11D75CE2B0028383B /* CKMessage.swift in Sources */,
 				0A10BEC71D7682F10010E892 /* CKMessagesInputToolbar.swift in Sources */,
+				91A556921D80E2F800ACF4B3 /* CGSize+CKMessages.swift in Sources */,
 				0A076AAE1D75CE2B0028383B /* CKMessageSizeCalculating.swift in Sources */,
 				0A076ABC1D75CE2B0028383B /* CKBackgroundLayout.swift in Sources */,
 				0A076AB31D75CE2B0028383B /* CKMessageBubbleImageData.swift in Sources */,

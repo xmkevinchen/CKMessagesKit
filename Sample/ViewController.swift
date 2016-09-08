@@ -73,7 +73,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
         
         let message = messages[indexPath.item]
         
-        return avatarFactory.avater(initials: message.sender.initials,
+        return avatarFactory.avatar(initials: message.sender.initials,
                                     backgroundColor: UIColor.darkGray,
                                     textColor: UIColor.white,
                                     font: UIFont.preferredFont(forTextStyle: .headline))

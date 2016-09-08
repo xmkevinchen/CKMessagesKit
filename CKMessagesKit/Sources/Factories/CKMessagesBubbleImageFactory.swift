@@ -72,10 +72,4 @@ public class CKMessagesBubbleImageFactory {
 
 
 
-public extension CGSize {
-    
-    func centerInsets() -> UIEdgeInsets {
-        let center = CGPoint(x: width / 2.0, y: height / 2.0)
-        return UIEdgeInsets(top: center.y, left: center.x, bottom: center.y, right: center.x)
-    }
-}
+
