@@ -254,6 +254,8 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
                 attributes.topLabelHeight = size(of: attributedText).height
             } else if let text = decorator.messagesView(messagesView, layout: self, textForTopLabelAt: indexPath) {
                 attributes.topLabelHeight = size(of: text, attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption1)]).height
+            } else {
+                attributes.topLabelHeight = 0
             }
             
             if let height = decorator.messagesView(messagesView, layout: self, heightForMessageTopLabelAt: indexPath) {
@@ -262,6 +264,8 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
                 attributes.messageTopLabelHeight = size(of: attributedText).height
             } else if let text = decorator.messagesView(messagesView, layout: self, textForMessageTopLabelAt: indexPath) {
                 attributes.messageTopLabelHeight = size(of: text, attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption1)]).height
+            } else {
+                attributes.messageTopLabelHeight = 0
             }
             
             if let height = decorator.messagesView(messagesView, layout: self, heightForBottomLabelAt: indexPath) {
@@ -270,6 +274,8 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
                 attributes.bottomLabelHeight = size(of: attributedText).height
             } else if let text = decorator.messagesView(messagesView, layout: self, textForBottomLabelAt: indexPath) {
                 attributes.bottomLabelHeight = size(of: text, attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption1)]).height
+            } else {
+                attributes.bottomLabelHeight = 0
             }
             
         }

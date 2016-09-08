@@ -63,6 +63,10 @@ open class CKMessageDataViewCell: UICollectionViewCell, Reusable {
             messageView.updateContentLayout(insets: attributes.messageContentInsets,
                                             size: attributes.messageContentSize)
             
+            messageView.topLabelHeightConstraint.constant = attributes.topLabelHeight
+            messageView.messageTopLabelConstraint.constant = attributes.messageTopLabelHeight
+            messageView.bottomLabelHeightConstraint.constant = attributes.bottomLabelHeight
+            
         }
         
     }

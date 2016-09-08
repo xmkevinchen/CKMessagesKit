@@ -144,29 +144,17 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
 }
 
 extension ViewController: CKMessagesViewDecorating {
-    
-    func contentSize(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CGSize {
         
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, contentSizeAt indexPath: IndexPath) -> CGSize? {
         let message = messages[indexPath.item]
         if message is CKMessage {
-            return .zero
+            return nil
         }
         
         return CGSize(width:Int(100 + arc4random_uniform(50)), height:Int(50 + arc4random_uniform(100)))
-        
     }
     
-    
-    func textForTop(at indexPath: IndexPath, of messagesView: CKMessagesView) -> String? {
-        let message = messages[indexPath.item]
-        if message.senderId == senderId {
-            return nil
-        } else {
-            return formatter.string(from: message.timestamp)
-        }
-    }
-    
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForTopLabelAt indexPath: IndexPath) -> String? {
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForMessageTopLabelAt indexPath: IndexPath) -> String? {
         let message = messages[indexPath.item]
         return message.sender
     }
@@ -198,9 +186,9 @@ extension ViewController: CKMessagesViewDecorating {
         
         if message.senderId == senderId {
             return "Send"
-        } else {
-            return ""
         }
+        
+        return nil
     }
     
     func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, avatarAt indexPath: IndexPath) -> CKMessagesAvatarImageData? {
