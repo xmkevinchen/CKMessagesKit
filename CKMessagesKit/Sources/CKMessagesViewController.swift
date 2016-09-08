@@ -516,11 +516,18 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
             let bubbleImageData = messagesView.decorator?.messageBubbleImage(at: indexPath, of: messagesView)
             messageCell.messageBubbleImageView.image = bubbleImageData?.image
             messageCell.messageBubbleImageView.highlightedImage = bubbleImageData?.highlightedImage
-            messageCell.topLabel.text = messagesView.decorator?.textForTop(at: indexPath, of: messagesView)
-            messageCell.topLabel.attributedText = messagesView.decorator?.attributedTextForTop(at: indexPath, of: messagesView)
             
-            messageCell.messageTopLabel.text = messagesView.decorator?.textForMessageTop(at: indexPath, of: messagesView)
-            messageCell.messageTopLabel.attributedText = messagesView.decorator?.attributedTextForMessageTop(at: indexPath, of: messagesView)
+            if let attributedText = messagesView.decorator?.attributedTextForTop(at: indexPath, of: messagesView) {
+                messageCell.topLabel.attributedText = attributedText
+            } else if let text = messagesView.decorator?.textForTop(at: indexPath, of: messagesView) {
+                messageCell.topLabel.text = text
+            }
+            
+            if let attributedText = messagesView.decorator?.attributedTextForMessageTop(at: indexPath, of: messagesView) {
+                messageCell.messageTopLabel.attributedText = attributedText
+            } else if let text = messagesView.decorator?.textForMessageTop(at: indexPath, of: messagesView) {
+                messageCell.messageTopLabel.text = text
+            }
             
             let messageTopLabelInset: CGFloat = (bubbleImageData != nil) ? 60: 15
             
@@ -530,9 +537,12 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
                 messageCell.messageTopLabel.textInsets = UIEdgeInsets(top: 0, left: messageTopLabelInset, bottom: 0, right: 0)
             }
             
-            messageCell.bottomLabel.text = messagesView.decorator?.textForBottom(at: indexPath, of: messagesView)
-            messageCell.bottomLabel.attributedText = messagesView.decorator?.attributedTextForBottom(at: indexPath, of: messagesView)
-            
+            if let attributedText = messagesView.decorator?.attributedTextForBottom(at: indexPath, of: messagesView) {
+                messageCell.bottomLabel.attributedText = attributedText
+            } else if let text = messagesView.decorator?.textForBottom(at: indexPath, of: messagesView) {
+                messageCell.bottomLabel.text = text
+            }
+                        
             cellForItem = messageCell
                         
         }
