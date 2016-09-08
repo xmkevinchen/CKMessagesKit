@@ -14,9 +14,12 @@ public enum CKMessageDirection: String {
 //@IBDesignable
 class CKMessageView: UIView {
     
-    @IBOutlet weak var topLabel: UILabel!
+    @IBOutlet weak var topLabel: CKInsetsLabel!
+    @IBOutlet weak var topLabelHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var messageTopLabel: CKInsetsLabel!
-    @IBOutlet weak var bottomLabel: UILabel!
+    @IBOutlet weak var messageTopLabelConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomLabel: CKInsetsLabel!
+    @IBOutlet weak var bottomLabelHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var containerView: UIView!
     
@@ -57,20 +60,23 @@ class CKMessageView: UIView {
         topLabel.textAlignment = .center
         topLabel.textColor = UIColor.lightGray
         topLabel.numberOfLines = 0
+        topLabel.textInsets = UIEdgeInsets(top: 2.5, left: 0, bottom: 2.5, right: 0)
         
         messageTopLabel.text = nil
         messageTopLabel.attributedText = nil
         messageTopLabel.font = UIFont.preferredFont(forTextStyle: .caption2)
-        messageTopLabel.textAlignment = .center
+        messageTopLabel.textAlignment = .left
         messageTopLabel.textColor = UIColor.lightGray
         messageTopLabel.numberOfLines = 0
+        messageTopLabel.textInsets = UIEdgeInsets(top: 2.5, left: 0, bottom: 2.5, right: 0)
         
         bottomLabel.text = nil
         bottomLabel.attributedText = nil
         bottomLabel.font = UIFont.preferredFont(forTextStyle: .caption2)
-        bottomLabel.textAlignment = .center
+        bottomLabel.textAlignment = .left
         bottomLabel.textColor = UIColor.lightGray
         bottomLabel.numberOfLines = 0
+        bottomLabel.textInsets = UIEdgeInsets(top: 2.5, left: 0, bottom: 2.5, right: 0)
         
         backgroundColor = UIColor.clear
         containerView.backgroundColor = UIColor.clear
@@ -138,6 +144,12 @@ class CKMessageView: UIView {
     
     var accessoryView: UIView? = nil {
         
+        willSet {
+            if accessoryView != nil {
+                accessoryView?.removeFromSuperview()
+            }
+        }
+        
         didSet {
             
             if let accessoryView = self.accessoryView {
@@ -145,43 +157,35 @@ class CKMessageView: UIView {
                 accessoryContainerView.addSubview(accessoryView)
                 accessoryView.translatesAutoresizingMaskIntoConstraints = false
                 
-                if #available(iOS 9, *) {
-                    
-                    accessoryView.centerXAnchor.constraint(equalTo: accessoryContainerView.centerXAnchor).isActive = true
-                    accessoryView.centerYAnchor.constraint(equalTo: accessoryContainerView.centerYAnchor).isActive = true
-                    accessoryContainerView.widthAnchor.constraint(equalTo: accessoryView.widthAnchor)
-                    
-                    
-                } else {
-                    
-                    accessoryContainerView.addConstraint(
-                        NSLayoutConstraint(item: accessoryView,
-                                           attribute: .centerX,
-                                           relatedBy: .equal,
-                                           toItem: accessoryContainerView,
-                                           attribute: .centerX,
-                                           multiplier: 1,
-                                           constant: 1))
-                    
-                    accessoryContainerView.addConstraint(
-                        NSLayoutConstraint(item: accessoryView,
-                                           attribute: .centerY,
-                                           relatedBy: .equal,
-                                           toItem: accessoryContainerView,
-                                           attribute: .centerY,
-                                           multiplier: 1,
-                                           constant: 1))
-                    
-                    accessoryContainerView.addConstraint(
-                        NSLayoutConstraint(item: accessoryContainerView,
-                        attribute: .width,
-                        relatedBy: .equal,
-                        toItem: accessoryView,
-                        attribute: .width,
-                        multiplier: 1,
-                        constant: 1))
-                    
-                }
+                
+                
+                accessoryContainerView.addConstraint(
+                    NSLayoutConstraint(item: accessoryView,
+                                       attribute: .centerX,
+                                       relatedBy: .equal,
+                                       toItem: accessoryContainerView,
+                                       attribute: .centerX,
+                                       multiplier: 1,
+                                       constant: 0))
+                
+                accessoryContainerView.addConstraint(
+                    NSLayoutConstraint(item: accessoryView,
+                                       attribute: .centerY,
+                                       relatedBy: .equal,
+                                       toItem: accessoryContainerView,
+                                       attribute: .centerY,
+                                       multiplier: 1,
+                                       constant: 0))
+                
+                accessoryContainerView.addConstraint(
+                    NSLayoutConstraint(item: accessoryContainerView,
+                                       attribute: .width,
+                                       relatedBy: .equal,
+                                       toItem: accessoryView,
+                                       attribute: .width,
+                                       multiplier: 1,
+                                       constant: 0))
+                
                 
                 
                 

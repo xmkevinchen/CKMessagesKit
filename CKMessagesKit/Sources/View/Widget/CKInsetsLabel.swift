@@ -36,7 +36,7 @@ public class CKInsetsLabel: UILabel {
     
     private var _textInsets: UIEdgeInsets = .zero
     
-    @IBInspectable
+//    @IBInspectable
     public var textInsets: UIEdgeInsets {
         get {
             return _textInsets
@@ -55,11 +55,24 @@ public class CKInsetsLabel: UILabel {
     
     
     override public func drawText(in rect: CGRect) {
-        super.drawText(in:
-            CGRect(x: rect.minX + _textInsets.left,
-                   y: rect.minY + _textInsets.top,
-                   width: rect.width - _textInsets.right,
-                   height: rect.height - _textInsets.bottom))
+        super.drawText(in:UIEdgeInsetsInsetRect(rect, _textInsets))
+    }
+    
+    public override var intrinsicContentSize: CGSize {
+        
+        var size = super.intrinsicContentSize
+        if size == .zero && text != nil {
+            
+            size = NSString(string: text!).boundingRect(with: bounds.size,
+                                                        options: [.usesLineFragmentOrigin, .usesFontLeading],
+                                                        attributes: [NSFontAttributeName: font],
+                                                        context: nil).integral.size
+            
+        }
+        size.width += (_textInsets.left + _textInsets.right)
+        size.height += (_textInsets.top + _textInsets.bottom)
+        
+        return size
     }
     
 }

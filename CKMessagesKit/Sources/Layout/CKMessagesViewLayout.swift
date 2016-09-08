@@ -248,23 +248,28 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
         
         
         if let decorator = messagesView.decorator {
-            
-            if let attributedText = decorator.attributedTextForTop(at: indexPath, of: messagesView) {
+            if let height = decorator.messagesView(messagesView, layout: self, heightForTopLabelAt: indexPath) {
+                attributes.topLabelHeight = height
+            } else if let attributedText = decorator.messagesView(messagesView, layout: self, attributedTextForTopLabelAt: indexPath) {
                 attributes.topLabelHeight = size(of: attributedText).height
-            } else if let text = decorator.textForTop(at: indexPath, of:messagesView) {
+            } else if let text = decorator.messagesView(messagesView, layout: self, textForTopLabelAt: indexPath) {
                 attributes.topLabelHeight = size(of: text, attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption1)]).height
             }
             
-            if let attributedText = decorator.attributedTextForMessageTop(at: indexPath, of: messagesView) {
+            if let height = decorator.messagesView(messagesView, layout: self, heightForMessageTopLabelAt: indexPath) {
+                attributes.messageTopLabelHeight = height
+            } else if let attributedText = decorator.messagesView(messagesView, layout: self, attributedTextForMessageTopLabelAt: indexPath) {
                 attributes.messageTopLabelHeight = size(of: attributedText).height
-            } else if let text = decorator.textForMessageTop(at: indexPath, of: messagesView) {
+            } else if let text = decorator.messagesView(messagesView, layout: self, textForMessageTopLabelAt: indexPath) {
                 attributes.messageTopLabelHeight = size(of: text, attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption1)]).height
             }
             
-            if let attributedText = decorator.attributedTextForBottom(at: indexPath, of: messagesView) {
-                attributes.topLabelHeight = size(of: attributedText).height
-            } else if let text = decorator.textForBottom(at: indexPath, of: messagesView) {
-                attributes.topLabelHeight = size(of: text, attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption1)]).height
+            if let height = decorator.messagesView(messagesView, layout: self, heightForBottomLabelAt: indexPath) {
+                attributes.bottomLabelHeight = height
+            } else if let attributedText = decorator.messagesView(messagesView, layout: self, attributedTextForBottomLabelAt: indexPath) {
+                attributes.bottomLabelHeight = size(of: attributedText).height
+            } else if let text = decorator.messagesView(messagesView, layout: self, textForBottomLabelAt: indexPath) {
+                attributes.bottomLabelHeight = size(of: text, attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption1)]).height
             }
             
         }

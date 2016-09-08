@@ -47,14 +47,14 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
         let hInsets = messagenContentInsets.left + messagenContentInsets.right
         let vInsets = messagenContentInsets.top + messagenContentInsets.bottom
         
-        var contentSize = layout.messagesView.decorator?.contentSize(at: indexPath, of: layout.messagesView)
+        var contentSize = layout.messagesView.decorator?.messagesView(layout.messagesView, layout: layout, contentSizeAt: indexPath)        
         
         var width: CGFloat = 0
         var height: CGFloat = 0
         
         let maximumWidth = layout.itemWidth - avatarSize.width - layout.messageContainerMargin - hInsets
         
-        if contentSize != nil && contentSize! != .zero {
+        if contentSize != nil {
             
             if contentSize!.width > maximumWidth {
                 contentSize!.width = maximumWidth

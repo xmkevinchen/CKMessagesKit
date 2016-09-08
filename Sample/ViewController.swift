@@ -20,10 +20,11 @@ extension String {
     
 }
 
-class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessagesViewDecorating {
+class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
     
     var messages = [CKMessageData]()
     var avatarFactory = CKMessagesAvatarImageFactory()
+    var formatter = DateFormatter()
         
     override func viewDidLoad() {
         
@@ -49,6 +50,12 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
             insertNewMessage()
         }
         
+        messagesView.messagesViewLayout.minimumLineSpacing = 20
+        
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .medium
+        formatter.doesRelativeDateFormatting = true
+        
         messagesView.reloadData()
         
     }
@@ -69,15 +76,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
     }
     
     
-    func avatarImage(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CKMessagesAvatarImageData? {
-        
-        let message = messages[indexPath.item]
-        
-        return avatarFactory.avatar(initials: message.sender.initials,
-                                    backgroundColor: UIColor.darkGray,
-                                    textColor: UIColor.white,
-                                    font: UIFont.preferredFont(forTextStyle: .headline))
-    }
+    
     
     func showTypingIndicator(_ sender: AnyObject) {
         isShowingIndicator = true
@@ -86,6 +85,13 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
             self.isShowingIndicator = false
             self.messagesView.reloadData()
         }
+    }
+    
+    override func didClickSendButton(_ button: UIButton, messageText: String) {
+        
+        let message = CKMessage(senderId: arc4random() % 2 == 0 ? senderId: "incoming", sender: sender, text: messageText)
+        messages.append(message)
+        finishSendingMessage()
     }
     
     
@@ -98,49 +104,10 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
         return "Kevin Chen"
     }
     
-    func contentSize(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CGSize {
-        
-        let message = messages[indexPath.item]
-        if message is CKMessage {
-            return .zero
-        }
-        
-        return CGSize(width:Int(100 + arc4random_uniform(50)), height:Int(50 + arc4random_uniform(100)))
-        
-        
-//        let value = indexPath.item % 4
-//        
-//        if value == 2 {
-//            return CGSize(width:240, height:50)
-//        } else if value == 3 {
-//            return CGSize(width:200, height:240)
-//        } else {
-//            return .zero
-//        }
-        
-    }
-    
-    override func didClickSendButton(_ button: UIButton, messageText: String) {
-        
-        let message = CKMessage(senderId: arc4random() % 2 == 0 ? senderId: "incoming", sender: sender, text: messageText)
-//        var message: CKMessageData
-//        let rand = arc4random_uniform(10)
-//        if rand % 2 == 0 {
-//            message = GridMessage(senderId: senderId, sender: sender, text: String(rand))
-//        } else {
-//            message = ListMessage(senderId: "incoming", sender: "Incoming", text: String(rand))
-//        }
-        messages.append(message)
-        finishSendingMessage()
-    }
     
     
     
-    func viewController(_ viewController: CKMessagesViewController, didClickAccessoryButton button: UIButton) {
         
-    }
-    
-    
     private func generateMessage(at index: Int) -> CKMessageData? {
         
         var message: CKMessageData?
@@ -163,12 +130,6 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
             break
         }
         
-//        if index % 2 == 0 {
-//            return CKMessage(senderId: senderId, sender: sender, text: "Your Apple ID must be associated with a paid Apple Developer Program or Apple Developer Enterprise Program to access certain software downloads.")
-//        } else {
-//            return CKMessage(senderId: "incoming", sender: "Incoming", text: "Get the latest beta releases of Xcode, iOS, macOS, watchOS, tvOS, and more.")
-//        }
-        
         return message
     }
     
@@ -179,6 +140,78 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging, CKMessa
         }
         
     }
+    
+}
+
+extension ViewController: CKMessagesViewDecorating {
+    
+    func contentSize(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CGSize {
+        
+        let message = messages[indexPath.item]
+        if message is CKMessage {
+            return .zero
+        }
+        
+        return CGSize(width:Int(100 + arc4random_uniform(50)), height:Int(50 + arc4random_uniform(100)))
+        
+    }
+    
+    
+    func textForTop(at indexPath: IndexPath, of messagesView: CKMessagesView) -> String? {
+        let message = messages[indexPath.item]
+        if message.senderId == senderId {
+            return nil
+        } else {
+            return formatter.string(from: message.timestamp)
+        }
+    }
+    
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForTopLabelAt indexPath: IndexPath) -> String? {
+        let message = messages[indexPath.item]
+        return message.sender
+    }
+    
+    
+    
+    //    func attributedTextForMessageTop(at indexPath: IndexPath, of messagesView: CKMessagesView) -> NSAttributedString? {
+    //        let paragraphStyle = NSMutableParagraphStyle()
+    //
+    //        let message = messages[indexPath.item]
+    //        if message.senderId == senderId {
+    //            paragraphStyle.alignment = .right
+    //            paragraphStyle.tailIndent = -15
+    //        } else {
+    //            paragraphStyle.alignment = .left
+    //            paragraphStyle.firstLineHeadIndent = 45
+    //            paragraphStyle.headIndent = 45
+    //        }
+    //
+    //        return NSAttributedString(string: message.sender,
+    //                                  attributes: [
+    //                                    NSParagraphStyleAttributeName: paragraphStyle
+    //            ])
+    //    }
+    
+    
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForBottomLabelAt indexPath: IndexPath) -> String? {
+        let message = messages[indexPath.item]
+        
+        if message.senderId == senderId {
+            return "Send"
+        } else {
+            return ""
+        }
+    }
+    
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, avatarAt indexPath: IndexPath) -> CKMessagesAvatarImageData? {
+        let message = messages[indexPath.item]
+        
+        return avatarFactory.avatar(initials: message.sender.initials,
+                                    backgroundColor: UIColor.darkGray,
+                                    textColor: UIColor.white,
+                                    font: UIFont.preferredFont(forTextStyle: .headline))
+    }
+    
     
 }
 

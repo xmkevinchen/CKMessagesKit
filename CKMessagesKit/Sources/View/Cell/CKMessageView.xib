@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11198.2" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -12,12 +12,18 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="15" text="Top Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NuR-dj-pdr">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="15" text="Top Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NuR-dj-pdr" customClass="CKInsetsLabel" customModule="CKMessagesKit" customModuleProvider="target">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="i5T-aW-wQM"/>
+                    </constraints>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="15" text="Message Top Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6vn-5D-F8h" customClass="CKInsetsLabel" customModule="CKMessagesKit" customModuleProvider="target">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="YlQ-vg-ZAl"/>
+                    </constraints>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -43,8 +49,8 @@
                         </view>
                         <view contentMode="scaleToFill" placeholderIntrinsicWidth="250" placeholderIntrinsicHeight="105" translatesAutoresizingMaskIntoConstraints="NO" id="irj-VC-Svg">
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AWG-V6-ir5"/>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8a0-cB-LKA" customClass="CKMessagePresentingView" customModule="CKMessagesKit" customModuleProvider="target">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="250" placeholderIntrinsicHeight="105" translatesAutoresizingMaskIntoConstraints="NO" id="AWG-V6-ir5"/>
+                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="244" placeholderIntrinsicHeight="105" translatesAutoresizingMaskIntoConstraints="NO" id="8a0-cB-LKA" customClass="CKMessagePresentingView" customModule="CKMessagesKit" customModuleProvider="target">
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                             </subviews>
@@ -81,7 +87,10 @@
                         <constraint firstItem="anD-40-m0y" firstAttribute="leading" secondItem="irj-VC-Svg" secondAttribute="trailing" id="wFa-xf-yse"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="15" text="Bottom Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lM5-XE-x1Y">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="15" text="Bottom Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lM5-XE-x1Y" customClass="CKInsetsLabel" customModule="CKMessagesKit" customModuleProvider="target">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="GHa-mQ-ztB"/>
+                    </constraints>
                     <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -112,6 +121,7 @@
                 <outlet property="avatarImageView" destination="7f3-jc-Pmm" id="Ch2-O8-Qs0"/>
                 <outlet property="avatarWidthConstraint" destination="Gxo-9s-Mid" id="fAj-1a-CtQ"/>
                 <outlet property="bottomLabel" destination="lM5-XE-x1Y" id="nbS-5f-EdV"/>
+                <outlet property="bottomLabelHeightConstraint" destination="GHa-mQ-ztB" id="bti-Z8-9bN"/>
                 <outlet property="containerView" destination="1ZP-U4-d5W" id="jD8-js-4WM"/>
                 <outlet property="contentView" destination="8a0-cB-LKA" id="AVF-jV-1Fi"/>
                 <outlet property="contentViewBottomConstraint" destination="wey-lk-vbF" id="KYY-X9-KbX"/>
@@ -121,9 +131,11 @@
                 <outlet property="messageBubbleImageView" destination="AWG-V6-ir5" id="74q-vY-wyX"/>
                 <outlet property="messageContainerView" destination="irj-VC-Svg" id="4a6-fu-JlN"/>
                 <outlet property="messageTopLabel" destination="6vn-5D-F8h" id="8Mx-et-JrO"/>
+                <outlet property="messageTopLabelConstraint" destination="YlQ-vg-ZAl" id="vz1-pN-xni"/>
                 <outlet property="topLabel" destination="NuR-dj-pdr" id="nsP-Hm-xQB"/>
+                <outlet property="topLabelHeightConstraint" destination="i5T-aW-wQM" id="6Tb-sJ-9yC"/>
             </connections>
-            <point key="canvasLocation" x="-323" y="-323"/>
+            <point key="canvasLocation" x="-430" y="-578"/>
         </view>
     </objects>
 </document>

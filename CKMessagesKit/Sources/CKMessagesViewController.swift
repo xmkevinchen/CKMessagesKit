@@ -508,39 +508,58 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
             var avatarImageData: CKMessagesAvatarImageData?
             
             if needsAvatar {
-                avatarImageData = messagesView.decorator?.avatarImage(at: indexPath, of: messagesView)
+                avatarImageData = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, avatarAt: indexPath)
                 messageCell.avatarImageView.image = avatarImageData?.avatar
                 messageCell.avatarImageView.highlightedImage = avatarImageData?.highlighted                
             }
             
-            let bubbleImageData = messagesView.decorator?.messageBubbleImage(at: indexPath, of: messagesView)
+            let bubbleImageData = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, messageBubbleAt: indexPath)
             messageCell.messageBubbleImageView.image = bubbleImageData?.image
             messageCell.messageBubbleImageView.highlightedImage = bubbleImageData?.highlightedImage
             
-            if let attributedText = messagesView.decorator?.attributedTextForTop(at: indexPath, of: messagesView) {
+            if let attributedText = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, attributedTextForTopLabelAt: indexPath) {
                 messageCell.topLabel.attributedText = attributedText
-            } else if let text = messagesView.decorator?.textForTop(at: indexPath, of: messagesView) {
+            } else if let text = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, textForTopLabelAt: indexPath) {
                 messageCell.topLabel.text = text
             }
             
-            if let attributedText = messagesView.decorator?.attributedTextForMessageTop(at: indexPath, of: messagesView) {
+            if let attributedText = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, attributedTextForMessageTopLabelAt: indexPath) {
                 messageCell.messageTopLabel.attributedText = attributedText
-            } else if let text = messagesView.decorator?.textForMessageTop(at: indexPath, of: messagesView) {
+            } else if let text = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, textForMessageTopLabelAt: indexPath) {
+                
+                var messageTopLabelInset: CGFloat = 15
+                let textInsets = messageCell.messageTopLabel.textInsets
+                if isOutgoing {
+                    if messagesView.messagesViewLayout.outgoingAvatarSize != .zero {
+                        messageTopLabelInset += messagesView.messagesViewLayout.outgoingAvatarSize.width
+                    }
+                    messageCell.messageTopLabel.textAlignment = .right
+                    messageCell.messageTopLabel.textInsets = UIEdgeInsets(top: textInsets.top, left: 0, bottom: textInsets.bottom, right: messageTopLabelInset)
+                    
+                } else {
+                    
+                    if messagesView.messagesViewLayout.incomingAvatarSize != .zero {
+                        messageTopLabelInset += messagesView.messagesViewLayout.incomingAvatarSize.width
+                    }
+                    
+                    messageCell.messageTopLabel.textAlignment = .left
+                    messageCell.messageTopLabel.textInsets = UIEdgeInsets(top: textInsets.top, left: messageTopLabelInset, bottom: textInsets.bottom, right: 0)
+                }
                 messageCell.messageTopLabel.text = text
             }
             
-            let messageTopLabelInset: CGFloat = (bubbleImageData != nil) ? 60: 15
             
-            if isOutgoing {
-                messageCell.messageTopLabel.textInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: messageTopLabelInset)
-            } else {
-                messageCell.messageTopLabel.textInsets = UIEdgeInsets(top: 0, left: messageTopLabelInset, bottom: 0, right: 0)
-            }
             
-            if let attributedText = messagesView.decorator?.attributedTextForBottom(at: indexPath, of: messagesView) {
+            if let attributedText = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, attributedTextForBottomLabelAt: indexPath) {
                 messageCell.bottomLabel.attributedText = attributedText
-            } else if let text = messagesView.decorator?.textForBottom(at: indexPath, of: messagesView) {
+            } else if let text = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, textForBottomLabelAt: indexPath) {
                 messageCell.bottomLabel.text = text
+                
+                if  isOutgoing {
+                    messageCell.bottomLabel.textAlignment = .right
+                } else {
+                    messageCell.bottomLabel.textAlignment = .left
+                }
             }
                         
             cellForItem = messageCell
