@@ -28,19 +28,13 @@ public class CKMessagesInputToolbar: UIToolbar {
         }
     }
     public var maximumHeight = CGFloat.greatestFiniteMagnitude
-    public var enableSendButtonAutomatically: Bool = true {
-        didSet {
-            updateSendButtonEnabledState()
-        }
-    }
-    public var sendButtonPosition: SendButtonPosition = .right {
-        
-        didSet {
-            
-        }
-    }
+    
             
     public private(set) var contentView: CKMessagesToolbarContentView!
+    
+    public var textView: CKMessagesComposerTextView {
+        return contentView.textView
+    }
     
     override public func awakeFromNib() {
         super.awakeFromNib()
@@ -50,71 +44,56 @@ public class CKMessagesInputToolbar: UIToolbar {
         addSubview(contentView)
         pinSubview(contentView)
         setNeedsUpdateConstraints()
-        
-        contentView.leftBarButtonItemDidUpdateHandler = { button in
-            
-            if let button = button {
-                button.addTarget(self, action: #selector(self.leftBarButtonClicked(_:)), for: .touchUpInside)
-            }
+    
+    }
+    
+}
+
+// MARK:- BarItems
+
+public extension CKMessagesInputToolbar {
+    
+    public var leftBarItem: CKMessagesInputToolbarItem? {
+        get {
+            return contentView.leftBarItem
         }
         
-        contentView.rightBarButtonItemDidUpdateHandler = { button in
-            
-            if let button = button {
-                button.addTarget(self, action: #selector(self.rightBarButtonClicked(_:)), for: .touchUpInside)
-            }
+        set {
+            contentView.leftBarItem = newValue
+        }
+    }
+    
+    public var leftBarItems: [CKMessagesInputToolbarItem]? {
+        get {
+            return contentView.leftBarItems
         }
         
-        let factory = CKMessagesToolbarButtonFactory()
-        
-        contentView.leftBarButtonItem = factory.accessoryButton
-        contentView.rightBarButtonItem = factory.sendButton
-        
-        updateSendButtonEnabledState()
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(textViewDidChange(_:)),
-                                               name: Notification.Name.UITextViewTextDidChange,
-                                               object: contentView.textView)
-                
+        set {
+            contentView.leftBarItems = newValue
+        }
     }
     
-    
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
+    public var rightBarItem: CKMessagesInputToolbarItem? {
         
-    }
-        
-    
-    @objc private func leftBarButtonClicked(_ sender: UIButton) {
-        (delegate as? CKMessagesInputToolbarDelegate)?.toolbar(self, didClickLeftBarButton: sender)
-    }
-    
-    @objc private func rightBarButtonClicked(_ sender: UIButton) {
-        (delegate as? CKMessagesInputToolbarDelegate)?.toolbar(self, didClickRightBarButton: sender)
-    }
-    
-    @objc private func textViewDidChange(_ notification: Notification) {
-        updateSendButtonEnabledState()
-    }
-    
-    
-    private func updateSendButtonEnabledState() {
-        guard enableSendButtonAutomatically else {
-            return
+        get {
+            return contentView.rightBarItem
         }
         
-        let hasText = contentView.textView.hasText
-        switch sendButtonPosition {
-        case .left:
-            contentView.leftBarButtonItem?.isEnabled = hasText
-        case .right:
-            contentView.rightBarButtonItem?.isEnabled = hasText
+        set {
+            contentView.rightBarItem = newValue
         }
-        
     }
     
+    public var rightBarItems: [CKMessagesInputToolbarItem]? {
+        
+        get {
+            return contentView.rightBarItems
+        }
+        
+        set {
+            contentView.rightBarItems = newValue
+        }
+    }
 }
 
 
@@ -130,11 +109,11 @@ public final class CKMessagesToolbarButtonFactory {
         self.init(font: UIFont.preferredFont(forTextStyle: .headline))
     }
     
-    public var accessoryButton: UIButton {
+    public var accessoryButton: CKMessagesInputToolbarItem {
         let accessory = UIImage.accessory
         let normal = accessory.with(mask: UIColor.lightGray)
         let highlighted = accessory.with(mask: UIColor.darkGray)
-        let accessoryButton = UIButton(frame: CGRect(x: 0, y: 0, width: accessory.size.width, height: 32.0))
+        let accessoryButton = CKMessagesInputToolbarItem(frame: CGRect(x: 0, y: 0, width: accessory.size.width, height: 32.0))
         accessoryButton.setImage(normal, for: .normal)
         accessoryButton.setImage(highlighted, for: .highlighted)
         
@@ -147,11 +126,11 @@ public final class CKMessagesToolbarButtonFactory {
         return accessoryButton
     }
     
-    public var sendButton: UIButton {
+    public var sendButton: CKMessagesInputToolbarItem {
         
         let title = "Send"
         
-        let button = UIButton(frame: .zero)
+        let button = CKMessagesInputToolbarItem(frame: .zero)
         button.setTitle(title, for: .normal)
         button.setTitleColor(UIColor.messageBubbleBlue, for: .normal)
         button.setTitleColor(UIColor.messageBubbleBlue.darken(with: 0.1), for: .highlighted)

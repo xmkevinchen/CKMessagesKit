@@ -53,6 +53,10 @@ open class CKMessagesViewController: UIViewController {
         }
     }
     
+    public lazy var sendButton: CKMessagesInputToolbarItem = {
+        return CKMessagesToolbarButtonFactory().sendButton
+    }()
+    
     // MARK: - Private Properties
     
     fileprivate var toolbarHeight: CGFloat = 44.0
@@ -146,15 +150,25 @@ open class CKMessagesViewController: UIViewController {
         
         toolbarHeight = inputToolbar.preferredDefaultHeight
         
-        inputToolbar.delegate = self
+        inputToolbar.rightBarItem = sendButton        
+        inputToolbar.leftBarItems = [CKMessagesToolbarButtonFactory().accessoryButton]
+        sendButton.addTarget(self, action: #selector(inputToolbarSend(_:)), for: .touchUpInside)
+        sendButton.isEnabled = inputToolbar.contentView.textView.text.lengthOfBytes(using: .utf8) > 0
+        
         inputToolbar.contentView.textView.placeHolder = "New Message"
         inputToolbar.contentView.textView.delegate = self
         inputToolbar.removeFromSuperview()
         
-        
         additionalContentInsets = .zero
         updateMessagesViewInsets()
         
+    }
+    
+    func inputToolbarSend(_ sender: CKMessagesInputToolbarItem) {
+        didClickSendButton(sender, messageText: currentlyComposedMessageText())
+    }
+    
+    open func didClickSendButton(_ button: UIButton, messageText: String) {
         
     }
     
@@ -649,49 +663,6 @@ extension CKMessagesViewController: UICollectionViewDataSourcePrefetching {
     }
 }
 
-// MARK: - Input Toolbar Delegate
-extension CKMessagesViewController: CKMessagesInputToolbarDelegate {
-    
-    public func toolbar(_ toolbar: CKMessagesInputToolbar, didClickLeftBarButton sender: UIButton) {
-        
-        switch toolbar.sendButtonPosition {
-        case .left:
-            didClickSendButton(sender, messageText: currentlyComposedMessageText())
-        case .right:
-            didClickAccessoryButton(sender)
-        }
-        
-    }
-    
-    public func toolbar(_ toolbar: CKMessagesInputToolbar, didClickRightBarButton sender: UIButton) {
-        
-        switch toolbar.sendButtonPosition {
-        case .left:
-            didClickAccessoryButton(sender)
-        case .right:
-            didClickSendButton(sender, messageText: currentlyComposedMessageText())
-            
-        }
-    }
-    
-    fileprivate func currentlyComposedMessageText() -> String {
-        
-        let textView = inputToolbar.contentView.textView!
-        textView.inputDelegate?.selectionWillChange(textView)
-        textView.inputDelegate?.selectionDidChange(textView)
-        
-        return textView.text.trimmingCharacters(in: .whitespaces)
-    }
-    
-    open func didClickSendButton(_ button: UIButton, messageText: String) {
-        
-    }
-    
-    open func didClickAccessoryButton(_ button: UIButton) {
-        
-    }
-}
-
 // MARK: - Receive & Send Message
 extension CKMessagesViewController {
     
@@ -756,7 +727,18 @@ extension CKMessagesViewController: UITextViewDelegate {
             return
         }
         
+        sendButton.isEnabled = textView.text.lengthOfBytes(using: .utf8) > 0
         
+        
+    }
+    
+    fileprivate func currentlyComposedMessageText() -> String {
+        
+        let textView = inputToolbar.contentView.textView!
+        textView.inputDelegate?.selectionWillChange(textView)
+        textView.inputDelegate?.selectionDidChange(textView)
+        
+        return textView.text.trimmingCharacters(in: .whitespaces)
     }
 }
 

@@ -13,9 +13,13 @@ public class CKMessagesToolbarContentView: UIView {
 
     @IBOutlet weak var leftContainerView: UIView!
     @IBOutlet weak var rightContainerView: UIView!
-    @IBOutlet weak var textView: CKMessagesComposerTextView!
+    @IBOutlet weak var composerContainerView: UIView!
+    
+    @IBOutlet var textView: CKMessagesComposerTextView!
 
-    let defaultHorizontalSpacing: CGFloat = 8.0
+    let DefaultHorizontalSpacing: CGFloat = 8.0
+    
+    private let BarItemHeight: CGFloat = 32.0
     
     @IBOutlet weak var leftHorizontalSpacingConstraint: NSLayoutConstraint!
     @IBOutlet weak var rightHorizontalSpacingConstraint: NSLayoutConstraint!
@@ -26,18 +30,127 @@ public class CKMessagesToolbarContentView: UIView {
     var leftBarButtonItemDidUpdateHandler: ((UIButton?) -> Void)?
     var rightBarButtonItemDidUpdateHandler: ((UIButton?) -> Void)?
     
+    public weak var leftBarItem: CKMessagesInputToolbarItem? = nil {
+        didSet {
+            if leftBarItem == nil {
+                layout(barItems: nil, in: leftContainerView)
+            } else {
+                layout(barItems: [leftBarItem!], in: leftContainerView)
+            }
+        }
+    }
+    
+    
+    public var leftBarItems: [CKMessagesInputToolbarItem]? = nil {
+        didSet {
+            layout(barItems: leftBarItems, in: leftContainerView)
+        }
+    }
+    
+    public weak var rightBarItem: CKMessagesInputToolbarItem? = nil {
+        didSet {
+            if rightBarItem == nil {
+                layout(barItems: nil, in: rightContainerView)
+            } else {
+                layout(barItems: [rightBarItem!], in: rightContainerView)
+            }
+        }
+
+    }
+    
+    
+    public var rightBarItems: [CKMessagesInputToolbarItem]? = nil {
+        didSet {
+            layout(barItems: rightBarItems, in: rightContainerView)
+        }
+    }
+
+    // MARK: - Bar Items
+    
+    private func layout(barItems: [CKMessagesInputToolbarItem]?, in container: UIView) {
+        
+        container.subviews.forEach { $0.removeFromSuperview() }
+        
+        if let barItems = barItems {
+            
+            var width: CGFloat = 0.0
+            var previous: Any?
+            
+            for item in barItems {
+                
+                let size = item.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: BarItemHeight))
+                width += size.width
+                
+                container.addSubview(item)
+                item.translatesAutoresizingMaskIntoConstraints = false
+                
+                
+                item.addConstraint(NSLayoutConstraint(item: item, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: size.width))
+                item.addConstraint(NSLayoutConstraint(item: item, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: BarItemHeight))
+                container.addConstraint(NSLayoutConstraint(item: item, attribute: .top, relatedBy: .equal, toItem: container, attribute: .top, multiplier: 1.0, constant: 0))
+                container.addConstraint(NSLayoutConstraint(item: item, attribute: .bottom, relatedBy: .equal, toItem: container, attribute: .bottom, multiplier: 1.0, constant: 0))
+                
+                if let previous = previous {
+                    container.addConstraint(NSLayoutConstraint(item: item, attribute: .leading, relatedBy: .equal, toItem: previous, attribute: .trailing, multiplier: 1.0, constant: DefaultHorizontalSpacing))
+                    width += DefaultHorizontalSpacing
+                    
+                } else {
+                    container.addConstraint(NSLayoutConstraint(item: item, attribute: .leading, relatedBy: .equal, toItem: container, attribute: .leading, multiplier: 1.0, constant: 0))
+                }
+                
+                                                
+                if barItems.index(of: item) == barItems.endIndex - 1 {
+                    container.addConstraint(NSLayoutConstraint(item: item, attribute: .trailing, relatedBy: .equal, toItem: container, attribute: .trailing, multiplier: 1.0, constant: 0))
+                } else {
+                    width += DefaultHorizontalSpacing
+                }
+                
+                previous = item
+            }
+            
+            
+            if container === leftContainerView {
+                leftHorizontalSpacingConstraint.constant = DefaultHorizontalSpacing
+                leftContainerWidthConstraint.constant = width
+            } else if container === rightContainerView {
+                rightHorizontalSpacingConstraint.constant = DefaultHorizontalSpacing
+                rightContainerWidthConstraint.constant = width
+            }
+            
+        } else {
+            
+            
+            
+            if container === leftContainerView {
+                leftHorizontalSpacingConstraint.constant = 0
+                leftContainerWidthConstraint.constant = 0
+            } else if container === rightContainerView {
+                rightHorizontalSpacingConstraint.constant = 0
+                rightContainerWidthConstraint.constant = 0
+                
+            }
+        }
+        
+    }
+    
     override public func awakeFromNib() {
         super.awakeFromNib()
         translatesAutoresizingMaskIntoConstraints = false
         
-        leftHorizontalSpacingConstraint.constant = defaultHorizontalSpacing
-        rightHorizontalSpacingConstraint.constant = defaultHorizontalSpacing
+        
+        leftBarItem = nil
+        rightBarItem = nil
         
         backgroundColor = UIColor.clear
     }
     
+    deinit {
+        textView = nil
+    }
+    
     override public func setNeedsDisplay() {
         super.setNeedsDisplay()
+        
         if textView != nil {
             textView.setNeedsDisplay()
         }
@@ -47,7 +160,6 @@ public class CKMessagesToolbarContentView: UIView {
     
     override public var backgroundColor: UIColor? {
         didSet {
-            
             if leftContainerView != nil {
                 leftContainerView.backgroundColor = backgroundColor
             }
@@ -55,28 +167,10 @@ public class CKMessagesToolbarContentView: UIView {
             if rightContainerView != nil {
                 rightContainerView.backgroundColor = backgroundColor
             }
-        }
-    }
-    
-    public var leftBarItemWidth: CGFloat {
-        get {
-            return leftContainerWidthConstraint.constant
-        }
-        
-        set {
-            leftContainerWidthConstraint.constant = newValue
-            setNeedsUpdateConstraints()
-        }
-    }
-    
-    public var rightBarItemWidth: CGFloat {
-        get {
-            return rightContainerWidthConstraint.constant
-        }
-        
-        set {
-            rightContainerWidthConstraint.constant = newValue
-            setNeedsUpdateConstraints()
+            
+            if composerContainerView != nil {
+                composerContainerView.backgroundColor = backgroundColor
+            }
         }
     }
     
@@ -88,81 +182,6 @@ public class CKMessagesToolbarContentView: UIView {
         return rightContainerWidthConstraint.constant
     }
     
-    
-    public var leftBarButtonItem: UIButton? {
-        
-        willSet {
-            if leftBarButtonItem != nil {
-                leftBarButtonItem?.removeFromSuperview()
-            }
-        }
-        
-        didSet {
-            
-            defer {
-                leftBarButtonItemDidUpdateHandler?(leftBarButtonItem)
-            }
-            
-            guard let item = leftBarButtonItem else {
-                leftHorizontalSpacingConstraint.constant = 0.0
-                leftContainerView.isHidden = true
-                leftBarItemWidth = 0.0
-                return
-            }
-            
-            if item.frame == .zero {
-                item.frame = leftContainerView.bounds
-            }
-            
-            leftContainerView.isHidden = false
-            leftHorizontalSpacingConstraint.constant = defaultHorizontalSpacing
-            leftBarItemWidth = item.frame.width
-            
-            item.translatesAutoresizingMaskIntoConstraints = false
-            leftContainerView.addSubview(item)
-            leftContainerView.pinSubview(item)
-            setNeedsUpdateConstraints()
-            
-            
-        }
-    }
-    
-    public var rightBarButtonItem: UIButton? {
-        
-        willSet {
-            if rightBarButtonItem != nil {
-                rightBarButtonItem?.removeFromSuperview()
-            }
-        }
-        
-        didSet {
-            
-            defer {
-                rightBarButtonItemDidUpdateHandler?(rightBarButtonItem)
-            }
-            
-            guard let item = rightBarButtonItem else {
-                rightHorizontalSpacingConstraint.constant = 0.0
-                rightContainerView.isHidden = true
-                rightBarItemWidth = 0.0
-                return
-            }
-            
-            if item.frame == .zero {
-                item.frame = rightContainerView.bounds
-            }
-            
-            rightContainerView.isHidden = false
-            rightHorizontalSpacingConstraint.constant = defaultHorizontalSpacing
-            rightBarItemWidth = item.frame.width
-            
-            item.translatesAutoresizingMaskIntoConstraints = false
-            rightContainerView.addSubview(item)
-            rightContainerView.pinSubview(item)
-            setNeedsUpdateConstraints()
-        }
-        
-    }
     
 }
 

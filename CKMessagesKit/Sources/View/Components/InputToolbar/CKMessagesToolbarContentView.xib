@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11198.2" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -16,19 +16,29 @@
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="Z4c-EG-3x5"/>
-                        <constraint firstAttribute="width" constant="34" id="rHu-U1-TpN"/>
+                        <constraint firstAttribute="width" priority="250" constant="34" id="rHu-U1-TpN"/>
                     </constraints>
                 </view>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="afO-ue-cnW" customClass="CKMessagesComposerTextView" customModule="CKMessagesKit" customModuleProvider="target">
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h2g-bs-jN6">
+                    <subviews>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="afO-ue-cnW" customClass="CKMessagesComposerTextView" customModule="CKMessagesKit" customModuleProvider="target">
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        </textView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="32" id="H3a-Gk-Fuo"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="Iey-mZ-UEF"/>
-                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="150" id="VSA-0g-rBi"/>
+                        <constraint firstAttribute="trailing" secondItem="afO-ue-cnW" secondAttribute="trailing" id="0mg-0z-ZJc"/>
+                        <constraint firstAttribute="trailing" secondItem="afO-ue-cnW" secondAttribute="trailing" id="6pQ-Fb-mMs"/>
+                        <constraint firstAttribute="bottom" secondItem="afO-ue-cnW" secondAttribute="bottom" id="JOk-BF-4xf"/>
+                        <constraint firstAttribute="bottom" secondItem="afO-ue-cnW" secondAttribute="bottom" id="RlW-1x-Mp7"/>
+                        <constraint firstItem="afO-ue-cnW" firstAttribute="leading" secondItem="h2g-bs-jN6" secondAttribute="leading" id="Yjb-UX-g2t"/>
+                        <constraint firstItem="afO-ue-cnW" firstAttribute="leading" secondItem="h2g-bs-jN6" secondAttribute="leading" id="acH-e2-yDC"/>
+                        <constraint firstItem="afO-ue-cnW" firstAttribute="top" secondItem="h2g-bs-jN6" secondAttribute="top" id="sbh-zv-dSO"/>
+                        <constraint firstItem="afO-ue-cnW" firstAttribute="top" secondItem="h2g-bs-jN6" secondAttribute="top" id="yjI-Vv-msa"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                </textView>
+                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qC1-de-qcP">
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -39,24 +49,25 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="qC1-de-qcP" firstAttribute="leading" secondItem="afO-ue-cnW" secondAttribute="trailing" constant="8" id="5Gw-Se-RUj"/>
-                <constraint firstItem="afO-ue-cnW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="6" id="Arq-BB-qx0"/>
+                <constraint firstItem="h2g-bs-jN6" firstAttribute="leading" secondItem="brC-Ky-39d" secondAttribute="trailing" constant="8" id="1oU-Oq-tcC"/>
+                <constraint firstItem="h2g-bs-jN6" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="6" id="4xU-He-4qo"/>
+                <constraint firstAttribute="bottom" secondItem="h2g-bs-jN6" secondAttribute="bottom" constant="6" id="WuN-E1-cJi"/>
                 <constraint firstAttribute="trailing" secondItem="qC1-de-qcP" secondAttribute="trailing" constant="8" id="cKh-06-O5J"/>
-                <constraint firstItem="afO-ue-cnW" firstAttribute="leading" secondItem="brC-Ky-39d" secondAttribute="trailing" constant="8" id="cXR-ap-Ne2"/>
                 <constraint firstAttribute="bottom" secondItem="brC-Ky-39d" secondAttribute="bottom" constant="6" id="fNN-d5-Kqf"/>
-                <constraint firstAttribute="bottom" secondItem="afO-ue-cnW" secondAttribute="bottom" constant="6" id="hWH-A3-ntG"/>
                 <constraint firstAttribute="bottom" secondItem="qC1-de-qcP" secondAttribute="bottom" constant="6" id="n26-Yx-DYr"/>
+                <constraint firstItem="qC1-de-qcP" firstAttribute="leading" secondItem="h2g-bs-jN6" secondAttribute="trailing" constant="8" id="qYX-Qn-j6k"/>
                 <constraint firstItem="brC-Ky-39d" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="xG7-wS-ndr"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="composerContainerView" destination="h2g-bs-jN6" id="Jjc-u8-4pj"/>
                 <outlet property="leftContainerView" destination="brC-Ky-39d" id="1sG-44-ekl"/>
                 <outlet property="leftContainerWidthConstraint" destination="rHu-U1-TpN" id="Mep-y2-ViB"/>
-                <outlet property="leftHorizontalSpacingConstraint" destination="cXR-ap-Ne2" id="grL-Zy-iYk"/>
+                <outlet property="leftHorizontalSpacingConstraint" destination="1oU-Oq-tcC" id="Pv7-y1-n0o"/>
                 <outlet property="rightContainerView" destination="qC1-de-qcP" id="Sn9-qn-V2R"/>
                 <outlet property="rightContainerWidthConstraint" destination="D03-FI-iuK" id="VOR-Ee-sp4"/>
-                <outlet property="rightHorizontalSpacingConstraint" destination="5Gw-Se-RUj" id="Z3M-u2-DR8"/>
+                <outlet property="rightHorizontalSpacingConstraint" destination="qYX-Qn-j6k" id="znm-SF-1in"/>
                 <outlet property="textView" destination="afO-ue-cnW" id="ywf-z9-M7p"/>
             </connections>
             <point key="canvasLocation" x="-287" y="-434"/>
