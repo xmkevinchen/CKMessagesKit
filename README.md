@@ -18,7 +18,7 @@
 
 ## Installation
 
-### [Carthage](https://github.com/Carthage/Carthage) (Recommanded)
+### [Carthage](https://github.com/Carthage/Carthage) (Recommended)
 
 ```
 github "xmkevinchen/CKMessagesKit"
