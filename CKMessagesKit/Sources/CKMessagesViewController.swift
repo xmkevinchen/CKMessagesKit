@@ -474,17 +474,13 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
                 messageCell = cell
                 
             } else {
-                guard isProcessable(of: message) else {
-                    fatalError("Unknown message type")
-                }
                 
-                // Just for CKMessage now
+                // For all unregistered / unknown message type, handle as text message, which is the basic case of messages view
                 
                 let cell: CKMessageViewCell = collectionView.dequeueReusable(at: indexPath)
                 cell.textView.text = message.text
                 cell.textView.dataDetectorTypes = .all
-                
-                
+                                
                 messageCell = cell
             }
             

@@ -132,7 +132,6 @@
 		0ADD57BC1D7C94B400370D5A /* CKMessagesIndicatorFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesIndicatorFooterView.swift; sourceTree = "<group>"; };
 		0ADD57BD1D7C94B400370D5A /* CKMessagesIndicatorFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKMessagesIndicatorFooterView.xib; sourceTree = "<group>"; };
 		0AFD7D471D6E9E2D000367B2 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridViewController.swift; sourceTree = "<group>"; };
-		0AFD7D4E1D6F2F0E000367B2 /* CKMessagesKit.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = CKMessagesKit.playground; sourceTree = "<group>"; };
 		912224041D6E6D0E00C5F3B4 /* CKMessagesKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CKMessagesKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		912224131D6E6D3300C5F3B4 /* CKMessages.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CKMessages.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		912224151D6E6D3300C5F3B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -320,7 +319,6 @@
 		912223FA1D6E6D0E00C5F3B4 = {
 			isa = PBXGroup;
 			children = (
-				0AFD7D4E1D6F2F0E000367B2 /* CKMessagesKit.playground */,
 				0A076A721D75CE2B0028383B /* CKMessagesKit */,
 				912224141D6E6D3300C5F3B4 /* Sample */,
 				912224051D6E6D0E00C5F3B4 /* Products */,
