@@ -91,6 +91,11 @@ extension GridViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("====> didSelectItemAt: \(indexPath)")
+        
+        let alert = UIAlertController(title: "Clicked", message: "\(indexPath)", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        
+        present(alert, animated: true, completion: nil)
     }
     
 }
