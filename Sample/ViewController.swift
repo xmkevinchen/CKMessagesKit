@@ -33,7 +33,9 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         title = "Messages"
         
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.typing, style: .plain, target: self, action: #selector(showTypingIndicator(_:)))
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(image: UIImage.typing, style: .plain, target: self, action: #selector(showTypingIndicator(_:))),
+            UIBarButtonItem(image: UIImage.typing, style: .plain, target: self, action: #selector(showTypingIndicator(_:)))]
         
         // Do any additional setup after loading the view, typically from a nib.
         register(presentor: GridViewController.self, for: GridMessage.self)
