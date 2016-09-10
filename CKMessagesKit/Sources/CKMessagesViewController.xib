@@ -8,6 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CKMessagesViewController" customModule="CKMessagesKit" customModuleProvider="target">
             <connections>
+                <outlet property="inputToobarBottomConstraint" destination="Kdh-Ub-jZc" id="2bR-03-II2"/>
                 <outlet property="inputToolbar" destination="OsF-kT-qT1" id="PjC-kp-Sef"/>
                 <outlet property="messagesView" destination="nEj-ac-bud" id="zWE-q6-TJj"/>
                 <outlet property="view" destination="iN0-l3-epB" id="U3J-3F-bPS"/>
