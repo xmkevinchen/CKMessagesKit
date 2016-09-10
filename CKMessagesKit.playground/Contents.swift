@@ -1,7 +1,9 @@
 //: Playground - noun: a place where people can play
 
 import UIKit
+import CKMessagesKit
 
-let users = ["A", "B", "C"]
+let viewController = CKMessagesViewController()
 
-users.index(of: "C")
+
+

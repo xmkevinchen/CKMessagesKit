@@ -14,7 +14,15 @@ open class CKMessagesViewController: UIViewController {
     // MARK: - Public Properties
     
     @IBOutlet public weak var messagesView: CKMessagesView!
-    @IBOutlet public weak var inputToolbar: CKMessagesInputToolbar!
+    @IBOutlet public weak var inputToolbar: CKMessagesToolbar!
+    
+    
+    /// Specify the bar item should be enabled automatically when the `textView` contains text
+    public weak var enablesAutomaticallyBarItem: CKMessagesToolbarItem? {
+        didSet {
+            enablesAutomaticallyBarItem?.isEnabled = inputToolbar.contentView.textView.hasText
+        }
+    }
     
     public static var nib: UINib {
         #if swift(>=3.0)
@@ -52,11 +60,7 @@ open class CKMessagesViewController: UIViewController {
             messagesView.messagesViewLayout.invalidateLayout()
         }
     }
-    
-    public lazy var sendButton: CKMessagesInputToolbarItem = {
-        return CKMessagesToolbarButtonFactory().sendButton
-    }()
-    
+        
     // MARK: - Private Properties
     
     fileprivate var toolbarHeight: CGFloat = 44.0
@@ -117,11 +121,12 @@ open class CKMessagesViewController: UIViewController {
     // MARK:- Public functions
     
     public func register(presentor: CKMessagePresenting.Type, for message: CKMessageData.Type) {
-        
         registeredPresentors[String(describing: message)] = presentor
-        
     }
     
+    
+        
+
     
     private func configure() {
         
@@ -150,11 +155,6 @@ open class CKMessagesViewController: UIViewController {
         
         toolbarHeight = inputToolbar.preferredDefaultHeight
         
-        inputToolbar.rightBarItem = sendButton        
-        inputToolbar.leftBarItems = [CKMessagesToolbarButtonFactory().accessoryButton]
-        sendButton.addTarget(self, action: #selector(inputToolbarSend(_:)), for: .touchUpInside)
-        sendButton.isEnabled = inputToolbar.contentView.textView.text.lengthOfBytes(using: .utf8) > 0
-        
         inputToolbar.contentView.textView.placeHolder = "New Message"
         inputToolbar.contentView.textView.delegate = self
         inputToolbar.removeFromSuperview()
@@ -163,14 +163,7 @@ open class CKMessagesViewController: UIViewController {
         updateMessagesViewInsets()
         
     }
-    
-    func inputToolbarSend(_ sender: CKMessagesInputToolbarItem) {
-        didClickSendButton(sender, messageText: currentlyComposedMessageText())
-    }
-    
-    open func didClickSendButton(_ button: UIButton, messageText: String) {
-        
-    }
+
     
     
 }
@@ -666,6 +659,7 @@ extension CKMessagesViewController: UICollectionViewDataSourcePrefetching {
 // MARK: - Receive & Send Message
 extension CKMessagesViewController {
     
+    
     public func finishSendingMessage(animated: Bool = true) {
         let textView = inputToolbar.contentView.textView!
         textView.text = nil
@@ -682,9 +676,7 @@ extension CKMessagesViewController {
     }
     
     public func finishReceivingMessage(animated: Bool = true) {
-        
-        
-        
+                        
         messagesView.messagesViewLayout.invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
         messagesView.reloadData()
         
@@ -727,12 +719,10 @@ extension CKMessagesViewController: UITextViewDelegate {
             return
         }
         
-        sendButton.isEnabled = textView.text.lengthOfBytes(using: .utf8) > 0
-        
-        
+        enablesAutomaticallyBarItem?.isEnabled = textView.hasText
     }
     
-    fileprivate func currentlyComposedMessageText() -> String {
+    public func currentlyComposedMessageText() -> String {
         
         let textView = inputToolbar.contentView.textView!
         textView.inputDelegate?.selectionWillChange(textView)

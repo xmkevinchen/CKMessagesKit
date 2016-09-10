@@ -23,40 +23,50 @@ extension String {
 class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
     
     var messages = [CKMessageData]()
-    var avatarFactory = CKMessagesAvatarImageFactory()
+    
     var formatter = DateFormatter()
-        
+    
+    var incomingAvatar: CKMessagesAvatarImageData?
+    
     override func viewDidLoad() {
         
         
         super.viewDidLoad()
         title = "Messages"
+                
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.typing, style: .plain, target: self, action: #selector(showTypingIndicator(_:)))
         
-        
-        navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(image: UIImage.typing, style: .plain, target: self, action: #selector(showTypingIndicator(_:))),
-            UIBarButtonItem(image: UIImage.typing, style: .plain, target: self, action: #selector(showTypingIndicator(_:)))]
-        
-        // Do any additional setup after loading the view, typically from a nib.
+        /// 1. Register presentor for specified message type
         register(presentor: GridViewController.self, for: GridMessage.self)
         register(presentor: ListViewController.self, for: ListMessage.self)
         
         messagesView.messenger = self
         messagesView.decorator = self        
         
-        
+        /// 2. Hide the sender avatar
+        let avatarFactory = CKMessagesAvatarImageFactory(diameter: 48)
         messagesView.messagesViewLayout.outgoingAvatarSize = .zero
-//        (messagesView.collectionViewLayout as! CKMessagesViewLayout).messageFont = UIFont.systemFont(ofSize: 14)
+        messagesView.messagesViewLayout.incomingAvatarSize = CGSize(width: 48, height: 48)
         
         for _ in 0..<8 {
             insertNewMessage()
         }
         
-        messagesView.messagesViewLayout.minimumLineSpacing = 20
+        messagesView.messagesViewLayout.minimumLineSpacing = 10
+        
+        /// 3. Configurae toolbar items
+        let send = CKMessagesToolbarItem.send
+        send.addTarget(self, action: #selector(send(_:)), for: .touchUpInside)
+        inputToolbar.rightBarItems = [CKMessagesToolbarItem.accessory, send]
         
         formatter.dateStyle = .medium
         formatter.timeStyle = .medium
         formatter.doesRelativeDateFormatting = true
+        
+        /// 4. Specify the bar item should be enabled automatically when the `textView` contains text.
+        enablesAutomaticallyBarItem = send
+        
+        incomingAvatar = avatarFactory.avatar(image: UIImage(named: "wechat")!)
         
         messagesView.reloadData()
         
@@ -73,13 +83,13 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
     
     public func messageForItem(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CKMessageData {
         return messages[indexPath.item]
-//        return GridMessage(senderId: "incoming", sender: "Incoming", text: String(1))
-        
     }
     
     
     
-    
+    /// Show typing indicator as collection view section footer
+    ///
+    /// - parameter sender:
     func showTypingIndicator(_ sender: AnyObject) {
         isShowingIndicator = true
         scrollToBottom(animated: true)
@@ -89,9 +99,13 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         }
     }
     
-    override func didClickSendButton(_ button: UIButton, messageText: String) {
-        
-        let message = CKMessage(senderId: arc4random() % 2 == 0 ? senderId: "incoming", sender: sender, text: messageText)
+    
+    /// Send message behavior
+    ///
+    /// - parameter sender:
+    func send(_ sender: UIButton) {
+        let messageText = currentlyComposedMessageText()
+        let message = CKMessage(senderId: arc4random() % 2 == 0 ? senderId: "incoming", sender: self.sender, text: messageText)
         messages.append(message)
         finishSendingMessage()
     }
@@ -107,9 +121,6 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
     }
     
     
-    
-    
-        
     private func generateMessage(at index: Int) -> CKMessageData? {
         
         var message: CKMessageData?
@@ -156,6 +167,16 @@ extension ViewController: CKMessagesViewDecorating {
         return CGSize(width:Int(100 + arc4random_uniform(50)), height:Int(50 + arc4random_uniform(100)))
     }
     
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForTopLabelAt indexPath: IndexPath) -> String? {
+        
+        if indexPath.item % 3 == 0 {
+            let message = messages[indexPath.item]
+            return formatter.string(from: message.timestamp)
+        } else {
+            return nil
+        }
+    }
+    
     func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForMessageTopLabelAt indexPath: IndexPath) -> String? {
         let message = messages[indexPath.item]
         return message.sender
@@ -196,10 +217,11 @@ extension ViewController: CKMessagesViewDecorating {
     func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, avatarAt indexPath: IndexPath) -> CKMessagesAvatarImageData? {
         let message = messages[indexPath.item]
         
-        return avatarFactory.avatar(initials: message.sender.initials,
-                                    backgroundColor: UIColor.darkGray,
-                                    textColor: UIColor.white,
-                                    font: UIFont.preferredFont(forTextStyle: .headline))
+        if message.senderId != senderId {
+            return incomingAvatar
+        } else {
+            return nil
+        }
     }
     
     

@@ -12,17 +12,21 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="brC-Ky-39d">
+                <view contentMode="scaleToFill" placeholderIntrinsicWidth="34" placeholderIntrinsicHeight="infinite" translatesAutoresizingMaskIntoConstraints="NO" id="brC-Ky-39d">
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="Z4c-EG-3x5"/>
-                        <constraint firstAttribute="width" priority="250" constant="34" id="rHu-U1-TpN"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h2g-bs-jN6">
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="afO-ue-cnW" customClass="CKMessagesComposerTextView" customModule="CKMessagesKit" customModuleProvider="target">
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="Jnn-fJ-ztr"/>
+                                <constraint firstAttribute="height" constant="32" id="T0c-u4-SUT"/>
+                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="150" id="gY1-xs-VRK"/>
+                            </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
@@ -30,20 +34,15 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="afO-ue-cnW" secondAttribute="trailing" id="0mg-0z-ZJc"/>
-                        <constraint firstAttribute="trailing" secondItem="afO-ue-cnW" secondAttribute="trailing" id="6pQ-Fb-mMs"/>
-                        <constraint firstAttribute="bottom" secondItem="afO-ue-cnW" secondAttribute="bottom" id="JOk-BF-4xf"/>
                         <constraint firstAttribute="bottom" secondItem="afO-ue-cnW" secondAttribute="bottom" id="RlW-1x-Mp7"/>
-                        <constraint firstItem="afO-ue-cnW" firstAttribute="leading" secondItem="h2g-bs-jN6" secondAttribute="leading" id="Yjb-UX-g2t"/>
                         <constraint firstItem="afO-ue-cnW" firstAttribute="leading" secondItem="h2g-bs-jN6" secondAttribute="leading" id="acH-e2-yDC"/>
-                        <constraint firstItem="afO-ue-cnW" firstAttribute="top" secondItem="h2g-bs-jN6" secondAttribute="top" id="sbh-zv-dSO"/>
                         <constraint firstItem="afO-ue-cnW" firstAttribute="top" secondItem="h2g-bs-jN6" secondAttribute="top" id="yjI-Vv-msa"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qC1-de-qcP">
+                <view contentMode="scaleToFill" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="infinite" translatesAutoresizingMaskIntoConstraints="NO" id="qC1-de-qcP">
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="1Iv-P9-7ac"/>
-                        <constraint firstAttribute="width" constant="50" id="D03-FI-iuK"/>
                     </constraints>
                 </view>
             </subviews>
@@ -63,10 +62,8 @@
             <connections>
                 <outlet property="composerContainerView" destination="h2g-bs-jN6" id="Jjc-u8-4pj"/>
                 <outlet property="leftContainerView" destination="brC-Ky-39d" id="1sG-44-ekl"/>
-                <outlet property="leftContainerWidthConstraint" destination="rHu-U1-TpN" id="Mep-y2-ViB"/>
                 <outlet property="leftHorizontalSpacingConstraint" destination="1oU-Oq-tcC" id="Pv7-y1-n0o"/>
                 <outlet property="rightContainerView" destination="qC1-de-qcP" id="Sn9-qn-V2R"/>
-                <outlet property="rightContainerWidthConstraint" destination="D03-FI-iuK" id="VOR-Ee-sp4"/>
                 <outlet property="rightHorizontalSpacingConstraint" destination="qYX-Qn-j6k" id="znm-SF-1in"/>
                 <outlet property="textView" destination="afO-ue-cnW" id="ywf-z9-M7p"/>
             </connections>
