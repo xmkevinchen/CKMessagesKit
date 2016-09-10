@@ -58,6 +58,10 @@ Use Carthage to download the dependencies of the Sample project
 
 ## Release Note
 
+### 1.0.6
+- Instead of putting inputToolbar as inputAccessoryView in `CKMessagesViewController`, now just a subview.
+- When inputToolbar expand higher, move the messages up automatically
+
 ### 1.0.5
 - Refactor `CKMessagesInputToolbar` and its components implementation. Make the implementation more **SOLID** 
     - `CKMessagesInputToolbar` now is more like `UINavigationBar`, focus on laying out items, instead of setting up items, like *Send* button. 

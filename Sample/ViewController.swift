@@ -43,10 +43,10 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         messagesView.messenger = self
         messagesView.decorator = self        
         
-        /// 2. Hide the sender avatar
+        /// 2. Show / Hide avatars
         let avatarFactory = CKMessagesAvatarImageFactory(diameter: 48)
         messagesView.messagesViewLayout.outgoingAvatarSize = .zero
-        messagesView.messagesViewLayout.incomingAvatarSize = CGSize(width: 48, height: 48)
+        messagesView.messagesViewLayout.incomingAvatarSize = CGSize(width: 48, height: 48)        
         
         for _ in 0..<16 {
             insertNewMessage()
