@@ -89,7 +89,7 @@ Use Carthage to download the dependencies of the Sample project
     * Image
     * Video
     * Location
-2. Submit CKMessagesKit to CocoaPods
+2. Submit CKMessagesKit to CocoaPods, needs to wait CocoaPods 1.1.0.rc.1 version 
 3. Async message content presenting mechanism.
 4. Try to use `CKViewLayout` protocol to layout message cell, instead of using massive AutoLayout constraint.
 
