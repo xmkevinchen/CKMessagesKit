@@ -502,19 +502,22 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
             if hasPresentor(of: message) {
                 let cell: CKMessageDataViewCell = collectionView.dequeueReusable(at: indexPath)
                 
-                if #available(iOS 10, *) {
-                    
-                    /**
-                     * For some unknown reason, on iOS 10, the hostedView sometime would be added to wrong indexPath cell
-                     * which makes some cells are empty.
-                     * So on iOS 10, at least, for now, moving attaching hostedView process to @collectionView(_:willDisplay:forItemAt:) delegate could solve the issue
-                     */
-                    prefetchPresentor(of: message, at: indexPath)
-                    
-                } else {
-                    if let presentor = presentor(of: message, at: indexPath) {
-                        cell.attach(hostedView: presentor.messageView)
-                    }
+//                if #available(iOS 10, *) {
+//                    
+//                    /**
+//                     * For some unknown reason, on iOS 10, the hostedView sometime would be added to wrong indexPath cell
+//                     * which makes some cells are empty.
+//                     * So on iOS 10, at least, for now, moving attaching hostedView process to @collectionView(_:willDisplay:forItemAt:) delegate could solve the issue
+//                     */
+//                    prefetchPresentor(of: message, at: indexPath)
+//                    
+//                } else {
+//                    if let presentor = presentor(of: message, at: indexPath) {
+//                        cell.attach(hostedView: presentor.messageView)
+//                    }
+//                }
+                if let presentor = presentor(of: message, at: indexPath) {
+                    cell.attach(hostedView: presentor.messageView)
                 }
                 
                 messageCell = cell

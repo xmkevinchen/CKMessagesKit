@@ -266,11 +266,11 @@ class CKMessageView: UIView {
         
         contentView.removeConstraints(contentView.constraints)
         
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-l-[v(width)]-r-|",
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-l-[v(width@999)]-r-|",
                                                                   options: [],
                                                                   metrics: metrics,
                                                                   views: ["v": hostedView!]))
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-t-[v(height)]-b@999-|",
+        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-t-[v(height@999)]-b@999-|",
                                                                   options: [],
                                                                   metrics: metrics,
                                                                   views: ["v": hostedView!]))

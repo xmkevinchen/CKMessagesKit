@@ -28,6 +28,7 @@ public class CKMessagesIndicatorFooterView: UICollectionReusableView, NibReusabl
         addConstraint(NSLayoutConstraint(item: indicator, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0))
         
         self.indicator = indicator
+        indicator.animationDuration = 1
         indicator.startAnimation()
     }
     
@@ -39,15 +40,11 @@ public class CKMessagesIndicatorFooterView: UICollectionReusableView, NibReusabl
         super.awakeFromNib()
         translatesAutoresizingMaskIntoConstraints = false
         isUserInteractionEnabled = false
+        indicator.animationDuration = 1
         indicator.startAnimation()
     }
     
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-        
-    }
-    
-    
+
     public override func prepareForReuse() {
         super.prepareForReuse()
     }
