@@ -74,5 +74,21 @@ public extension CKMessagePresenting where Self: UIViewController {
         view.subviews.filter { $0 is UILayoutSupport }
             .forEach { $0.removeFromSuperview() }
     }
+    
+}
+
+public extension CKMessagePresenting where Self: UIViewController {
+    
+    var messagesViewController: CKMessagesViewController? {
+                
+        var parentVC: UIViewController? = parent
+        
+        while parentVC != nil && !(parentVC! is CKMessagesViewController) {
+            parentVC = parentVC?.parent
+        }
+        
+        return parentVC as? CKMessagesViewController
+    }
+    
 }
 

@@ -73,6 +73,7 @@ open class CKMessagesViewController: UIViewController {
     // MARK: - Life Cycle
     
     deinit {
+        removePresentors()
         unregisterObservers()
     }
     
@@ -108,14 +109,14 @@ open class CKMessagesViewController: UIViewController {
     open override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         
-        unusedPresentors.removeAll()
-        prefetchedPresentors.removeAll()
-        usingPresentors.removeAll()
+        removePresentors()
         
         messagesView.collectionViewLayout.invalidateLayout()
         messagesView.setNeedsLayout()
         
     }
+    
+    
     
 
     // MARK:- Public functions
@@ -218,6 +219,12 @@ extension CKMessagesViewController {
         var presentor = PresentorType.presentor()
         presentor.message = message
         usingPresentors[indexPath] = presentor
+        
+        if let child = presentor as? UIViewController {
+            addChildViewController(child)
+            child.didMove(toParentViewController: self)
+        }
+        
         return presentor
         
     }
@@ -241,6 +248,11 @@ extension CKMessagesViewController {
             var presentor = PresentorType.presentor()
             presentor.message = message
             prefetchedPresentors[indexPath] = presentor
+            
+            if let child = presentor as? UIViewController {
+                addChildViewController(child)
+                child.didMove(toParentViewController: self)
+            }
         }
         
     }
@@ -260,6 +272,33 @@ extension CKMessagesViewController {
             
             presentor.messageView.removeFromSuperview()
         }
+    }
+    
+    
+    fileprivate func removePresentors() {
+        unusedPresentors.flatMap { return $0.value }.forEach { presentor in
+            if let presentor = presentor as? UIViewController {
+                presentor.removeFromParentViewController()
+            }
+        }
+        
+        unusedPresentors.removeAll()
+        
+        prefetchedPresentors.flatMap { return $0.value }.forEach { presentor in
+            if let presentor = presentor as? UIViewController {
+                presentor.removeFromParentViewController()
+            }
+        }
+        
+        prefetchedPresentors.removeAll()
+        
+        usingPresentors.flatMap { return $0.value }.forEach { presentor in
+            if let presentor = presentor as? UIViewController {
+                presentor.removeFromParentViewController()
+            }
+        }
+        
+        usingPresentors.removeAll()
     }
 }
 
