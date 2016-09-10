@@ -58,6 +58,13 @@ Use Carthage to download the dependencies of the Sample project
 
 ## Release Note
 
+### 1.0.5
+- Refactor `CKMessagesInputToolbar` and its components implementation. Make the implementation more **SOLID** 
+    - `CKMessagesInputToolbar` now is more like `UINavigationBar`, focus on laying out items, instead of setting up items, like *Send* button. 
+    - Leave the responsibility to concrete subclass of `CKMessagesViewController`. 
+    - Get rid of the multiple level delegates propagating up from `CKMessagesToolbarContentView` to `CKMessagesViewController`. 
+    - Check out the Sample project to see how to setup `CKMessagesInputToolbar` bar items.
+
 ### 1.0.4
 - Add `messsagesViewController` property to UIViewController which adopts the `CKMessagePresenting` protocol
 
@@ -91,5 +98,7 @@ There're some reasons I created CKMessagesKit
 
 * Pure Swift implementation, written in Swift 3.0
 * Easy to support nested collection UI presentation, like using `UICollectionView`, `UITableView` in `UICollectionViewCell` to show such **Data Card** UI design
-* JSQMessagesViewController has some design strongly against the MVC design pattern, misusing the Model and View
+* JSQMessagesViewController has some design strongly against the SOLID principles and MVC design pattern, misusing the Model and View
 * LayerKit heavily integrated with its Layer service
+
+
