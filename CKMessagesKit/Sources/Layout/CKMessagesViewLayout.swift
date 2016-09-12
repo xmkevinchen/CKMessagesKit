@@ -49,16 +49,13 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
         }
     }
     
-    public var messageBubbleContainerMaximumWidth: CGFloat = 0.0 {
-        
+    public var messageBubbleMarginWidth: CGFloat = 0.0 {
         didSet {
-            if messageBubbleContainerMaximumWidth != oldValue {
+            if messageBubbleMarginWidth != oldValue {
                 resetLayout()
             }
         }
-    
     }
-
     
     public var messageSizeCalculator: CKMessageSizeCalculating = CKMessageSizeCalculator()
     
@@ -94,7 +91,7 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
     
     override public func prepare() {
         super.prepare()
-        messageBubbleContainerMaximumWidth = reasonablemessageBubbleContainerMaximumWidth()
+        messageBubbleMarginWidth = readableMessageBubbleMarginWidth()
     }
     
     override public func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
@@ -203,7 +200,7 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
         
     }
     
-    private func reasonablemessageBubbleContainerMaximumWidth() -> CGFloat {
+    private func readableMessageBubbleMarginWidth() -> CGFloat {
         
         var width: CGFloat = 0
         
@@ -230,7 +227,7 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
             width = UIScreen.main.bounds.width
         }
         
-        return width * 0.75
+        return width * 0.25
     }
     
     
@@ -302,7 +299,7 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
     
     
     private func resetLayout() {
-        messageBubbleContainerMaximumWidth = reasonablemessageBubbleContainerMaximumWidth()
+        messageBubbleMarginWidth = readableMessageBubbleMarginWidth()
         messageSizeCalculator.prepareForResetting(layout: self)
         invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
     }

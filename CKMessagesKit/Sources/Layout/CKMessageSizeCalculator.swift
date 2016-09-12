@@ -39,22 +39,23 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
         if let cachedSize = cache.object(forKey: key) as? CGSize {
             return cachedSize
         }
-                        
+        
+        let avatarSize: CGSize = self.avatarSize(of: message, with: layout)
+        let messageInsets = layout.messageInsets
+        let horizontalSpace = messageInsets.left + messageInsets.right
+        let maximumWidth = layout.itemWidth - avatarSize.width - horizontalSpace - layout.messageBubbleMarginWidth
         
         /// If decorator returns contentSize of message, just use it without caching it
-        if let contentSize = layout.messagesView.decorator?.messagesView(layout.messagesView, layout: layout, contentSizeAt: indexPath) {
+        if var contentSize = layout.messagesView.decorator?.messagesView(layout.messagesView, layout: layout, contentSizeAt: indexPath) {
+            
+            contentSize.width = min(maximumWidth, contentSize.width)
             return contentSize
         }
         
-        let messageInsets = layout.messageInsets
-        let horizontalSpace = messageInsets.left + messageInsets.right
-        
-        let avatarSize: CGSize = self.avatarSize(of: message, with: layout)
-        let maximumWidth = min(layout.itemWidth - avatarSize.width - horizontalSpace - 50, layout.messageBubbleContainerMaximumWidth)
-                        
-         let textView = CKMessageCellTextView()
-         textView.text = message.text
-         let referenceSize = textView.sizeThatFits(CGSize(width: maximumWidth, height: CGFloat.greatestFiniteMagnitude))
+                                        
+        //         let textView = CKMessageCellTextView()
+        //         textView.text = message.text
+        //         let referenceSize = textView.sizeThatFits(CGSize(width: maximumWidth, height: CGFloat.greatestFiniteMagnitude))
         
         let stringRect = NSString(string: message.text)
             .boundingRect(with: CGSize(width: maximumWidth, height: CGFloat.greatestFiniteMagnitude),
