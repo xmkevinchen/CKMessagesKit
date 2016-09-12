@@ -60,11 +60,11 @@ open class CKMessageDataViewCell: UICollectionViewCell, Reusable {
             }
             
             
-            messageView.updateContentLayout(insets: attributes.messageContentInsets,
-                                            size: attributes.messageContentSize)
+            messageView.updateContentLayout(insets: attributes.messageInsets,
+                                            size: attributes.messageSize)
             
             messageView.topLabelHeightConstraint.constant = attributes.topLabelHeight
-            messageView.messageTopLabelConstraint.constant = attributes.messageTopLabelHeight
+            messageView.messageTopLabelConstraint.constant = attributes.bubbleTopLabelHeight
             messageView.bottomLabelHeightConstraint.constant = attributes.bottomLabelHeight
             
         }
@@ -118,7 +118,7 @@ open class CKMessageDataViewCell: UICollectionViewCell, Reusable {
         return messageView.topLabel
     }
     
-    public var messageTopLabel: CKInsetsLabel {
+    public var messageTopLabel: CKMessageInsetsLabel {
         return messageView.messageTopLabel
     }
     

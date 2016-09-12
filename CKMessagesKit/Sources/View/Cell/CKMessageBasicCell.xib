@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CKMessageBasicCell" customModule="CKMessagesKit" customModuleProvider="target">
+            <connections>
+                <outlet property="accessoryContainerView" destination="JXA-3i-cAX" id="UFN-Zy-uF9"/>
+                <outlet property="avatarContainerView" destination="gJW-VW-hfg" id="dgR-Tt-lqV"/>
+                <outlet property="avatarImageView" destination="OLq-Lj-2Wu" id="OMn-vX-DuP"/>
+                <outlet property="avatarImageViewHeightConstraint" destination="Mcg-3G-pUu" id="zZo-Yq-dLQ"/>
+                <outlet property="avatarImageViewWidthConstraint" destination="Ml4-Fz-7hP" id="lIf-kn-VdX"/>
+                <outlet property="bottomLabel" destination="a7x-En-FGi" id="2Nn-Fl-h0r"/>
+                <outlet property="bottomLabelHeightConstraint" destination="k5r-LB-n5K" id="J3M-2C-fhr"/>
+                <outlet property="bubbleImageView" destination="xa4-wj-2ws" id="4Ny-Rt-bhZ"/>
+                <outlet property="bubbleTopLabel" destination="11X-nJ-0nD" id="3HS-6e-GWk"/>
+                <outlet property="bubbleTopLabelHeightConstraint" destination="a8g-aM-UZQ" id="Ogj-Ic-RHJ"/>
+                <outlet property="containerView" destination="Wm1-PC-L7Y" id="ZZd-ys-icq"/>
+                <outlet property="messageBubbleContainerView" destination="rED-XC-BNB" id="u02-aG-iTu"/>
+                <outlet property="topLabel" destination="ZPG-N3-idJ" id="U84-MY-nTz"/>
+                <outlet property="topLabelHeightConstraint" destination="Af5-E7-rMP" id="6AW-vO-reg"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="gh9-nu-Hfo">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="15" text="Top Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000000000000004" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZPG-N3-idJ" customClass="CKMessageInsetsLabel" customModule="CKMessagesKit" customModuleProvider="target">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="Af5-E7-rMP"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="15" text="Bubble Top Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="11X-nJ-0nD" customClass="CKMessageInsetsLabel" customModule="CKMessagesKit" customModuleProvider="target">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="a8g-aM-UZQ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="150" translatesAutoresizingMaskIntoConstraints="NO" id="Wm1-PC-L7Y" userLabel="Container View">
+                    <subviews>
+                        <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" placeholderIntrinsicWidth="30" placeholderIntrinsicHeight="105" translatesAutoresizingMaskIntoConstraints="NO" id="gJW-VW-hfg" userLabel="Avatar Container View">
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OLq-Lj-2Wu">
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="Mcg-3G-pUu"/>
+                                        <constraint firstAttribute="width" constant="30" id="Ml4-Fz-7hP"/>
+                                    </constraints>
+                                </imageView>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="OLq-Lj-2Wu" firstAttribute="top" relation="greaterThanOrEqual" secondItem="gJW-VW-hfg" secondAttribute="top" priority="750" id="EbK-Ot-mGh"/>
+                                <constraint firstItem="OLq-Lj-2Wu" firstAttribute="leading" secondItem="gJW-VW-hfg" secondAttribute="leading" id="HP2-io-JJg"/>
+                                <constraint firstAttribute="bottom" secondItem="OLq-Lj-2Wu" secondAttribute="bottom" id="fWo-AA-yPl"/>
+                                <constraint firstAttribute="trailing" secondItem="OLq-Lj-2Wu" secondAttribute="trailing" id="gtq-5X-pyS"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="rED-XC-BNB" userLabel="Message Bubble Container View" customClass="CKMessageBubbleContainerView" customModule="CKMessagesKit" customModuleProvider="target">
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xa4-wj-2ws"/>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="xa4-wj-2ws" secondAttribute="trailing" id="R5T-Nt-gxO"/>
+                                <constraint firstItem="xa4-wj-2ws" firstAttribute="leading" secondItem="rED-XC-BNB" secondAttribute="leading" id="TH5-be-zHR"/>
+                                <constraint firstAttribute="bottom" secondItem="xa4-wj-2ws" secondAttribute="bottom" id="ltK-4c-jdM"/>
+                                <constraint firstAttribute="height" constant="105" placeholder="YES" id="pCk-FC-7AZ"/>
+                                <constraint firstAttribute="width" constant="250" placeholder="YES" id="vad-m9-vUd"/>
+                                <constraint firstItem="xa4-wj-2ws" firstAttribute="top" secondItem="rED-XC-BNB" secondAttribute="top" id="zUy-ag-6E6"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="40" placeholderIntrinsicHeight="105" translatesAutoresizingMaskIntoConstraints="NO" id="JXA-3i-cAX" userLabel="Accessory Container View">
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" id="tVS-7j-G7h"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="gJW-VW-hfg" firstAttribute="leading" secondItem="Wm1-PC-L7Y" secondAttribute="leading" placeholder="YES" id="0AR-1Z-PwF"/>
+                        <constraint firstAttribute="bottom" secondItem="gJW-VW-hfg" secondAttribute="bottom" id="0WW-mX-dzV"/>
+                        <constraint firstItem="JXA-3i-cAX" firstAttribute="leading" secondItem="rED-XC-BNB" secondAttribute="trailing" placeholder="YES" id="1Pn-gS-d72"/>
+                        <constraint firstAttribute="bottom" secondItem="rED-XC-BNB" secondAttribute="bottom" id="55K-io-gCF"/>
+                        <constraint firstItem="rED-XC-BNB" firstAttribute="leading" secondItem="gJW-VW-hfg" secondAttribute="trailing" placeholder="YES" id="ESk-e5-Vm7"/>
+                        <constraint firstItem="gJW-VW-hfg" firstAttribute="top" secondItem="Wm1-PC-L7Y" secondAttribute="top" id="Hkh-hR-kmW"/>
+                        <constraint firstItem="rED-XC-BNB" firstAttribute="top" secondItem="Wm1-PC-L7Y" secondAttribute="top" id="JTS-Ja-ia0"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="JXA-3i-cAX" secondAttribute="trailing" placeholder="YES" id="QFO-dn-1X7"/>
+                        <constraint firstAttribute="bottom" secondItem="JXA-3i-cAX" secondAttribute="bottom" id="fwX-Ri-jQR"/>
+                        <constraint firstItem="JXA-3i-cAX" firstAttribute="top" secondItem="Wm1-PC-L7Y" secondAttribute="top" id="uqG-oa-HVR"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" placeholderIntrinsicWidth="infinite" placeholderIntrinsicHeight="15" text="Bottom Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a7x-En-FGi" customClass="CKMessageInsetsLabel" customModule="CKMessagesKit" customModuleProvider="target">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="k5r-LB-n5K"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="ZPG-N3-idJ" firstAttribute="top" secondItem="gh9-nu-Hfo" secondAttribute="top" id="2Yc-3p-Dz8"/>
+                <constraint firstItem="a7x-En-FGi" firstAttribute="top" secondItem="Wm1-PC-L7Y" secondAttribute="bottom" id="5AS-fp-LTp"/>
+                <constraint firstItem="Wm1-PC-L7Y" firstAttribute="leading" secondItem="gh9-nu-Hfo" secondAttribute="leading" id="LNU-FZ-8Pw"/>
+                <constraint firstItem="11X-nJ-0nD" firstAttribute="top" secondItem="ZPG-N3-idJ" secondAttribute="bottom" id="PAo-wJ-mw3"/>
+                <constraint firstItem="ZPG-N3-idJ" firstAttribute="leading" secondItem="gh9-nu-Hfo" secondAttribute="leading" id="S21-av-UIa"/>
+                <constraint firstAttribute="trailing" secondItem="Wm1-PC-L7Y" secondAttribute="trailing" id="XQJ-yA-ine"/>
+                <constraint firstItem="11X-nJ-0nD" firstAttribute="top" secondItem="ZPG-N3-idJ" secondAttribute="bottom" id="cG0-t3-701"/>
+                <constraint firstAttribute="bottom" secondItem="a7x-En-FGi" secondAttribute="bottom" id="erE-3a-GUF"/>
+                <constraint firstItem="11X-nJ-0nD" firstAttribute="leading" secondItem="gh9-nu-Hfo" secondAttribute="leading" id="fvi-e2-q8K"/>
+                <constraint firstItem="a7x-En-FGi" firstAttribute="leading" secondItem="gh9-nu-Hfo" secondAttribute="leading" id="hWt-wD-UuT"/>
+                <constraint firstAttribute="trailing" secondItem="ZPG-N3-idJ" secondAttribute="trailing" id="in7-mT-Lug"/>
+                <constraint firstItem="Wm1-PC-L7Y" firstAttribute="top" secondItem="11X-nJ-0nD" secondAttribute="bottom" id="nQq-YO-gsZ"/>
+                <constraint firstAttribute="trailing" secondItem="a7x-En-FGi" secondAttribute="trailing" id="nq8-zb-gMy"/>
+                <constraint firstAttribute="trailing" secondItem="11X-nJ-0nD" secondAttribute="trailing" id="sjg-Ck-qX7"/>
+                <constraint firstItem="Wm1-PC-L7Y" firstAttribute="top" secondItem="11X-nJ-0nD" secondAttribute="bottom" id="sqP-3o-TxU"/>
+                <constraint firstItem="a7x-En-FGi" firstAttribute="top" secondItem="Wm1-PC-L7Y" secondAttribute="bottom" id="uDo-Gu-hTa"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-66" y="-819"/>
+        </view>
+    </objects>
+</document>

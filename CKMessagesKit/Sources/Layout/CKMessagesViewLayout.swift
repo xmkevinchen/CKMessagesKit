@@ -29,33 +29,36 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
     public var incomingAvatarSize: CGSize = .zero {
         didSet {
             if incomingAvatarSize != oldValue {
-                invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
+                resetLayout()
             }
         }
     }
     public var outgoingAvatarSize: CGSize = .zero {
         didSet {
             if outgoingAvatarSize != oldValue {
-                invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
+                resetLayout()
             }
         }
     }
     
+    public var messageInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16) {
+        didSet {
+            if messageInsets != oldValue {
+                resetLayout()
+            }
+        }
+    }
     
-    public var messageContentInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16) {
+    public var messageBubbleContainerMaximumWidth: CGFloat = 0.0 {
+        
         didSet {
-            if messageContentInsets != oldValue {
-                invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
+            if messageBubbleContainerMaximumWidth != oldValue {
+                resetLayout()
             }
         }
+    
     }
-    public var messageContainerMargin: CGFloat = 0.0 {
-        didSet {
-            if messageContainerMargin != oldValue {
-                invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
-            }
-        }
-    }
+
     
     public var messageSizeCalculator: CKMessageSizeCalculating = CKMessageSizeCalculator()
     
@@ -91,6 +94,7 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
     
     override public func prepare() {
         super.prepare()
+        messageBubbleContainerMaximumWidth = reasonablemessageBubbleContainerMaximumWidth()
     }
     
     override public func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
@@ -135,18 +139,6 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
     
     public override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
         
-        if let context = context as? CKMessagesViewLayoutInvalidationContext {
-            if context.invalidateDataSourceCounts {
-                context.invalidateFlowLayoutAttributes = true
-                context.invalidateFlowLayoutDelegateMetrics = true
-            }
-            
-            
-            if context.invalidateLayoutMessagesCache {
-                reset()
-            }
-        }
-        
         super.invalidateLayout(with: context)
     }
     
@@ -156,12 +148,13 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
         
         let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView)
         let messageSize = size(of: message, at: indexPath)
-        var height = messageSize.container.height
+                
+        var height = messageSize.height + messageInsets.top + messageInsets.bottom
         
         if let attributes = layoutAttributesForItem(at: indexPath) as? CKMessagesViewLayoutAttributes {
             
             height += attributes.topLabelHeight
-            height += attributes.messageTopLabelHeight
+            height += attributes.bubbleTopLabelHeight
             height += attributes.bottomLabelHeight
             
         }
@@ -170,7 +163,7 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
         
     }
     
-    private func size(of message:CKMessageData?, at indexPath: IndexPath) -> CKMessageSize {
+    private func size(of message:CKMessageData?, at indexPath: IndexPath) -> CGSize {
         
         if let message = message {
             return messageSizeCalculator.size(of: message, at: indexPath, with: self)
@@ -190,22 +183,14 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
             - sectionInset.left - sectionInset.right
     }
     
+
+    
     // MARK:- Private
     private func configure() {
         scrollDirection = .vertical
         sectionInset = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
         minimumLineSpacing = 5
-        
-        incomingAvatarSize = defaultAvatarSize
-        outgoingAvatarSize = defaultAvatarSize
-        
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            messageContainerMargin = 240
-        } else {
-            messageContainerMargin = 50
-        }
-        
-        
+                                
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(didReceiveApplicationMemoryWarningNotification(_:)),
                                                name: Notification.Name.UIApplicationDidReceiveMemoryWarning,
@@ -218,6 +203,35 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
         
     }
     
+    private func reasonablemessageBubbleContainerMaximumWidth() -> CGFloat {
+        
+        var width: CGFloat = 0
+        
+        let trait = messagesView.traitCollection
+        
+        switch (trait.horizontalSizeClass, trait.verticalSizeClass) {
+        case (.compact, .compact):  // iPhone landscape
+            width = UIScreen.main.bounds.height
+            
+        case (.compact, .regular):  // iPhone / iPhone Plus portrait
+            width = UIScreen.main.bounds.width
+            
+        case (.regular, .compact):  // iPhone Plus landscape
+            width = UIScreen.main.bounds.height
+            
+        case (.regular, .regular):  // iPad
+            if UIDevice.current.orientation == .portrait {
+                width = UIScreen.main.bounds.width
+            } else {
+                width = UIScreen.main.bounds.height
+            }
+            
+        default:
+            width = UIScreen.main.bounds.width
+        }
+        
+        return width * 0.75
+    }
     
     
     @objc private func didReceiveApplicationMemoryWarningNotification(_ notification: Notification) {
@@ -225,7 +239,7 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
     }
     
     @objc private func didReceiveDeviceOrientationDidChangeNotification(_ notification: Notification) {
-        invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
+        resetLayout()
     }
     
     private func configure(attributes: CKMessagesViewLayoutAttributes) {
@@ -234,8 +248,8 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
         
         let messageSize = size(of: message, at: indexPath)
                 
-        attributes.messageContentSize = messageSize.content
-        attributes.messageContentInsets = messageContentInsets
+        attributes.messageInsets = messageInsets
+        attributes.messageSize = messageSize
         attributes.messageFont = messageFont
         attributes.incomingAvatarSize = incomingAvatarSize
         attributes.outgoingAvatarSize = outgoingAvatarSize
@@ -258,14 +272,14 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
                 attributes.topLabelHeight = 0
             }
             
-            if let height = decorator.messagesView(messagesView, layout: self, heightForMessageTopLabelAt: indexPath) {
-                attributes.messageTopLabelHeight = height
-            } else if let attributedText = decorator.messagesView(messagesView, layout: self, attributedTextForMessageTopLabelAt: indexPath) {
-                attributes.messageTopLabelHeight = size(of: attributedText).height
-            } else if let text = decorator.messagesView(messagesView, layout: self, textForMessageTopLabelAt: indexPath) {
-                attributes.messageTopLabelHeight = size(of: text, attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption1)]).height
+            if let height = decorator.messagesView(messagesView, layout: self, heightForBubbleTopLabelAt: indexPath) {
+                attributes.bubbleTopLabelHeight = height
+            } else if let attributedText = decorator.messagesView(messagesView, layout: self, attributedTextForBubbleTopLabelAt: indexPath) {
+                attributes.bubbleTopLabelHeight = size(of: attributedText).height
+            } else if let text = decorator.messagesView(messagesView, layout: self, textForBubbleTopLabelAt: indexPath) {
+                attributes.bubbleTopLabelHeight = size(of: text, attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption1)]).height
             } else {
-                attributes.messageTopLabelHeight = 0
+                attributes.bubbleTopLabelHeight = 0
             }
             
             if let height = decorator.messagesView(messagesView, layout: self, heightForBottomLabelAt: indexPath) {
@@ -287,8 +301,10 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
     
     
     
-    private func reset() {
+    private func resetLayout() {
+        messageBubbleContainerMaximumWidth = reasonablemessageBubbleContainerMaximumWidth()
         messageSizeCalculator.prepareForResetting(layout: self)
+        invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
     }
     
     private func size(of text: NSAttributedString) -> CGSize {

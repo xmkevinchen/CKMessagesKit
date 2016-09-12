@@ -90,9 +90,9 @@ open class CKMessagesViewController: UIViewController {
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        toolbarHeight = inputToolbar.preferredDefaultHeight
-        view.layoutIfNeeded()
+        toolbarHeight = inputToolbar.preferredDefaultHeight        
         messagesView.collectionViewLayout.invalidateLayout()
+        updateMessagesViewInsets()
         
         if automaticallyScrollsToMostRecentMessage {
             DispatchQueue.main.async {
@@ -130,15 +130,6 @@ open class CKMessagesViewController: UIViewController {
     
     
 
-    // MARK:- Public functions
-    
-    public func register(presentor: CKMessagePresenting.Type, for message: CKMessageData.Type) {
-        registeredPresentors[String(describing: message)] = presentor
-    }
-    
-    
-        
-
     
     private func configure() {
         
@@ -149,9 +140,9 @@ open class CKMessagesViewController: UIViewController {
         #endif
         
         messagesView.translatesAutoresizingMaskIntoConstraints = false
-                
-        messagesView.register(for: CKMessageDataViewCell.self)
-        messagesView.register(for: CKMessageViewCell.self)
+        
+        messagesView.register(for: CKMessageBasicCell.self)
+        messagesView.register(for: CKMessageTextCell.self)
         messagesView.register(forSupplementaryView: UICollectionElementKindSectionFooter, for: CKMessagesIndicatorFooterView.self)
         
         messagesView.delegate = self
@@ -185,23 +176,19 @@ open class CKMessagesViewController: UIViewController {
 extension CKMessagesViewController {
     
     
+    /// Register presentor type of specified message type
+    ///
+    /// - parameter presentor: Presentor type
+    /// - parameter message:   Message type
+    public func register(presentor: CKMessagePresenting.Type, for message: CKMessageData.Type) {
+        registeredPresentors[String(describing: message)] = presentor
+    }
+    
+    
     fileprivate func hasPresentor(of message: CKMessageData) -> Bool {
         return registeredPresentors[String(describing: type(of:message))] != nil
     }
     
-    fileprivate func isProcessable(of message: CKMessageData) -> Bool {
-        var isProcessable = false
-        
-        switch message {
-        case is CKMessage:
-            isProcessable = true
-        default:
-            break
-        }
-        
-        return isProcessable
-        
-    }
     
     fileprivate func presentor(of message: CKMessageData, at indexPath: IndexPath) -> CKMessagePresenting? {
         
@@ -523,17 +510,17 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        
+
         var cellForItem: UICollectionViewCell!
         
         if let messagesView = collectionView as? CKMessagesView,
             let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) {
             
-            var messageCell: CKMessageDataViewCell!
+            var messageCell: CKMessageBasicCell!
             
             
             if hasPresentor(of: message) {
-                let cell: CKMessageDataViewCell = collectionView.dequeueReusable(at: indexPath)
+                let cell: CKMessageBasicCell = collectionView.dequeueReusable(at: indexPath)
                 
                 if #available(iOS 10, *) {
                     
@@ -546,7 +533,7 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
                     
                 } else {
                     if let presentor = presentor(of: message, at: indexPath) {
-                        cell.attach(hostedView: presentor.messageView)
+                        cell.messageView = presentor.messageView
                     }
                 }
 
@@ -557,7 +544,7 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
                 
                 // For all unregistered / unknown message type, handle as text message, which is the basic case of messages view
                 
-                let cell: CKMessageViewCell = collectionView.dequeueReusable(at: indexPath)
+                let cell: CKMessageTextCell = collectionView.dequeueReusable(at: indexPath)
                 cell.textView.text = message.text
                 cell.textView.dataDetectorTypes = .all
                                 
@@ -568,13 +555,13 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
             var needsAvatar: Bool = true
             let isOutgoing = self.isOutgoing(message: message)
             if isOutgoing {
-                messageCell.direction = .outgoing
+                messageCell.orientation = .outgoing
                 if messagesView.messagesViewLayout.outgoingAvatarSize == .zero {
                     needsAvatar = false
                 }
                 
             } else {
-                messageCell.direction = .incoming
+                messageCell.orientation = .incoming
                 if messagesView.messagesViewLayout.incomingAvatarSize == .zero {
                     needsAvatar = false
                 }
@@ -590,8 +577,8 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
             }
             
             let bubbleImageData = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, messageBubbleAt: indexPath)
-            messageCell.messageBubbleImageView.image = bubbleImageData?.image
-            messageCell.messageBubbleImageView.highlightedImage = bubbleImageData?.highlightedImage
+            messageCell.bubbleImageView.image = bubbleImageData?.image
+            messageCell.bubbleImageView.highlightedImage = bubbleImageData?.highlightedImage
             
             if let attributedText = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, attributedTextForTopLabelAt: indexPath) {
                 messageCell.topLabel.attributedText = attributedText
@@ -599,18 +586,18 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
                 messageCell.topLabel.text = text
             }
             
-            if let attributedText = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, attributedTextForMessageTopLabelAt: indexPath) {
-                messageCell.messageTopLabel.attributedText = attributedText
-            } else if let text = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, textForMessageTopLabelAt: indexPath) {
+            if let attributedText = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, attributedTextForBubbleTopLabelAt: indexPath) {
+                messageCell.bubbleTopLabel.attributedText = attributedText
+            } else if let text = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, textForBubbleTopLabelAt: indexPath) {
                 
                 var messageTopLabelInset: CGFloat = 15
-                let textInsets = messageCell.messageTopLabel.textInsets
+                let textInsets = messageCell.bubbleTopLabel.textInsets
                 if isOutgoing {
                     if messagesView.messagesViewLayout.outgoingAvatarSize != .zero {
                         messageTopLabelInset += messagesView.messagesViewLayout.outgoingAvatarSize.width
                     }
-                    messageCell.messageTopLabel.textAlignment = .right
-                    messageCell.messageTopLabel.textInsets = UIEdgeInsets(top: textInsets.top, left: 0, bottom: textInsets.bottom, right: messageTopLabelInset)
+                    messageCell.bubbleTopLabel.textAlignment = .right
+                    messageCell.bubbleTopLabel.textInsets = UIEdgeInsets(top: textInsets.top, left: 0, bottom: textInsets.bottom, right: messageTopLabelInset)
                     
                 } else {
                     
@@ -618,10 +605,10 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
                         messageTopLabelInset += messagesView.messagesViewLayout.incomingAvatarSize.width
                     }
                     
-                    messageCell.messageTopLabel.textAlignment = .left
-                    messageCell.messageTopLabel.textInsets = UIEdgeInsets(top: textInsets.top, left: messageTopLabelInset, bottom: textInsets.bottom, right: 0)
+                    messageCell.bubbleTopLabel.textAlignment = .left
+                    messageCell.bubbleTopLabel.textInsets = UIEdgeInsets(top: textInsets.top, left: messageTopLabelInset, bottom: textInsets.bottom, right: 0)
                 }
-                messageCell.messageTopLabel.text = text
+                messageCell.bubbleTopLabel.text = text
             }
             
             
@@ -673,9 +660,9 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
                  * So on iOS 10, at least, for now, process attaching hostedView in willDisplay could solve the issue
                  */
                 
-                if let cell = cell as? CKMessageDataViewCell,
+                if let cell = cell as? CKMessageBasicCell,
                     let presentor = presentor(of: message, at: indexPath) {
-                    cell.attach(hostedView: presentor.messageView)
+                    cell.messageView = presentor.messageView
                     presentor.renderPresenting(with: message)
                 }
             }

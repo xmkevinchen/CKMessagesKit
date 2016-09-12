@@ -55,7 +55,7 @@ public protocol CKMessagesViewDecorating: NSObjectProtocol {
     func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, heightForTopLabelAt indexPath: IndexPath) -> CGFloat?
     
     
-    /// Asks the decorator for the text of the `messageTopLabel` for the item at the specified indexPath
+    /// Asks the decorator for the text of the `bubbleTopLabel` for the item at the specified indexPath
     ///
     /// - parameter messagesView: The messages view object displaying the flow layout
     /// - parameter layout:       The layout object requesting the information
@@ -63,7 +63,7 @@ public protocol CKMessagesViewDecorating: NSObjectProtocol {
     ///
     /// - returns: The text of the `messageTopLabel` for the item at indexPath
     ///
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForMessageTopLabelAt indexPath: IndexPath) -> String?
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForBubbleTopLabelAt indexPath: IndexPath) -> String?
     
     /// Asks the decorator for the attributed text of the `messageTopLabel` for the item at the specified indexPath
     ///
@@ -73,7 +73,7 @@ public protocol CKMessagesViewDecorating: NSObjectProtocol {
     ///
     /// - returns: The attributed text of the `messageTopLabel` for the item at indexPath
     ///
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, attributedTextForMessageTopLabelAt indexPath: IndexPath) -> NSAttributedString?
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, attributedTextForBubbleTopLabelAt indexPath: IndexPath) -> NSAttributedString?
     
     /// Asks the decorator for the height of the `messageTopLabel` for the item at the specified indexPath
     ///
@@ -83,7 +83,7 @@ public protocol CKMessagesViewDecorating: NSObjectProtocol {
     ///
     /// - returns: The height of the `messageTopLabel` for the item at indexPath
     ///
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, heightForMessageTopLabelAt indexPath: IndexPath) -> CGFloat?
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, heightForBubbleTopLabelAt indexPath: IndexPath) -> CGFloat?
     
     /// Asks the decorator for the text of the `bottomLabel` for the item at the specified indexPath
     ///
@@ -253,7 +253,7 @@ public extension CKMessagesViewDecorating {
     }
     
     
-    /// Asks the decorator for the text of the `messageTopLabel` for the item at the specified indexPath
+    /// Asks the decorator for the text of the `bubbleTopLabel` for the item at the specified indexPath
     ///
     /// - parameter messagesView: The messages view object displaying the flow layout
     /// - parameter layout:       The layout object requesting the information
@@ -261,11 +261,11 @@ public extension CKMessagesViewDecorating {
     ///
     /// - returns: The text of the `messageTopLabel` for the item at indexPath
     ///
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForMessageTopLabelAt indexPath: IndexPath) -> String? {
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForBubbleTopLabelAt indexPath: IndexPath) -> String? {
         return nil
     }
     
-    /// Asks the decorator for the attributed text of the `messageTopLabel` for the item at the specified indexPath
+    /// Asks the decorator for the attributed text of the `bubbleTopLabel` for the item at the specified indexPath
     ///
     /// - parameter messagesView: The messages view object displaying the flow layout
     /// - parameter layout:       The layout object requesting the information
@@ -273,11 +273,11 @@ public extension CKMessagesViewDecorating {
     ///
     /// - returns: The attributed text of the `messageTopLabel` for the item at indexPath
     ///
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, attributedTextForMessageTopLabelAt indexPath: IndexPath) -> NSAttributedString? {
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, attributedTextForBubbleTopLabelAt indexPath: IndexPath) -> NSAttributedString? {
         return nil
     }
     
-    /// Asks the decorator for the height of the `messageTopLabel` for the item at the specified indexPath
+    /// Asks the decorator for the height of the `bubbleTopLabel` for the item at the specified indexPath
     ///
     /// - parameter messagesView: The messages view object displaying the flow layout
     /// - parameter layout:       The layout object requesting the information
@@ -285,7 +285,7 @@ public extension CKMessagesViewDecorating {
     ///
     /// - returns: The height of the `messageTopLabel` for the item at indexPath
     ///
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, heightForMessageTopLabelAt indexPath: IndexPath) -> CGFloat? {
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, heightForBubbleTopLabelAt indexPath: IndexPath) -> CGFloat? {
         return nil
     }
     

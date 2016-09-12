@@ -32,72 +32,50 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
         self.init(cache: cache, minimumWidth: minimumWidth)
     }
     
-    func size(of message: CKMessageData, at indexPath: IndexPath, with layout: CKMessagesViewLayout) -> CKMessageSize {
+    func size(of message: CKMessageData, at indexPath: IndexPath, with layout: CKMessagesViewLayout) -> CGSize {
         
         let key = message.hash as AnyObject
         
-        if let cachedSize = cache.object(forKey: key) as? CKMessageSize {
+        if let cachedSize = cache.object(forKey: key) as? CGSize {
             return cachedSize
         }
+                        
         
-        let avatarSize: CGSize = self.avatarSize(of: message, with: layout)
-        
-        let messagenContentInsets = layout.messageContentInsets
-        
-        let hInsets = messagenContentInsets.left + messagenContentInsets.right
-        let vInsets = messagenContentInsets.top + messagenContentInsets.bottom
-        
-        var contentSize = layout.messagesView.decorator?.messagesView(layout.messagesView, layout: layout, contentSizeAt: indexPath)        
-        
-        var width: CGFloat = 0
-        var height: CGFloat = 0
-        
-        let maximumWidth = layout.itemWidth - avatarSize.width - layout.messageContainerMargin - hInsets
-        
-        if contentSize != nil {
-            
-            if contentSize!.width > maximumWidth {
-                contentSize!.width = maximumWidth
-            }
-            
-            width = contentSize!.width + hInsets
-            height = contentSize!.height + vInsets
-            
-            
-        } else {
-            
-            
-//            let textView = CKMessageCellTextView()
-//            textView.text = message.text
-//            let stringSize = textView.sizeThatFits(CGSize(width: maximumWidth, height: CGFloat.greatestFiniteMagnitude))
-            
-            let stringRect = NSString(string: message.text)
-                .boundingRect(with: CGSize(width: maximumWidth, height: CGFloat.greatestFiniteMagnitude),
-                              options: [.usesLineFragmentOrigin, .usesFontLeading],
-                              attributes: [NSFontAttributeName: layout.messageFont],
-                              context: nil)
-
-            var stringSize = stringRect.integral.size
-            
-            // The stringSize calculated here is 2 pixels less than the one calculated by UIText.sizeThatFits(_:) method
-            // as the comment above the stringRect calculation.
-            // In order to keep this code without UI components, we still use the additional insets
-            
-            stringSize.height += additionalInsets
-            
-            contentSize = stringSize
-            
-            width = contentSize!.width + hInsets
-            height = contentSize!.height + vInsets
+        /// If decorator returns contentSize of message, just use it without caching it
+        if let contentSize = layout.messagesView.decorator?.messagesView(layout.messagesView, layout: layout, contentSizeAt: indexPath) {
+            return contentSize
         }
         
+        let messageInsets = layout.messageInsets
+        let horizontalSpace = messageInsets.left + messageInsets.right
         
-        let containerSize = CGSize(width: max(width, minimumWidth), height: height)
+        let avatarSize: CGSize = self.avatarSize(of: message, with: layout)
+        let maximumWidth = min(layout.itemWidth - avatarSize.width - horizontalSpace - 50, layout.messageBubbleContainerMaximumWidth)
+                        
+         let textView = CKMessageCellTextView()
+         textView.text = message.text
+         let referenceSize = textView.sizeThatFits(CGSize(width: maximumWidth, height: CGFloat.greatestFiniteMagnitude))
         
-        let size = CKMessageSize(container: containerSize, content: contentSize!)
-        cache.setObject(size as AnyObject, forKey: key)        
+        let stringRect = NSString(string: message.text)
+            .boundingRect(with: CGSize(width: maximumWidth, height: CGFloat.greatestFiniteMagnitude),
+                          options: [.usesLineFragmentOrigin, .usesFontLeading],
+                          attributes: [NSFontAttributeName: layout.messageFont],
+                          context: nil)
         
-        return size
+        var stringSize = stringRect.integral.size
+        
+        // The stringSize calculated here is 2 pixels less than the one calculated by UIText.sizeThatFits(_:) method
+        // as the comment above the stringRect calculation.
+        // In order to keep this code without UI components, we still use the additional insets
+        
+        stringSize.height += additionalInsets
+        
+        var contentSize = stringSize
+        contentSize.width = max(contentSize.width, minimumWidth)
+        
+        cache.setObject(contentSize as AnyObject, forKey: key)
+        
+        return contentSize
     }
     
     func prepareForResetting(layout: CKMessagesViewLayout) {
@@ -105,6 +83,7 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
     }
     
     private func avatarSize(of message: CKMessageData, with layout: CKMessagesViewLayout) -> CGSize {
+        
         if let senderId = layout.messagesView.messenger?.senderId {
             
             if message.senderId == senderId {

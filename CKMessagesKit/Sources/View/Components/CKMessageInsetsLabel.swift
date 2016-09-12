@@ -1,5 +1,5 @@
 //
-//  CKInsetsLabel.swift
+//  CKMessageInsetsLabel.swift
 //  CKMessagesViewController
 //
 //  Created by Kevin Chen on 8/26/16.
@@ -8,8 +8,7 @@
 
 import UIKit
 
-//@IBDesignable
-public class CKInsetsLabel: UILabel {
+public class CKMessageInsetsLabel: UILabel {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,37 +24,26 @@ public class CKInsetsLabel: UILabel {
         super.awakeFromNib()
         configure()
     }
-    
-    
-    
-    
+                
     private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
     }
     
-    
-    private var _textInsets: UIEdgeInsets = .zero
-    
-//    @IBInspectable
-    public var textInsets: UIEdgeInsets {
-        get {
-            return _textInsets
-        }
+    public var textInsets: UIEdgeInsets = .zero {
         
-        set {
-            guard newValue != _textInsets else {
+        didSet {
+            guard textInsets != oldValue else {
                 return
             }
             
-            _textInsets = newValue
-            
             setNeedsDisplay()
+            setNeedsLayout()
         }
     }
     
     
     override public func drawText(in rect: CGRect) {
-        super.drawText(in:UIEdgeInsetsInsetRect(rect, _textInsets))
+        super.drawText(in:UIEdgeInsetsInsetRect(rect, textInsets))
     }
     
     public override var intrinsicContentSize: CGSize {
@@ -69,8 +57,8 @@ public class CKInsetsLabel: UILabel {
                                                         context: nil).integral.size
             
         }
-        size.width += (_textInsets.left + _textInsets.right)
-        size.height += (_textInsets.top + _textInsets.bottom)
+        size.width += (textInsets.left + textInsets.right)
+        size.height += (textInsets.top + textInsets.bottom)
         
         return size
     }

@@ -16,24 +16,32 @@ public class CKMessagesViewLayoutAttributes: UICollectionViewLayoutAttributes {
         case right
     }
     
-    public var messageFont: UIFont
+    
+    
+    public var avatarPosition: CKMessagesViewAvatarPosition
     public var incomingAvatarSize: CGSize
     public var outgoingAvatarSize: CGSize
-    public var messageContentInsets: UIEdgeInsets
-    public var messageContentSize: CGSize
+    
+    public var messageFont: UIFont
+    public var messageBubbleContainerSize: CGSize
+    public var messageSize: CGSize
+    public var messageInsets: UIEdgeInsets
+    
     public var topLabelHeight: CGFloat
-    public var messageTopLabelHeight: CGFloat
+    public var bubbleTopLabelHeight: CGFloat
     public var bottomLabelHeight: CGFloat
-    public var avatarPosition: CKMessagesViewAvatarPosition
+    
+    
     
     override init() {
         messageFont = UIFont.preferredFont(forTextStyle: .body)
         incomingAvatarSize = .zero
         outgoingAvatarSize = .zero
-        messageContentInsets = .zero
-        messageContentSize = .zero
+        messageInsets = .zero
+        messageSize = .zero
+        messageBubbleContainerSize = .zero
         topLabelHeight = 0.0
-        messageTopLabelHeight = 0.0
+        bubbleTopLabelHeight = 0.0
         bottomLabelHeight = 0.0
         avatarPosition = .left
         super.init()
@@ -45,10 +53,11 @@ public class CKMessagesViewLayoutAttributes: UICollectionViewLayoutAttributes {
         copy.messageFont = messageFont
         copy.incomingAvatarSize = incomingAvatarSize
         copy.outgoingAvatarSize = outgoingAvatarSize
-        copy.messageContentInsets = messageContentInsets
-        copy.messageContentSize = messageContentSize
+        copy.messageInsets = messageInsets
+        copy.messageSize = messageSize
+        copy.messageBubbleContainerSize = messageBubbleContainerSize
         copy.topLabelHeight = topLabelHeight
-        copy.messageTopLabelHeight = messageTopLabelHeight
+        copy.bubbleTopLabelHeight = bubbleTopLabelHeight
         copy.bottomLabelHeight = bottomLabelHeight
         copy.avatarPosition = avatarPosition
         
@@ -62,10 +71,11 @@ public class CKMessagesViewLayoutAttributes: UICollectionViewLayoutAttributes {
                 return messageFont == attributes.messageFont                    
                     && incomingAvatarSize == attributes.incomingAvatarSize
                     && outgoingAvatarSize == attributes.outgoingAvatarSize
-                    && messageContentInsets == attributes.messageContentInsets                    
-                    && messageContentSize == attributes.messageContentSize
+                    && messageInsets == attributes.messageInsets                    
+                    && messageSize == attributes.messageSize
+                    && messageBubbleContainerSize == attributes.messageBubbleContainerSize
                     && topLabelHeight == attributes.topLabelHeight
-                    && messageTopLabelHeight == attributes.messageTopLabelHeight
+                    && bubbleTopLabelHeight == attributes.bubbleTopLabelHeight
                     && bottomLabelHeight == attributes.bottomLabelHeight
                     && avatarPosition == attributes.avatarPosition
                     && super.isEqual(attributes)

@@ -14,11 +14,11 @@ public enum CKMessageDirection: String {
 //@IBDesignable
 class CKMessageView: UIView {
     
-    @IBOutlet weak var topLabel: CKInsetsLabel!
+    @IBOutlet weak var topLabel: CKMessageInsetsLabel!
     @IBOutlet weak var topLabelHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var messageTopLabel: CKInsetsLabel!
+    @IBOutlet weak var messageTopLabel: CKMessageInsetsLabel!
     @IBOutlet weak var messageTopLabelConstraint: NSLayoutConstraint!
-    @IBOutlet weak var bottomLabel: CKInsetsLabel!
+    @IBOutlet weak var bottomLabel: CKMessageInsetsLabel!
     @IBOutlet weak var bottomLabelHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var containerView: UIView!
