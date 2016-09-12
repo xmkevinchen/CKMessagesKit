@@ -35,7 +35,7 @@ class CKMessageView: UIView {
     @IBOutlet weak var avatarWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var avatarHeightConstraint: NSLayoutConstraint!
     
-//    @IBOutlet weak var messageContainerViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var messageContainerViewWidthConstraint: NSLayoutConstraint!
     
     
     @IBOutlet weak var contentViewTopConstraint: NSLayoutConstraint!

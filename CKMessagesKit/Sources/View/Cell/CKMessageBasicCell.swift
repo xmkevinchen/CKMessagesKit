@@ -49,10 +49,14 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
     
     @IBOutlet weak var avatarImageViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var avatarImageViewHeightConstraint: NSLayoutConstraint!
+            
+    @IBOutlet weak var messageBubbleContainerViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var messageBubbleContainerViewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var accessoryContainerViewWidthConstraint: NSLayoutConstraint!
     
     private var messageViewConstraints: MessageViewConstraints?
+    private var containerViewConstraints: ContainerViewConstraints!
     
     /// MARK: - Overrides
     
@@ -67,6 +71,10 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
             proxyView.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview(proxyView)
             contentView.pinSubview(proxyView)
+            containerViewConstraints = ContainerViewConstraints(avatar: avatarContainerView,
+                                                                message: messageBubbleContainerView,
+                                                                accessory: accessoryContainerView)
+            
             
         } else {
             fatalError("====> Unable to instantiate CKMessageBasicCell outlets from nib: \(nib)")
@@ -112,225 +120,128 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
                 return
             }
             
-            layout(with: attributes)
+            topLabelHeightConstraint.constant = attributes.topLabelHeight
+            bubbleTopLabelHeightConstraint.constant = attributes.bubbleTopLabelHeight
+            bottomLabelHeightConstraint.constant = attributes.bottomLabelHeight
+            
+            self.orientation = attributes.avatarPosition == .left ? .incoming : .outgoing
+            self.avatarSize = (orientation == .incoming) ? attributes.incomingAvatarSize : attributes.outgoingAvatarSize
+            self.messageSize = attributes.messageSize
+            self.messageInsets = attributes.messageInsets
+
+            setNeedsUpdateConstraints()
+            setNeedsLayout()
         }
         
     }
     
-    open func layout(with attributes: CKMessagesViewLayoutAttributes) {
+    open override func updateConstraints() {
         
-        topLabelHeightConstraint.constant = attributes.topLabelHeight
-        bubbleTopLabelHeightConstraint.constant = attributes.bubbleTopLabelHeight
-        bottomLabelHeightConstraint.constant = attributes.bottomLabelHeight
         
-        let orientation: MessageOrientation = attributes.avatarPosition == .left ? .incoming : .outgoing
-        let messageSize = attributes.messageSize
-        let messageInsets = attributes.messageInsets
-        
-        let avatarSize = orientation == .incoming ? attributes.incomingAvatarSize : attributes.outgoingAvatarSize
-        
+        // Avatar
         avatarImageViewWidthConstraint.constant = avatarSize.width
         avatarImageViewHeightConstraint.constant = avatarSize.height
         
         
-        if orientation != self.orientation {
-            layout(with: orientation)
+        messageBubbleContainerViewWidthConstraint.constant = messageSize.width + messageInsets.left + messageInsets.right
+        messageBubbleContainerViewHeightConstraint.constant = messageSize.height + messageInsets.top + messageInsets.bottom
+        
+        // Message
+        if let constraints = messageViewConstraints, let messageView = messageView {
+            if messageView.superview === messageBubbleContainerView {
+                
+                
+                var leading = messageInsets.left
+                var trailing = messageInsets.right
+                
+                switch orientation {
+                case .incoming:
+                    leading += bubbleTailHorizontalSpace
+                    
+                case .outgoing:
+                    trailing += bubbleTailHorizontalSpace
+                }
+                
+                
+                constraints.width?.constant = messageSize.width
+                constraints.height?.constant = messageSize.height
+                
+                constraints.top?.constant = messageInsets.top
+                constraints.bottom?.constant = messageInsets.bottom
+                constraints.leading?.constant = leading
+                constraints.trailing?.constant = trailing
+                
+                
+                let extras = messageView.constraints.filter { !constraints.constraints.contains($0) }
+                messageView.removeConstraints(extras)
+                
+                messageBubbleContainerViewWidthConstraint.constant = messageSize.width + leading + trailing
+                
+            }
         }
         
-        guard let messageView = messageView else {
-            return
-        }
         
-        messageBubbleContainerView.removeConstraints(
-            messageBubbleContainerView.constraints
-                .filter { $0.firstItem === messageView || $0.secondItem === messageView })
         
-        var leading = messageInsets.left
-        var trailing = messageInsets.right
+        
+        // Orientation
         switch orientation {
         case .incoming:
-            leading += bubbleTailHorizontalSpace
+            
+            if containerViewConstraints.actived != .incoming {
+                NSLayoutConstraint.deactivate(containerViewConstraints.outgoing)
+                NSLayoutConstraint.activate(containerViewConstraints.incoming)
+                containerViewConstraints.actived = .incoming
+            }
+            
             
         case .outgoing:
-            trailing += bubbleTailHorizontalSpace
-        }
-        
-        let metrics = [
-            "t" : messageInsets.top,
-            "b" : messageInsets.bottom,
-            "l" : leading,
-            "r" : trailing,
-            "width": messageSize.width,
-            "height": messageSize.height
-        ]
-        
-        messageBubbleContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-l-[v(width@999)]-r-|",
-                                                                  options: [],
-                                                                  metrics: metrics,
-                                                                  views: ["v": messageView]))
-        messageBubbleContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-t-[v(height@999)]-b@999-|",
-                                                                  options: [],
-                                                                  metrics: metrics,
-                                                                  views: ["v": messageView]))
-        
-        setNeedsUpdateConstraints()
-        setNeedsLayout()
-        
-        
-    }
-    
-    public var avatarSize: CGSize = .zero {
-        didSet {
-            
-            guard avatarSize != oldValue else {
-                return
+            if containerViewConstraints.actived != .outgoing {
+                NSLayoutConstraint.deactivate(containerViewConstraints.incoming)
+                NSLayoutConstraint.activate(containerViewConstraints.outgoing)
+                containerViewConstraints.actived = .outgoing
             }
             
-            
-            avatarImageViewWidthConstraint.constant = avatarSize.width
-            avatarImageViewHeightConstraint.constant = avatarSize.height
-            
-            setNeedsLayout()
         }
-    }
-    
-    
-    
-    public var orientation: MessageOrientation = .incoming
-    {
         
-        didSet {
-            guard orientation != oldValue else {
-                return
-            }
-            
-            layout(with: orientation)
-        }
+        super.updateConstraints()
+        
     }
-    
-    
-    
-    /// The bubble tail to its body horizontal space, Default value is 6.0
-    public var bubbleTailHorizontalSpace: CGFloat = 6.0
-//    {
-//        
-//        didSet {
-//            
-//            guard bubbleTailHorizontalSpace != oldValue && messageView != nil && messageViewConstraints != nil else {
-//                return
-//            }
-//            
-//            
-//            switch orientation {
-//            case .incoming:
-//                
-//                messageViewConstraints?.leading?.constant = (bubbleTailHorizontalSpace + messageInsets.left)
-//                
-//            case .outgoing:
-//                
-//                messageViewConstraints?.trailing?.constant = (bubbleTailHorizontalSpace + messageInsets.right)
-//            }
-//            
-//            
-//            messageBubbleContainerView.setNeedsLayout()
-//            setNeedsLayout()
-//            
-//        }
-//    }
-    
-    public var messageView: UIView? {
+
+    public weak var messageView: UIView? {
         
         
         didSet {
             
             if let messageView = messageView {
-                
                 messageBubbleContainerView.addSubview(messageView)
                 messageView.translatesAutoresizingMaskIntoConstraints = false
-                
-                
-//                let constraints = MessageViewConstraints()
-//                
-//                constraints.width = NSLayoutConstraint(item: messageView,
-//                                                       attribute: .width,
-//                                                       relatedBy: .equal,
-//                                                       toItem: nil,
-//                                                       attribute: .notAnAttribute,
-//                                                       multiplier: 1.0,
-//                                                       constant: messageSize.width)
-//
-//                
-//                constraints.height = NSLayoutConstraint(item: messageView,
-//                                                        attribute: .height,
-//                                                        relatedBy: .equal,
-//                                                        toItem: nil,
-//                                                        attribute: .notAnAttribute,
-//                                                        multiplier: 1.0,
-//                                                        constant: messageSize.height)
-//                constraints.height?.priority = 999
-//                
-//                
-//                constraints.top = NSLayoutConstraint(item: messageView,
-//                                                     attribute: .top,
-//                                                     relatedBy: .equal,
-//                                                     toItem: messageBubbleContainerView,
-//                                                     attribute: .top,
-//                                                     multiplier: 1.0,
-//                                                     constant: messageInsets.top)
-//                
-//                constraints.bottom = NSLayoutConstraint(item: messageView,
-//                                                        attribute: .bottom,
-//                                                        relatedBy: .equal,
-//                                                        toItem: messageBubbleContainerView,
-//                                                        attribute: .bottom,
-//                                                        multiplier: 1.0,
-//                                                        constant: messageInsets.bottom)
-//                
-//                
-//                var leadingConstant = messageInsets.left
-//                var trailingConstant = messageInsets.right
-//                
-//                switch orientation {
-//                case .incoming:
-//                    leadingConstant += bubbleTailHorizontalSpace
-//                    
-//                case .outgoing:
-//                    trailingConstant += bubbleTailHorizontalSpace
-//                    
-//                }
-//                
-//                constraints.leading = NSLayoutConstraint(item: messageView,
-//                                                         attribute: .leading,
-//                                                         relatedBy: .equal,
-//                                                         toItem: messageBubbleContainerView,
-//                                                         attribute: .leading,
-//                                                         multiplier: 1.0,
-//                                                         constant: leadingConstant)
-//                constraints.trailing = NSLayoutConstraint(item: messageView,
-//                                                          attribute: .trailing,
-//                                                          relatedBy: .equal,
-//                                                          toItem: messageBubbleContainerView,
-//                                                          attribute: .trailing,
-//                                                          multiplier: 1.0,
-//                                                          constant: trailingConstant)
-//                
-//                messageViewConstraints = constraints
-//                
-//                NSLayoutConstraint.activate(constraints.constraints)
-//                setNeedsLayout()
-                
+                messageViewConstraints = MessageViewConstraints(target: messageView, superview: messageBubbleContainerView, insets: messageInsets, size: messageSize)
+                NSLayoutConstraint.activate(messageViewConstraints!.constraints)
             } else {
-//                if messageViewConstraints != nil {
-//                    NSLayoutConstraint.deactivate(messageViewConstraints!.constraints)
-//                    messageViewConstraints = nil
-//                    setNeedsLayout()
-//                }
+                
+                messageViewConstraints = nil
             }
             
         }
         
     }
     
+    public var accessoryView: UIView?
+    
+    
+    // MARK: - Adjustable Layout properties
+    
+    
+    /// The orientation of message, Default is incoming
+    public var orientation: MessageOrientation = .incoming
+
+    
+    /// The size of avatar, Default is CGSize.zero
+    public var avatarSize: CGSize = .zero
+    
+    /// The bubble tail to its body horizontal space, Default value is 6.0
+    public var bubbleTailHorizontalSpace: CGFloat = 6.0
+
     
     /// The insets of message inside of the message bubble, besides the `bubbleTailWidth`
     ///
@@ -339,94 +250,10 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
     /// * incoming -- The total insets.left = `messageInsets.left + bubbleTailWidth`
     /// * outgoing -- The total insets.right = `messageInset.right + bubbleTailWidth`
     public var messageInsets: UIEdgeInsets = .zero
-//    {
-//        
-//        didSet {
-//            
-//            guard messageView != nil && messageInsets != oldValue else {
-//                return
-//            }
-//            
-////            if let constraints = messageViewConstraints {
-////                
-////                constraints.top?.constant = messageInsets.top
-////                constraints.bottom?.constant = messageInsets.bottom
-////                constraints.leading?.constant = messageInsets.left
-////                constraints.trailing?.constant = messageInsets.right
-////                
-////                switch orientation {
-////                case .incoming:
-////                    constraints.leading?.constant += bubbleTailHorizontalSpace
-////                case .outgoing:
-////                    constraints.trailing?.constant += bubbleTailHorizontalSpace
-////                }
-////                
-////                
-////                messageBubbleContainerView.setNeedsUpdateConstraints()
-////                setNeedsUpdateConstraints()
-////            }
-//            let removingConstraints = messageBubbleContainerView.constraints.filter {
-//                $0.firstItem === messageView || $0.secondItem === messageView
-//            }
-//            
-//            messageBubbleContainerView.removeConstraints(removingConstraints)
-//            messageView?.removeConstraints(messageView!.constraints)
-//            
-//            let constraints
-//                = MessageViewConstraints(target: messageView!,
-//                                         superview: messageBubbleContainerView,
-//                                         insets: messageInsets,
-//                                         size: messageSize,
-//                                         orientation: orientation,
-//                                         bubbleTailHorizontalSpace: bubbleTailHorizontalSpace)
-//            
-//            NSLayoutConstraint.activate(constraints.constraints)
-//            setNeedsUpdateConstraints()
-//            setNeedsLayout()
-//            
-//            
-//        }
-//    }
     
+    
+    /// The size of message to `messageView`
     public var messageSize: CGSize = .zero
-//    {
-//        didSet {
-//            
-//            guard messageSize != oldValue && messageView != nil else {
-//                return
-//            }
-//            
-////            messageViewConstraints?.width?.constant = messageSize.width
-////            messageViewConstraints?.height?.constant = messageSize.height
-////            
-////            messageBubbleContainerView.setNeedsUpdateConstraints()
-////            setNeedsUpdateConstraints()
-//            
-//            let removingConstraints = messageBubbleContainerView.constraints.filter {
-//                $0.firstItem === messageView || $0.secondItem === messageView
-//            }
-//            
-//            messageBubbleContainerView.removeConstraints(removingConstraints)
-//            messageView?.removeConstraints(messageView!.constraints)
-//            
-//            let constraints
-//                = MessageViewConstraints(target: messageView!,
-//                                         superview: messageBubbleContainerView,
-//                                         insets: messageInsets,
-//                                         size: messageSize,
-//                                         orientation: orientation,
-//                                         bubbleTailHorizontalSpace: bubbleTailHorizontalSpace)
-//            
-//            NSLayoutConstraint.activate(constraints.constraints)
-//            setNeedsUpdateConstraints()
-//            setNeedsLayout()
-//            
-//            
-//        }
-//    }
-    
-    public var accessoryView: UIView?
-    
     
     private func configure() {
         
@@ -462,67 +289,51 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
         contentView.clipsToBounds = true
         messageBubbleContainerView.clipsToBounds = true
         
-        
-        layout(with: orientation)
-        
-        
+        updateConstraints()
     }
     
     
-    private func layout(with orientation: MessageOrientation) {
+    
+    // MARK:- Layout Convenience Holder
+    
+    
+    /// A convenience data struct to hold two groups of `containerView` layout constraints
+    private class ContainerViewConstraints {
         
-        let removingAttributes: [NSLayoutAttribute] = [.leading, .trailing]
-        containerView.removeConstraints(
-            containerView.constraints.filter { constraint in
-                
-                return (removingAttributes.contains(constraint.firstAttribute)
-                    || removingAttributes.contains(constraint.secondAttribute))
-            }
-        )
+        var avatar: UIView
+        var message: UIView
+        var accessory: UIView
         
-        switch orientation {
-        case .incoming:
+        var actived: MessageOrientation?
+        
+        lazy var incoming: [NSLayoutConstraint] = {
             
-            containerView.addConstraints(
-                NSLayoutConstraint.constraints(withVisualFormat: "H:|[avatar][message][accessory]-(>=0)-|",
-                                               options: [],
-                                               metrics: nil,
-                                               views: [
-                                                "avatar": avatarContainerView,
-                                                "message": messageBubbleContainerView,
-                                                "accessory": accessoryContainerView]))
+            return NSLayoutConstraint.constraints(withVisualFormat: "H:|[avatar][message][accessory]-(>=0)-|",
+                                                  options: [],
+                                                  metrics: nil,
+                                                  views: ["avatar": self.avatar,
+                                                          "message": self.message,
+                                                          "accessory": self.accessory])
             
-            if let constraints = messageViewConstraints {
-                constraints.leading?.constant = (bubbleTailHorizontalSpace + messageInsets.left)
-                constraints.trailing?.constant = messageInsets.right
-            }
-            
-            
-            
-        case .outgoing:
-            
-            containerView.addConstraints(
-                NSLayoutConstraint.constraints(withVisualFormat: "H:|-(>=0)-[accessory][message][avatar]|",
-                                               options: [],
-                                               metrics: nil,
-                                               views: [
-                                                "avatar": avatarContainerView,
-                                                "message": messageBubbleContainerView,
-                                                "accessory": accessoryContainerView]))
-
-            
-            if let constraints = messageViewConstraints {
-                constraints.leading?.constant = messageInsets.left
-                constraints.trailing?.constant = (bubbleTailHorizontalSpace + messageInsets.right)
-            }
-            
-            
+        }()
+        
+        lazy var outgoing: [NSLayoutConstraint] = {
+            return NSLayoutConstraint.constraints(withVisualFormat: "H:|-(>=0)-[accessory][message][avatar]|",
+                                                  options: [],
+                                                  metrics: nil,
+                                                  views: ["avatar": self.avatar,
+                                                          "message": self.message,
+                                                          "accessory": self.accessory])
+        }()
+        
+        init(avatar: UIView, message: UIView, accessory: UIView) {
+            self.avatar = avatar
+            self.message = message
+            self.accessory = accessory
         }
         
-        setNeedsUpdateConstraints()
-        
-        
     }
+
     
     
     /// Convenience constraints class for holding all constraints of messageView
@@ -537,7 +348,7 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
         
         override init() {}
         
-        init(target: UIView, superview: UIView, insets: UIEdgeInsets, size: CGSize, orientation: MessageOrientation, bubbleTailHorizontalSpace: CGFloat) {
+        init(target: UIView, superview: UIView, insets: UIEdgeInsets, size: CGSize) {
             width = NSLayoutConstraint(item: target,
                                        attribute: .width,
                                        relatedBy: .equal,
@@ -545,7 +356,7 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
                                        attribute: .notAnAttribute,
                                        multiplier: 1.0,
                                        constant: size.width)
-            
+            width?.priority = 999
             
             height = NSLayoutConstraint(item: target,
                                         attribute: .height,
@@ -573,33 +384,21 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
                                         multiplier: 1.0,
                                         constant: insets.bottom)
             
-            
-            var leadingConstant = insets.left
-            var trailingConstant = insets.right
-            
-            switch orientation {
-            case .incoming:
-                leadingConstant += bubbleTailHorizontalSpace
-                
-            case .outgoing:
-                trailingConstant += bubbleTailHorizontalSpace
-                
-            }
-            
             leading = NSLayoutConstraint(item: target,
                                          attribute: .leading,
                                          relatedBy: .equal,
                                          toItem: superview,
                                          attribute: .leading,
                                          multiplier: 1.0,
-                                         constant: leadingConstant)
+                                         constant: insets.left)
             trailing = NSLayoutConstraint(item: target,
                                           attribute: .trailing,
                                           relatedBy: .equal,
                                           toItem: superview,
                                           attribute: .trailing,
                                           multiplier: 1.0,
-                                          constant: trailingConstant)
+                                          constant: insets.right)
+            trailing?.priority = 999
         }
         
         

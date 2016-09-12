@@ -48,7 +48,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         messagesView.messagesViewLayout.outgoingAvatarSize = .zero
         messagesView.messagesViewLayout.incomingAvatarSize = CGSize(width: 48, height: 48)        
         
-        for _ in 0..<12 {
+        for _ in 0..<4 {
             insertNewMessage()
         }
         
@@ -120,18 +120,25 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         return "Kevin Chen"
     }
     
+    let text = "It is almost always cleaner and easier to update a constraint immediately after the affecting change has occurred. Deferring these changes to a later method makes the code more complex and harder to understand.\nHowever, there are times when you may want to batch changes for performance reasons. This should only be done when changing the constraints in place is too slow, or when a view is making a number of redundant changes.\nTo batch a change, instead of making the change directly, call the setNeedsUpdateConstraints method on the view holding the constraint. Then, override the view’s updateConstraints method to modify the affected constraints."
     
     private func generateMessage(at index: Int) -> CKMessageData? {
         
         var message: CKMessageData?
-        let value = index % 2
+        let value = index % 4
+        
+        let length = self.text.lengthOfBytes(using: .utf8)
+        let lastIndex = self.text.index(self.text.startIndex, offsetBy: max(Int(arc4random_uniform(UInt32(length - 1))), 80))
+//        let lastIndex = self.text.index(self.text.startIndex, offsetBy: 60)
+        let text = self.text.substring(to: lastIndex)
         
         switch value {
         case 0:
+            
             message = CKMessage(senderId: senderId, sender: sender, text: "Your Apple ID must be associated with a paid Apple Developer Program or Apple Developer Enterprise Program to access certain software downloads.")
             
         case 1:
-            message = CKMessage(senderId: "incoming", sender: "Incoming", text: "Get the latest beta releases of Xcode, iOS, macOS, watchOS, tvOS, and more.")
+            message = CKMessage(senderId: "incoming", sender: "Incoming", text: text)
             
         case 2:
             message = GridMessage(senderId: senderId, sender: sender, text: String(index))
@@ -160,11 +167,18 @@ extension ViewController: CKMessagesViewDecorating {
         
     func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, contentSizeAt indexPath: IndexPath) -> CGSize? {
         let message = messages[indexPath.item]
-        if message is CKMessage {
+        
+        switch message {
+        case is GridMessage:
+            return CGSize(width: 260, height: 60)
+            
+        case is ListMessage:
+            return CGSize(width: 240, height: 200)
+            
+        default:
             return nil
         }
         
-        return CGSize(width:Int(100 + arc4random_uniform(50)), height:Int(50 + arc4random_uniform(100)))
     }
     
 //    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForTopLabelAt indexPath: IndexPath) -> String? {

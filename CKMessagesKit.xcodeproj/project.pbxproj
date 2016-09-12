@@ -302,10 +302,7 @@
 		0A076A911D75CE2B0028383B /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				91A6CBAD1D77A52F00695657 /* CKMessageView.swift */,
-				91A6CBAE1D77A52F00695657 /* CKMessageView.xib */,
-				0A076A921D75CE2B0028383B /* CKMessageDataViewCell.swift */,
-				0A076A931D75CE2B0028383B /* CKMessageViewCell.swift */,
+				0AEFF34F1D86560B00471F30 /* Deprecated */,
 				0A9175F71D8476AF00D2A11F /* CKMessageBasicCell.swift */,
 				0A9175F81D8476AF00D2A11F /* CKMessageBasicCell.xib */,
 				0AE4F21F1D8512F20094EB64 /* CKMessageTextCell.swift */,
@@ -356,6 +353,17 @@
 				0A9176001D8480F000D2A11F /* Reusable.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		0AEFF34F1D86560B00471F30 /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				91A6CBAD1D77A52F00695657 /* CKMessageView.swift */,
+				91A6CBAE1D77A52F00695657 /* CKMessageView.xib */,
+				0A076A921D75CE2B0028383B /* CKMessageDataViewCell.swift */,
+				0A076A931D75CE2B0028383B /* CKMessageViewCell.swift */,
+			);
+			name = Deprecated;
 			sourceTree = "<group>";
 		};
 		912223FA1D6E6D0E00C5F3B4 = {
