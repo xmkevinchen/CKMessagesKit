@@ -227,7 +227,7 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
             width = UIScreen.main.bounds.width
         }
         
-        return width * 0.25
+        return width * 0.2
     }
     
     

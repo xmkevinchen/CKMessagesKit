@@ -48,7 +48,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         messagesView.messagesViewLayout.outgoingAvatarSize = .zero
         messagesView.messagesViewLayout.incomingAvatarSize = CGSize(width: 48, height: 48)        
         
-        for _ in 0..<4 {
+        for _ in 0..<1 {
             insertNewMessage()
         }
         
@@ -181,52 +181,52 @@ extension ViewController: CKMessagesViewDecorating {
         
     }
     
-//    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForTopLabelAt indexPath: IndexPath) -> String? {
-//        
-//        if indexPath.item % 3 == 0 {
-//            let message = messages[indexPath.item]
-//            return formatter.string(from: message.timestamp)
-//        } else {
-//            return nil
-//        }
-//    }
-//    
-//    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForBubbleTopLabelAt indexPath: IndexPath) -> String? {
-//        let message = messages[indexPath.item]
-//        return message.sender
-//    }
-//    
-//    
-//    
-//    //    func attributedTextForMessageTop(at indexPath: IndexPath, of messagesView: CKMessagesView) -> NSAttributedString? {
-//    //        let paragraphStyle = NSMutableParagraphStyle()
-//    //
-//    //        let message = messages[indexPath.item]
-//    //        if message.senderId == senderId {
-//    //            paragraphStyle.alignment = .right
-//    //            paragraphStyle.tailIndent = -15
-//    //        } else {
-//    //            paragraphStyle.alignment = .left
-//    //            paragraphStyle.firstLineHeadIndent = 45
-//    //            paragraphStyle.headIndent = 45
-//    //        }
-//    //
-//    //        return NSAttributedString(string: message.sender,
-//    //                                  attributes: [
-//    //                                    NSParagraphStyleAttributeName: paragraphStyle
-//    //            ])
-//    //    }
-//    
-//    
-//    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForBottomLabelAt indexPath: IndexPath) -> String? {
-//        let message = messages[indexPath.item]
-//        
-//        if message.senderId == senderId {
-//            return "Send"
-//        }
-//        
-//        return nil
-//    }
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForTopLabelAt indexPath: IndexPath) -> String? {
+        
+        if indexPath.item % 3 == 0 {
+            let message = messages[indexPath.item]
+            return formatter.string(from: message.timestamp)
+        } else {
+            return nil
+        }
+    }
+    
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForBubbleTopLabelAt indexPath: IndexPath) -> String? {
+        let message = messages[indexPath.item]
+        return message.sender
+    }
+    
+    
+    
+    //    func attributedTextForMessageTop(at indexPath: IndexPath, of messagesView: CKMessagesView) -> NSAttributedString? {
+    //        let paragraphStyle = NSMutableParagraphStyle()
+    //
+    //        let message = messages[indexPath.item]
+    //        if message.senderId == senderId {
+    //            paragraphStyle.alignment = .right
+    //            paragraphStyle.tailIndent = -15
+    //        } else {
+    //            paragraphStyle.alignment = .left
+    //            paragraphStyle.firstLineHeadIndent = 45
+    //            paragraphStyle.headIndent = 45
+    //        }
+    //
+    //        return NSAttributedString(string: message.sender,
+    //                                  attributes: [
+    //                                    NSParagraphStyleAttributeName: paragraphStyle
+    //            ])
+    //    }
+    
+    
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForBottomLabelAt indexPath: IndexPath) -> String? {
+        let message = messages[indexPath.item]
+        
+        if message.senderId == senderId {
+            return "Send"
+        }
+        
+        return nil
+    }
     
     func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, avatarAt indexPath: IndexPath) -> CKMessagesAvatarImageData? {
         let message = messages[indexPath.item]

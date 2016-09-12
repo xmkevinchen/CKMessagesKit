@@ -60,7 +60,7 @@ class CKMessageView: UIView {
         topLabel.textAlignment = .center
         topLabel.textColor = UIColor.lightGray
         topLabel.numberOfLines = 0
-        topLabel.textInsets = UIEdgeInsets(top: 2.5, left: 0, bottom: 2.5, right: 0)
+//        topLabel.textInsets = UIEdgeInsets(top: 2.5, left: 0, bottom: 2.5, right: 0)
         
         messageTopLabel.text = nil
         messageTopLabel.attributedText = nil
@@ -68,7 +68,7 @@ class CKMessageView: UIView {
         messageTopLabel.textAlignment = .left
         messageTopLabel.textColor = UIColor.lightGray
         messageTopLabel.numberOfLines = 0
-        messageTopLabel.textInsets = UIEdgeInsets(top: 2.5, left: 0, bottom: 2.5, right: 0)
+//        messageTopLabel.textInsets = UIEdgeInsets(top: 2.5, left: 0, bottom: 2.5, right: 0)
         
         bottomLabel.text = nil
         bottomLabel.attributedText = nil
@@ -76,7 +76,7 @@ class CKMessageView: UIView {
         bottomLabel.textAlignment = .left
         bottomLabel.textColor = UIColor.lightGray
         bottomLabel.numberOfLines = 0
-        bottomLabel.textInsets = UIEdgeInsets(top: 2.5, left: 0, bottom: 2.5, right: 0)
+//        bottomLabel.textInsets = UIEdgeInsets(top: 2.5, left: 0, bottom: 2.5, right: 0)
         
         backgroundColor = UIColor.clear
         containerView.backgroundColor = UIColor.clear

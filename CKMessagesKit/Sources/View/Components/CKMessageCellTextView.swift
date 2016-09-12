@@ -36,6 +36,8 @@ public class CKMessageCellTextView: UITextView {
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
         isScrollEnabled = false
+        alwaysBounceHorizontal = false
+        alwaysBounceVertical = false
         
         backgroundColor = UIColor.clear
         textContainerInset = .zero

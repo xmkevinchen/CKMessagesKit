@@ -20,8 +20,7 @@
                 <outlet property="bubbleTopLabelHeightConstraint" destination="a8g-aM-UZQ" id="Ogj-Ic-RHJ"/>
                 <outlet property="containerView" destination="Wm1-PC-L7Y" id="ZZd-ys-icq"/>
                 <outlet property="messageBubbleContainerView" destination="rED-XC-BNB" id="u02-aG-iTu"/>
-                <outlet property="messageBubbleContainerViewHeightConstraint" destination="s4X-uf-VNt" id="TwF-1q-DHP"/>
-                <outlet property="messageBubbleContainerViewWidthConstraint" destination="vad-m9-vUd" id="19s-dp-MHv"/>
+                <outlet property="messageContainerView" destination="RwI-Xz-bM1" id="NHp-en-yMg"/>
                 <outlet property="topLabel" destination="ZPG-N3-idJ" id="U84-MY-nTz"/>
                 <outlet property="topLabelHeightConstraint" destination="Af5-E7-rMP" id="6AW-vO-reg"/>
             </connections>
@@ -66,17 +65,22 @@
                                 <constraint firstAttribute="trailing" secondItem="OLq-Lj-2Wu" secondAttribute="trailing" id="gtq-5X-pyS"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rED-XC-BNB" userLabel="Message Bubble Container View" customClass="CKMessageBubbleContainerView" customModule="CKMessagesKit" customModuleProvider="target">
+                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="250" placeholderIntrinsicHeight="105" translatesAutoresizingMaskIntoConstraints="NO" id="rED-XC-BNB" userLabel="Message Bubble Container View" customClass="CKMessageBubbleContainerView" customModule="CKMessagesKit" customModuleProvider="target">
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xa4-wj-2ws"/>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RwI-Xz-bM1" customClass="CKMessageContainerView" customModule="CKMessagesKit" customModuleProvider="target">
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="xa4-wj-2ws" secondAttribute="trailing" id="R5T-Nt-gxO"/>
                                 <constraint firstItem="xa4-wj-2ws" firstAttribute="leading" secondItem="rED-XC-BNB" secondAttribute="leading" id="TH5-be-zHR"/>
+                                <constraint firstAttribute="trailing" secondItem="RwI-Xz-bM1" secondAttribute="trailing" id="TpT-oL-J2A"/>
+                                <constraint firstItem="RwI-Xz-bM1" firstAttribute="top" secondItem="rED-XC-BNB" secondAttribute="top" id="bIb-HV-arB"/>
+                                <constraint firstAttribute="bottom" secondItem="RwI-Xz-bM1" secondAttribute="bottom" id="cz0-sk-WvM"/>
+                                <constraint firstItem="RwI-Xz-bM1" firstAttribute="leading" secondItem="rED-XC-BNB" secondAttribute="leading" id="ddP-0l-CSs"/>
                                 <constraint firstAttribute="bottom" secondItem="xa4-wj-2ws" secondAttribute="bottom" id="ltK-4c-jdM"/>
-                                <constraint firstAttribute="height" priority="999" constant="105" id="s4X-uf-VNt"/>
-                                <constraint firstAttribute="width" constant="250" id="vad-m9-vUd"/>
                                 <constraint firstItem="xa4-wj-2ws" firstAttribute="top" secondItem="rED-XC-BNB" secondAttribute="top" id="zUy-ag-6E6"/>
                             </constraints>
                         </view>
