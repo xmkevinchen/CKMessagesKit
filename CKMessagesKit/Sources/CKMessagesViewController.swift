@@ -162,7 +162,6 @@ open class CKMessagesViewController: UIViewController {
             messagesView.prefetchDataSource = self
         }
         
-        automaticallyAdjustsScrollViewInsets = false
         automaticallyScrollsToMostRecentMessage = true
         
         toolbarHeight = inputToolbar.preferredDefaultHeight
@@ -356,12 +355,11 @@ extension CKMessagesViewController {
     fileprivate func updateMessagesViewInsets(with keyboradFrame: CGRect = .zero) {
         self.keyboardEndFrame = keyboradFrame
         
-        var top = additionalContentInsets.top
-        var bottom = additionalContentInsets.bottom + toolbarHeight + keyboradFrame.height
-        if !automaticallyAdjustsScrollViewInsets {
-            top += topLayoutGuide.length
-            bottom += bottomLayoutGuide.length
-        }
+        let top = additionalContentInsets.top + topLayoutGuide.length
+        let bottom = additionalContentInsets.bottom
+            + toolbarHeight
+            + keyboradFrame.height
+            + bottomLayoutGuide.length
         
         let insets = UIEdgeInsets(top: top,
                                   left: additionalContentInsets.left,
