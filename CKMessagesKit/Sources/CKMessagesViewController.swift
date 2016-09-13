@@ -16,7 +16,6 @@ open class CKMessagesViewController: UIViewController {
     @IBOutlet public weak var messagesView: CKMessagesView!
     @IBOutlet public weak var inputToolbar: CKMessagesToolbar!
     
-    @IBOutlet weak var inputToobarBottomConstraint: NSLayoutConstraint!
     
     /// Specify the bar item should be enabled automatically when the `textView` contains text
     public weak var enablesAutomaticallyBarItem: CKMessagesToolbarItem? {
@@ -118,21 +117,6 @@ open class CKMessagesViewController: UIViewController {
     }
     
     
-    open override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if let toobar = inputToolbar {
-            if toolbarHeight != toobar.bounds.height {
-                toolbarHeight = toobar.bounds.height
-                updateMessagesViewInsets(with: keyboardEndFrame)
-                scrollToBottom(animated: true)
-            }
-        }
-    }
-    
-    
-
-    
     private func configure() {
         
         #if swift(>=3.0)
@@ -156,15 +140,18 @@ open class CKMessagesViewController: UIViewController {
         }
         
         automaticallyScrollsToMostRecentMessage = true
+        automaticallyAdjustsScrollViewInsets = false
         
         toolbarHeight = inputToolbar.preferredDefaultHeight
         
         inputToolbar.contentView.textView.placeHolder = "New Message"
         inputToolbar.contentView.textView.delegate = self
-//        inputToolbar.removeFromSuperview()
+        inputToolbar.removeFromSuperview()
         
         additionalContentInsets = .zero
-        updateMessagesViewInsets()                
+        updateMessagesViewInsets()
+        
+        
     }
 
     
@@ -345,10 +332,7 @@ extension CKMessagesViewController {
         self.keyboardEndFrame = keyboradFrame
         
         let top = additionalContentInsets.top + topLayoutGuide.length
-        let bottom = additionalContentInsets.bottom
-            + toolbarHeight
-            + keyboradFrame.height
-            + bottomLayoutGuide.length
+        let bottom = keyboradFrame.height + additionalContentInsets.bottom
         
         let insets = UIEdgeInsets(top: top,
                                   left: additionalContentInsets.left,
@@ -409,10 +393,15 @@ extension CKMessagesViewController {
     
     fileprivate func registerObservers() {
         
-        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardWillShow(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardWillHide(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didReceivePreferredContentSizeChanged(_:)), name: Notification.Name.UIContentSizeCategoryDidChange, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didReceivePreferredContentSizeChanged(_:)),
+                                               name: Notification.Name.UIContentSizeCategoryDidChange,
+                                               object: nil)
         
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didReceiveKeyboardWillChangeFrame(_:)),
+                                               name: Notification.Name.UIKeyboardWillChangeFrame,
+                                               object: nil)
         
     }
     
@@ -420,40 +409,7 @@ extension CKMessagesViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    
-    @objc private func didReceiveKeyboardWillShow(_ notification: Notification) {
-        
-        if let userInfo = notification.userInfo,
-            let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
-            let animationCurve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? Int,
-            let animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double 
-        {
-        
-            
-            guard !keyboardEndFrame.isNull else {
-                return
-            }
-            
-            
-            let animationOption = UIViewAnimationOptions(rawValue: UInt(animationCurve << 16))
-
-            UIView.animate(withDuration: animationDuration,
-                           delay: 0.0,
-                           options: [animationOption],
-                           animations:
-                {
-                    self.updateMessagesViewInsets(with: keyboardEndFrame)
-                    self.inputToobarBottomConstraint.constant = keyboardEndFrame.height
-                    self.view.layoutIfNeeded()
-                    self.scrollToBottom(animated: true)
-
-                    
-                }, completion: { _ in })
-        }
-        
-    }
-    
-    @objc private func didReceiveKeyboardWillHide(_ notification: Notification) {
+    open func didReceiveKeyboardWillChangeFrame(_ notification: Notification) {
         
         if let userInfo = notification.userInfo,
             let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
@@ -474,12 +430,13 @@ extension CKMessagesViewController {
                            options: [animationOption],
                            animations:
                 {
-                    self.updateMessagesViewInsets(with: .zero)
-                    self.inputToobarBottomConstraint.constant = 0
-                    self.view.layoutIfNeeded()
+                    self.updateMessagesViewInsets(with: keyboardEndFrame)
+                    if self.automaticallyScrollsToMostRecentMessage {
+                        self.scrollToBottom(animated: true)
+                    }
                     
                     
-                }, completion: { _ in })
+                }, completion: nil)
         }
         
     }
@@ -487,11 +444,10 @@ extension CKMessagesViewController {
     
 
     
-    @objc private func didReceivePreferredContentSizeChanged(_ notification: Notification) {
+    open func didReceivePreferredContentSizeChanged(_ notification: Notification) {
         messagesView.messagesViewLayout.invalidateLayout()
         messagesView.setNeedsLayout()
     }
-    
     
 }
 
@@ -790,19 +746,19 @@ extension CKMessagesViewController: UITextViewDelegate {
     }
 }
 
-//// MARK: - Input
-//
-//extension CKMessagesViewController {
-//
-//    open override var canBecomeFirstResponder: Bool {
-//        return true
-//    }
-//
-//    open override var inputAccessoryView: UIView? {
-//        return self.inputToolbar
-//    }
-//
-//}
+// MARK: - Input
+
+extension CKMessagesViewController {
+
+    open override var canBecomeFirstResponder: Bool {
+        return true
+    }
+
+    open override var inputAccessoryView: UIView? {
+        return self.inputToolbar
+    }
+
+}
 
 
 // MARK: - Debugging

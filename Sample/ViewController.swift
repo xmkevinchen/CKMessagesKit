@@ -48,7 +48,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         messagesView.messagesViewLayout.outgoingAvatarSize = .zero
         messagesView.messagesViewLayout.incomingAvatarSize = CGSize(width: 48, height: 48)        
         
-        for _ in 0..<12 {
+        for _ in 0..<3 {
             insertNewMessage()
         }
         
@@ -125,7 +125,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
     private func generateMessage(at index: Int) -> CKMessageData? {
         
         var message: CKMessageData?
-        let value = Int(arc4random()) * index % 4
+        let value = Int(arc4random_uniform(120)) * index % 4
         
         let length = self.text.lengthOfBytes(using: .utf8)
         let lastIndex = self.text.index(self.text.startIndex, offsetBy: max(Int(arc4random_uniform(UInt32(length - 1))), 80))

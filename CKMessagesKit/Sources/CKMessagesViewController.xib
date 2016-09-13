@@ -8,7 +8,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CKMessagesViewController" customModule="CKMessagesKit" customModuleProvider="target">
             <connections>
-                <outlet property="inputToobarBottomConstraint" destination="Kdh-Ub-jZc" id="2bR-03-II2"/>
                 <outlet property="inputToolbar" destination="OsF-kT-qT1" id="PjC-kp-Sef"/>
                 <outlet property="messagesView" destination="nEj-ac-bud" id="zWE-q6-TJj"/>
                 <outlet property="view" destination="iN0-l3-epB" id="U3J-3F-bPS"/>
@@ -34,13 +33,13 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="OsF-kT-qT1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="EqO-dH-gH1"/>
                 <constraint firstAttribute="bottom" secondItem="nEj-ac-bud" secondAttribute="bottom" id="JEe-up-TxK"/>
-                <constraint firstAttribute="bottom" secondItem="OsF-kT-qT1" secondAttribute="bottom" id="Kdh-Ub-jZc"/>
                 <constraint firstItem="nEj-ac-bud" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="dTY-yf-Y9x"/>
                 <constraint firstAttribute="trailing" secondItem="nEj-ac-bud" secondAttribute="trailing" id="fcS-wG-vgg"/>
                 <constraint firstItem="nEj-ac-bud" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="pcj-ii-1vP"/>
-                <constraint firstAttribute="trailing" secondItem="OsF-kT-qT1" secondAttribute="trailing" id="rwH-TG-Af3"/>
-                <constraint firstItem="OsF-kT-qT1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="szV-jq-fLJ"/>
+                <constraint firstAttribute="trailing" secondItem="OsF-kT-qT1" secondAttribute="trailing" id="tkZ-a1-gpO"/>
+                <constraint firstAttribute="bottom" secondItem="OsF-kT-qT1" secondAttribute="bottom" id="zmC-rI-qTw"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <point key="canvasLocation" x="-355" y="-164"/>
