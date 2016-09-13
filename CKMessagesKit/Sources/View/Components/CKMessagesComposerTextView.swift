@@ -82,9 +82,10 @@ public class CKMessagesComposerTextView: UITextView {
         }
     }
     
-    private var heightConstraint: NSLayoutConstraint?
+    var heightConstraint: NSLayoutConstraint?
     private var minHeightConstraint: NSLayoutConstraint?
     private var maxHeightConstraint: NSLayoutConstraint?
+    
     
     private func configure() {
         
@@ -141,7 +142,7 @@ public class CKMessagesComposerTextView: UITextView {
             height = max(height, minHeightConstraint!.constant)
         }
         
-        heightConstraint?.constant = height
+        heightConstraint?.constant = height        
         
     }
     

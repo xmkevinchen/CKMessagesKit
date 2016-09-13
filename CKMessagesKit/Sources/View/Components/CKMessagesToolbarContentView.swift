@@ -129,6 +129,12 @@ public class CKMessagesToolbarContentView: UIView {
         textView = nil
     }
     
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        
+    }
+    
     override public func setNeedsDisplay() {
         super.setNeedsDisplay()
         
