@@ -117,21 +117,6 @@ open class CKMessagesViewController: UIViewController {
     }
     
     
-    open override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-//        if let toobar = inputToolbar {
-//            if toolbarHeight != toobar.bounds.height {
-//                toolbarHeight = toobar.bounds.height
-//                updateMessagesViewInsets(with: keyboardEndFrame)
-//                scrollToBottom(animated: true)
-//            }
-//        }
-    }
-    
-    
-
-    
     private func configure() {
         
         #if swift(>=3.0)
@@ -166,18 +151,11 @@ open class CKMessagesViewController: UIViewController {
         additionalContentInsets = .zero
         updateMessagesViewInsets()
         
-        inputToolbar.layer.addObserver(self, forKeyPath: #keyPath(CALayer.bounds), options: [.new], context: nil)
+        
     }
 
     
-    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        
-        
-        if keyPath == #keyPath(CALayer.bounds) {
-            
-        }
-        
-    }
+    
 }
 
 
@@ -353,9 +331,7 @@ extension CKMessagesViewController {
     fileprivate func updateMessagesViewInsets(with keyboradFrame: CGRect = .zero) {
         self.keyboardEndFrame = keyboradFrame
         
-        let top = additionalContentInsets.top
-            + topLayoutGuide.length
-        
+        let top = additionalContentInsets.top + topLayoutGuide.length
         let bottom = keyboradFrame.height + additionalContentInsets.bottom
         
         let insets = UIEdgeInsets(top: top,
@@ -417,8 +393,15 @@ extension CKMessagesViewController {
     
     fileprivate func registerObservers() {
         
-        NotificationCenter.default.addObserver(self, selector: #selector(didReceivePreferredContentSizeChanged(_:)), name: Notification.Name.UIContentSizeCategoryDidChange, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardWillChangeFrame(_:)), name: Notification.Name.UIKeyboardWillChangeFrame, object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didReceivePreferredContentSizeChanged(_:)),
+                                               name: Notification.Name.UIContentSizeCategoryDidChange,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didReceiveKeyboardWillChangeFrame(_:)),
+                                               name: Notification.Name.UIKeyboardWillChangeFrame,
+                                               object: nil)
         
     }
     
@@ -426,7 +409,7 @@ extension CKMessagesViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc private func didReceiveKeyboardWillChangeFrame(_ notification: Notification) {
+    open func didReceiveKeyboardWillChangeFrame(_ notification: Notification) {
         
         if let userInfo = notification.userInfo,
             let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
@@ -448,9 +431,12 @@ extension CKMessagesViewController {
                            animations:
                 {
                     self.updateMessagesViewInsets(with: keyboardEndFrame)
+                    if self.automaticallyScrollsToMostRecentMessage {
+                        self.scrollToBottom(animated: true)
+                    }
                     
                     
-                }, completion: { _ in })
+                }, completion: nil)
         }
         
     }
@@ -458,11 +444,10 @@ extension CKMessagesViewController {
     
 
     
-    @objc private func didReceivePreferredContentSizeChanged(_ notification: Notification) {
+    open func didReceivePreferredContentSizeChanged(_ notification: Notification) {
         messagesView.messagesViewLayout.invalidateLayout()
         messagesView.setNeedsLayout()
     }
-    
     
 }
 
