@@ -121,10 +121,12 @@ open class CKMessagesViewController: UIViewController {
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        if toolbarHeight != inputToolbar.bounds.height {
-            toolbarHeight = inputToolbar.bounds.height
-            updateMessagesViewInsets(with: keyboardEndFrame)
-            scrollToBottom(animated: true)
+        if let toobar = inputToolbar {
+            if toolbarHeight != toobar.bounds.height {
+                toolbarHeight = toobar.bounds.height
+                updateMessagesViewInsets(with: keyboardEndFrame)
+                scrollToBottom(animated: true)
+            }
         }
     }
     
@@ -722,8 +724,8 @@ extension CKMessagesViewController {
         let textView = inputToolbar.contentView.textView!
         textView.text = nil
         textView.undoManager?.removeAllActions()
+        textView.delegate?.textViewDidChange?(textView)
         
-        NotificationCenter.default.post(name: Notification.Name.UITextViewTextDidChange, object: textView)
         messagesView.messagesViewLayout.invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
         messagesView.reloadData()
         

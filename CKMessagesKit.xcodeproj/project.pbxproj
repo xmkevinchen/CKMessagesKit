@@ -26,8 +26,6 @@
 		0A076AB31D75CE2B0028383B /* CKMessageBubbleImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A8C1D75CE2B0028383B /* CKMessageBubbleImageData.swift */; };
 		0A076AB41D75CE2B0028383B /* CKMessageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A8D1D75CE2B0028383B /* CKMessageData.swift */; };
 		0A076AB51D75CE2B0028383B /* CKMessagePresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A8F1D75CE2B0028383B /* CKMessagePresenting.swift */; };
-		0A076AB61D75CE2B0028383B /* CKMessageDataViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A921D75CE2B0028383B /* CKMessageDataViewCell.swift */; };
-		0A076AB71D75CE2B0028383B /* CKMessageViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A931D75CE2B0028383B /* CKMessageViewCell.swift */; };
 		0A076AB81D75CE2B0028383B /* CKMessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A941D75CE2B0028383B /* CKMessagesView.swift */; };
 		0A076ABC1D75CE2B0028383B /* CKBackgroundLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A991D75CE2B0028383B /* CKBackgroundLayout.swift */; };
 		0A076ABD1D75CE2B0028383B /* CKInsetsLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A9A1D75CE2B0028383B /* CKInsetsLayout.swift */; };
@@ -67,8 +65,6 @@
 		917D41561D721704001E678D /* GridMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917D41551D721704001E678D /* GridMessage.swift */; };
 		91A092B01D74E3BF0018AC08 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A092AF1D74E3BF0018AC08 /* ListViewController.swift */; };
 		91A556921D80E2F800ACF4B3 /* CGSize+CKMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A556911D80E2F800ACF4B3 /* CGSize+CKMessages.swift */; };
-		91A6CBAF1D77A52F00695657 /* CKMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A6CBAD1D77A52F00695657 /* CKMessageView.swift */; };
-		91A6CBB01D77A52F00695657 /* CKMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91A6CBAE1D77A52F00695657 /* CKMessageView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -131,8 +127,6 @@
 		0A076A8C1D75CE2B0028383B /* CKMessageBubbleImageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageBubbleImageData.swift; sourceTree = "<group>"; };
 		0A076A8D1D75CE2B0028383B /* CKMessageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageData.swift; sourceTree = "<group>"; };
 		0A076A8F1D75CE2B0028383B /* CKMessagePresenting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagePresenting.swift; sourceTree = "<group>"; };
-		0A076A921D75CE2B0028383B /* CKMessageDataViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageDataViewCell.swift; sourceTree = "<group>"; };
-		0A076A931D75CE2B0028383B /* CKMessageViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageViewCell.swift; sourceTree = "<group>"; };
 		0A076A941D75CE2B0028383B /* CKMessagesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesView.swift; sourceTree = "<group>"; };
 		0A076A991D75CE2B0028383B /* CKBackgroundLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKBackgroundLayout.swift; sourceTree = "<group>"; };
 		0A076A9A1D75CE2B0028383B /* CKInsetsLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKInsetsLayout.swift; sourceTree = "<group>"; };
@@ -172,8 +166,6 @@
 		917D41551D721704001E678D /* GridMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridMessage.swift; sourceTree = "<group>"; };
 		91A092AF1D74E3BF0018AC08 /* ListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		91A556911D80E2F800ACF4B3 /* CGSize+CKMessages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGSize+CKMessages.swift"; sourceTree = "<group>"; };
-		91A6CBAD1D77A52F00695657 /* CKMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageView.swift; sourceTree = "<group>"; };
-		91A6CBAE1D77A52F00695657 /* CKMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKMessageView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,7 +294,6 @@
 		0A076A911D75CE2B0028383B /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				0AEFF34F1D86560B00471F30 /* Deprecated */,
 				0A9175F71D8476AF00D2A11F /* CKMessageBasicCell.swift */,
 				0A9175F81D8476AF00D2A11F /* CKMessageBasicCell.xib */,
 				0AE4F21F1D8512F20094EB64 /* CKMessageTextCell.swift */,
@@ -353,17 +344,6 @@
 				0A9176001D8480F000D2A11F /* Reusable.framework */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		0AEFF34F1D86560B00471F30 /* Deprecated */ = {
-			isa = PBXGroup;
-			children = (
-				91A6CBAD1D77A52F00695657 /* CKMessageView.swift */,
-				91A6CBAE1D77A52F00695657 /* CKMessageView.xib */,
-				0A076A921D75CE2B0028383B /* CKMessageDataViewCell.swift */,
-				0A076A931D75CE2B0028383B /* CKMessageViewCell.swift */,
-			);
-			name = Deprecated;
 			sourceTree = "<group>";
 		};
 		912223FA1D6E6D0E00C5F3B4 = {
@@ -517,7 +497,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0AE4F2221D851DD40094EB64 /* CKMessageTextCell.xib in Resources */,
-				91A6CBB01D77A52F00695657 /* CKMessageView.xib in Resources */,
 				0A1751891D83C5F0002919DF /* CKMessagesIndicatorFooterView.xib in Resources */,
 				0A076AC31D75CF250028383B /* Images.xcassets in Resources */,
 				0A076AA41D75CE2B0028383B /* CKMessagesViewController.xib in Resources */,
@@ -566,7 +545,6 @@
 				0A076AB41D75CE2B0028383B /* CKMessageData.swift in Sources */,
 				0A5A48D51D7A478500BFC790 /* CKMessagesAvatarImageFactory.swift in Sources */,
 				0A5A48D31D7A379C00BFC790 /* CKMessagesAvatarImage.swift in Sources */,
-				0A076AB71D75CE2B0028383B /* CKMessageViewCell.swift in Sources */,
 				0A076ABF1D75CE2B0028383B /* UIView+CKViewLayout.swift in Sources */,
 				0A9175F91D8476AF00D2A11F /* CKMessageBasicCell.swift in Sources */,
 				0A17518B1D83C5F0002919DF /* CKMessagesToolbar.swift in Sources */,
@@ -577,7 +555,6 @@
 				0A076AAE1D75CE2B0028383B /* CKMessageSizeCalculating.swift in Sources */,
 				0A076ABC1D75CE2B0028383B /* CKBackgroundLayout.swift in Sources */,
 				0A076AB31D75CE2B0028383B /* CKMessageBubbleImageData.swift in Sources */,
-				91A6CBAF1D77A52F00695657 /* CKMessageView.swift in Sources */,
 				0A17514D1D828FE5002919DF /* UIView+NSLayoutConstraint.swift in Sources */,
 				0A076AA71D75CE2B0028383B /* Bundle+CKMessages.swift in Sources */,
 				0A076AA81D75CE2B0028383B /* UIColor+CKMessages.swift in Sources */,
@@ -586,7 +563,6 @@
 				0A1751851D83C5F0002919DF /* CKMessageInsetsLabel.swift in Sources */,
 				0A5A48D11D7A375300BFC790 /* CKMessagesAvatarImageData.swift in Sources */,
 				0A076AAC1D75CE2B0028383B /* CKMessagesViewLayoutAttributes.swift in Sources */,
-				0A076AB61D75CE2B0028383B /* CKMessageDataViewCell.swift in Sources */,
 				0A076ABE1D75CE2B0028383B /* CKViewLayout.swift in Sources */,
 				0A076AAD1D75CE2B0028383B /* CKMessagesViewLayoutInvalidationContext.swift in Sources */,
 				0A076AAF1D75CE2B0028383B /* CKMessageSizeCalculator.swift in Sources */,
