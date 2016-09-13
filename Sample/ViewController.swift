@@ -125,7 +125,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
     private func generateMessage(at index: Int) -> CKMessageData? {
         
         var message: CKMessageData?
-        let value = index % 4
+        let value = Int(arc4random()) * index % 4
         
         let length = self.text.lengthOfBytes(using: .utf8)
         let lastIndex = self.text.index(self.text.startIndex, offsetBy: max(Int(arc4random_uniform(UInt32(length - 1))), 80))
@@ -137,10 +137,10 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
             
             message = CKMessage(senderId: senderId, sender: sender, text: "Your Apple ID must be associated with a paid Apple Developer Program or Apple Developer Enterprise Program to access certain software downloads.")
             
-        case 1:
+        case 2:
             message = CKMessage(senderId: "incoming", sender: "Incoming", text: text)
             
-        case 2:
+        case 1:
             message = GridMessage(senderId: senderId, sender: sender, text: String(index))
             
         case 3:
@@ -173,7 +173,7 @@ extension ViewController: CKMessagesViewDecorating {
             return CGSize(width: 260, height: 60)
             
         case is ListMessage:
-            return CGSize(width: 240, height: 200)
+            return CGSize(width: 240, height: 150)
             
         default:
             return nil

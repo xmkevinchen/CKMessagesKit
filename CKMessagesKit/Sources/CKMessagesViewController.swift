@@ -411,7 +411,6 @@ extension CKMessagesViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardWillShow(_:)), name: Notification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveKeyboardWillHide(_:)), name: Notification.Name.UIKeyboardWillHide, object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(didReceivePreferredContentSizeChanged(_:)), name: Notification.Name.UIContentSizeCategoryDidChange, object: nil)
         
         
@@ -660,13 +659,12 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
                  * So on iOS 10, at least, for now, process attaching hostedView in willDisplay could solve the issue
                  */
                 
-                if let cell = cell as? CKMessageBasicCell,
-                    let presentor = presentor(of: message, at: indexPath) {
+                if let cell = cell as? CKMessageBasicCell, let presentor = presentor(of: message, at: indexPath) {
                     cell.messageView = presentor.messageView
                     presentor.renderPresenting(with: message)
                 }
             }
-        }
+        }               
     }
     
     

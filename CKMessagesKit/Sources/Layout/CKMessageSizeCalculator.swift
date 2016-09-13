@@ -43,12 +43,13 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
         let avatarSize: CGSize = self.avatarSize(of: message, with: layout)
         let messageInsets = layout.messageInsets
         let horizontalSpace = messageInsets.left + messageInsets.right
-        let maximumWidth = layout.itemWidth - avatarSize.width - horizontalSpace - layout.messageBubbleMarginWidth
+        let bubbleTailWidth = layout.messagesView.decorator?.messagesView(layout.messagesView, layout: layout, bubbleTailHorizontalSpaceAt: indexPath) ?? layout.messageBubbleTailHorizonalSpace
+        let maximumWidth = layout.itemWidth - avatarSize.width - horizontalSpace - layout.messageBubbleMarginWidth - bubbleTailWidth
         
         /// If decorator returns contentSize of message, just use it without caching it
         if var contentSize = layout.messagesView.decorator?.messagesView(layout.messagesView, layout: layout, contentSizeAt: indexPath) {
-            
             contentSize.width = min(maximumWidth, contentSize.width)
+            cache.setObject(contentSize as AnyObject, forKey: key)
             return contentSize
         }
         
@@ -75,7 +76,7 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
         
         /// Because we use the insets to layout messageView inside of the message bubble image
         /// So the minimuWidth should subtract the horizontal insets as well
-        let bubbleTailWidth = layout.messagesView.decorator?.messagesView(layout.messagesView, layout: layout, bubbleTailHorizontalSpaceAt: indexPath) ?? layout.messageBubbleTailHorizonalSpace
+        
         contentSize.width = max(contentSize.width, minimumWidth - messageInsets.left - messageInsets.right - bubbleTailWidth)
         
         cache.setObject(contentSize as AnyObject, forKey: key)
