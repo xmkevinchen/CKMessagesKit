@@ -10,11 +10,6 @@ import UIKit
 
 public class CKMessagesToolbar: UIToolbar {
     
-    public enum SendButtonPosition {
-        case left
-        case right
-    }
-    
     public var preferredDefaultHeight: CGFloat = 44.0 {
         willSet {
             assert(newValue > 0)
@@ -36,8 +31,8 @@ public class CKMessagesToolbar: UIToolbar {
         addSubview(contentView)
         pinSubview(contentView)
         setNeedsUpdateConstraints()
-    
-    }
+        translatesAutoresizingMaskIntoConstraints = false
+    }        
     
 }
 
