@@ -78,7 +78,7 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
             containerViewConstraints = ContainerViewConstraints(avatar: avatarContainerView,
                                                                 message: messageBubbleContainerView,
                                                                 accessory: accessoryContainerView)
-            
+            NSLayoutConstraint.activate(containerViewConstraints.incoming)
             
             
         } else {
@@ -200,22 +200,13 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
                 
                 
                 // TODO: - Figure out why the code above doesn't work
-                var leading = messageInsets.left
-                var trailing = messageInsets.right
                 
-                switch orientation {
-                case .incoming:
-                    leading += bubbleTailHorizontalSpace
-                    
-                case .outgoing:
-                    trailing += bubbleTailHorizontalSpace
-                }
                 
                 let metrics = [
                     "t" : messageInsets.top,
                     "b" : messageInsets.bottom,
-                    "l" : leading,
-                    "r" : trailing,
+                    "l" : messageInsets.left,
+                    "r" : messageInsets.right,
                     "width": messageSize.width,
                     "height": messageSize.height
                 ]
@@ -288,11 +279,7 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
     
     /// The size of avatar, Default is CGSize.zero
     public var avatarSize: CGSize = .zero
-    
-    /// The bubble tail to its body horizontal space, Default value is 6.0
-    public var bubbleTailHorizontalSpace: CGFloat = 6.0
-    
-    
+        
     /// The insets of message inside of the message bubble, besides the `bubbleTailWidth`
     ///
     /// So when message orientatin is

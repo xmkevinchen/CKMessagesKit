@@ -152,12 +152,21 @@ public protocol CKMessagesViewDecorating: NSObjectProtocol {
     ///
     /// - parameter messagesView: The messages view object displaying the flow layout
     /// - parameter layout:       The layout object requesting the information
-    /// - parameter at:           The index path of the item
+    /// - parameter at:           The layout object requesting the information
     ///
     /// - returns: The content size of the message at the specified indexPath
     ///
     func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, contentSizeAt indexPath: IndexPath) -> CGSize?
     
+    
+    /// Asks the decorator for the bubble tail horizonal space till its body that corresponds to the message at the specified indexPath
+    ///
+    /// - parameter messagesView: The messages view object displaying the flow layout
+    /// - parameter layout:       The layout object requesting the information
+    /// - parameter indexPath:    The layout object requesting the information
+    ///
+    /// - returns: The bubble tail horizontal space at the specified indexPath
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, bubbleTailHorizontalSpaceAt indexPath: IndexPath) -> CGFloat?
     
 }
 
@@ -388,7 +397,16 @@ public extension CKMessagesViewDecorating {
         return nil
     }
     
-    
+    /// Asks the decorator for the bubble tail horizonal space till its body that corresponds to the message at the specified indexPath
+    ///
+    /// - parameter messagesView: The messages view object displaying the flow layout
+    /// - parameter layout:       The layout object requesting the information
+    /// - parameter indexPath:    The layout object requesting the information
+    ///
+    /// - returns: The bubble tail horizontal space at the specified indexPath
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, bubbleTailHorizontalSpaceAt indexPath: IndexPath) -> CGFloat? {
+        return nil
+    }
     
     
     

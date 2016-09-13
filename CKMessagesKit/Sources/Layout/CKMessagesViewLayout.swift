@@ -57,6 +57,14 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
         }
     }
     
+    public var messageBubbleTailHorizonalSpace: CGFloat = 6.0 {
+        didSet {
+            if messageBubbleTailHorizonalSpace != oldValue {
+                resetLayout()
+            }
+        }
+    }
+    
     public var messageSizeCalculator: CKMessageSizeCalculating = CKMessageSizeCalculator()
     
     
@@ -241,23 +249,28 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
     
     private func configure(attributes: CKMessagesViewLayoutAttributes) {
         let indexPath = attributes.indexPath
-        let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView)
         
+        let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView)
+        let isOutgoing = (message?.senderId == messagesView.messenger?.senderId)
         let messageSize = size(of: message, at: indexPath)
-                
+        var messageInsets = self.messageInsets
+        
+        let bubbleTailWidth
+            = messagesView.decorator?.messagesView(messagesView, layout: self, bubbleTailHorizontalSpaceAt: indexPath) ?? messageBubbleTailHorizonalSpace
+        if isOutgoing {
+            attributes.avatarPosition = .right
+            messageInsets.right += bubbleTailWidth
+        } else {
+            attributes.avatarPosition = .left
+            messageInsets.left += bubbleTailWidth
+        }
+        
         attributes.messageInsets = messageInsets
         attributes.messageSize = messageSize
         attributes.messageFont = messageFont
         attributes.incomingAvatarSize = incomingAvatarSize
         attributes.outgoingAvatarSize = outgoingAvatarSize
-        
-        if message?.senderId == messagesView.messenger?.senderId {
-            attributes.avatarPosition = .right
-        } else {
-            attributes.avatarPosition = .left
-        }
-        
-        
+                                
         if let decorator = messagesView.decorator {
             if let height = decorator.messagesView(messagesView, layout: self, heightForTopLabelAt: indexPath) {
                 attributes.topLabelHeight = height

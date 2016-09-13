@@ -72,7 +72,11 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
         stringSize.height += additionalInsets
         
         var contentSize = stringSize
-        contentSize.width = max(contentSize.width, minimumWidth)
+        
+        /// Because we use the insets to layout messageView inside of the message bubble image
+        /// So the minimuWidth should subtract the horizontal insets as well
+        let bubbleTailWidth = layout.messagesView.decorator?.messagesView(layout.messagesView, layout: layout, bubbleTailHorizontalSpaceAt: indexPath) ?? layout.messageBubbleTailHorizonalSpace
+        contentSize.width = max(contentSize.width, minimumWidth - messageInsets.left - messageInsets.right - bubbleTailWidth)
         
         cache.setObject(contentSize as AnyObject, forKey: key)
         
