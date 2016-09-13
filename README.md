@@ -58,6 +58,17 @@ Use Carthage to download the dependencies of the Sample project
 
 ## Release Note
 
+### 1.0.9
+- Refactor `CKMessageBasicCell`, remove unnecessary view layers
+- Enhance some reusable logic, so now the subclass of `CKMessagesBasicCell` could use its own xib file to design the message UI, without bothering the whole message layout
+- Optimize `CKMessageBasicCell` constraints batch update logic
+
+### 1.0.8
+- Fixed crash when dismiss `CKMessagesViewController`
+
+### 1.0.7
+- Move bubble tail width calculation logic from `CKMessageBasicCell` to `CKMessagesViewLayout` to simplify the cell layout logic
+
 ### 1.0.6
 - Instead of putting inputToolbar as inputAccessoryView in `CKMessagesViewController`, now just a subview.
 - When inputToolbar expand higher, move the messages up automatically
