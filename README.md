@@ -60,6 +60,7 @@ Use Carthage to download the dependencies of the Sample project
 
 ### 1.0.10
 - Reverse the inputToolbar back as inputAccessoryView
+- CocoaPods officially supported
 
 ### 1.0.9
 - Refactor `CKMessageBasicCell`, remove unnecessary view layers
@@ -108,7 +109,7 @@ Use Carthage to download the dependencies of the Sample project
     * Image
     * Video
     * Location
-2. Submit CKMessagesKit to CocoaPods, needs to wait CocoaPods 1.1.0.rc.2 version
+2. ~~Submit CKMessagesKit to CocoaPods, needs to wait CocoaPods 1.1.0.rc.2 version~~
 3. Async message content presenting mechanism.
 4. Try to use `CKViewLayout` protocol to layout message cell, instead of using massive AutoLayout constraint.
 
