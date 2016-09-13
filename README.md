@@ -58,9 +58,11 @@ Use Carthage to download the dependencies of the Sample project
 
 ## Release Note
 
+### 1.1
+- CocoaPods officially supported
+
 ### 1.0.10
 - Reverse the inputToolbar back as inputAccessoryView
-- CocoaPods officially supported
 
 ### 1.0.9
 - Refactor `CKMessageBasicCell`, remove unnecessary view layers
