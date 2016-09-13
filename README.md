@@ -58,6 +58,10 @@ Use Carthage to download the dependencies of the Sample project
 
 ## Release Note
 
+### 1.0.10
+- Reverse the inputToolbar back as inputAccessoryView
+- CocoaPods officially supported
+
 ### 1.0.9
 - Refactor `CKMessageBasicCell`, remove unnecessary view layers
 - Enhance some reusable logic, so now the subclass of `CKMessagesBasicCell` could use its own xib file to design the message UI, without bothering the whole message layout
@@ -75,10 +79,10 @@ Use Carthage to download the dependencies of the Sample project
 - Fixed `CKMessagesView` contentInset.top incorrect
 
 ### 1.0.5
-- Refactor `CKMessagesInputToolbar` and its components implementation. Make the implementation more **SOLID** 
-    - `CKMessagesInputToolbar` now is more like `UINavigationBar`, focus on laying out items, instead of setting up items, like *Send* button. 
-    - Leave the responsibility to concrete subclass of `CKMessagesViewController`. 
-    - Get rid of the multiple level delegates propagating up from `CKMessagesToolbarContentView` to `CKMessagesViewController`. 
+- Refactor `CKMessagesInputToolbar` and its components implementation. Make the implementation more **SOLID**
+    - `CKMessagesInputToolbar` now is more like `UINavigationBar`, focus on laying out items, instead of setting up items, like *Send* button.
+    - Leave the responsibility to concrete subclass of `CKMessagesViewController`.
+    - Get rid of the multiple level delegates propagating up from `CKMessagesToolbarContentView` to `CKMessagesViewController`.
     - Check out the Sample project to see how to setup `CKMessagesInputToolbar` bar items.
 
 ### 1.0.4
@@ -105,7 +109,7 @@ Use Carthage to download the dependencies of the Sample project
     * Image
     * Video
     * Location
-2. Submit CKMessagesKit to CocoaPods, needs to wait CocoaPods 1.1.0.rc.2 version 
+2. ~~Submit CKMessagesKit to CocoaPods, needs to wait CocoaPods 1.1.0.rc.2 version~~
 3. Async message content presenting mechanism.
 4. Try to use `CKViewLayout` protocol to layout message cell, instead of using massive AutoLayout constraint.
 
@@ -119,7 +123,5 @@ However, there're some reasons pushing me to create CKMessagesKit by myself
 * JSQMessagesViewController has some design strongly against the SOLID principles and MVC design pattern, misusing the Model and View, such as
     * Message model has `UIView` property
     * Input toolbar has quite a few assumption which loses the simplicity to customize. Because of the pre-assembly of *Send* button, delegate propagation up and function override are introduced.
-    
+
 * LayerKit heavily integrated with its Layer service
-
-
