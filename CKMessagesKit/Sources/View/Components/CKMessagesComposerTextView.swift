@@ -11,7 +11,8 @@ import UIKit
 public class CKMessagesComposerTextView: UITextView {
     
     public override var hasText: Bool {
-        return text.trimmingCharacters(in: .whitespaces).lengthOfBytes(using: .utf8) > 0
+        return text.trimmingCharacters(in: .whitespaces)
+            .lengthOfBytes(using: .utf8) > 0
     }
     
     public var placeHolder: String? {

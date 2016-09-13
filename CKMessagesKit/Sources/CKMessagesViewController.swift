@@ -724,8 +724,8 @@ extension CKMessagesViewController {
         let textView = inputToolbar.contentView.textView!
         textView.text = nil
         textView.undoManager?.removeAllActions()
+        textView.delegate?.textViewDidChange?(textView)
         
-        NotificationCenter.default.post(name: Notification.Name.UITextViewTextDidChange, object: textView)
         messagesView.messagesViewLayout.invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
         messagesView.reloadData()
         
