@@ -67,9 +67,11 @@ Use Carthage to download the dependencies of the Sample project
 4. Try to use `CKViewLayout` protocol to layout message cell, instead of using massive AutoLayout constraint.
 
 
-## Current version
+## Release version
 
-### 1.1.1
+> 1.1.1
+
+### Release Note
 - Fix inputToolbar deallocated when presents `CKMessagesViewController` as Model
 
 ### [Release Notes](CHANGELOG.md)
