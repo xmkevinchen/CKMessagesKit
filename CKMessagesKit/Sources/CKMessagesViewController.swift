@@ -67,7 +67,6 @@ open class CKMessagesViewController: UIViewController {
     fileprivate var usingPresentors = [IndexPath: CKMessagePresenting]()
     fileprivate var unusedPresentors = [String: [CKMessagePresenting]]()
     fileprivate var prefetchedPresentors = [IndexPath: CKMessagePresenting]()
-    fileprivate var keyboardEndFrame: CGRect = .zero
     
     
     convenience init() {
@@ -104,10 +103,8 @@ open class CKMessagesViewController: UIViewController {
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         toolbarHeight = inputToolbar.preferredDefaultHeight        
         messagesView.collectionViewLayout.invalidateLayout()
-        updateMessagesViewInsets()
         
         if automaticallyScrollsToMostRecentMessage {
             DispatchQueue.main.async {
@@ -119,8 +116,19 @@ open class CKMessagesViewController: UIViewController {
     
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+    }
+    
+    open override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        updateMessagesViewInsets()
         
     }
+    
+    open override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+    
+    }
+    
         
     open override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -142,6 +150,8 @@ open class CKMessagesViewController: UIViewController {
         #endif
         
         messagesView.translatesAutoresizingMaskIntoConstraints = false
+        messagesView.alwaysBounceVertical = true
+        
         
         messagesView.register(for: CKMessageBasicCell.self)
         messagesView.register(for: CKMessageTextCell.self)
@@ -156,7 +166,7 @@ open class CKMessagesViewController: UIViewController {
         }
         
         automaticallyScrollsToMostRecentMessage = true
-        automaticallyAdjustsScrollViewInsets = false
+        automaticallyAdjustsScrollViewInsets = true
         
         toolbarHeight = inputToolbar.preferredDefaultHeight
         
@@ -344,11 +354,11 @@ extension CKMessagesViewController {
 
 extension CKMessagesViewController {
     
-    fileprivate func updateMessagesViewInsets(with keyboradFrame: CGRect = .zero) {
-        self.keyboardEndFrame = keyboradFrame
+    fileprivate func updateMessagesViewInsets(with keyboardHeight: CGFloat = 0) {
         
         let top = additionalContentInsets.top + topLayoutGuide.length
-        let bottom = keyboradFrame.height + additionalContentInsets.bottom
+        
+        let bottom = max(keyboardHeight, inputToolbar.bounds.height) + additionalContentInsets.bottom
         
         let insets = UIEdgeInsets(top: top,
                                   left: additionalContentInsets.left,
@@ -396,7 +406,7 @@ extension CKMessagesViewController {
             - messagesView.contentInset.bottom
             - inputToolbar.bounds.height
         
-        let scrollPosition: UICollectionViewScrollPosition = size.height > heightForVisibleMessage ? .bottom : .top
+        let scrollPosition: UICollectionViewScrollPosition = size.height > heightForVisibleMessage ? [.bottom] : [.top]
         
         messagesView.scrollToItem(at: indexPath, at: scrollPosition, animated: animated)
         
@@ -438,21 +448,28 @@ extension CKMessagesViewController {
                 return
             }
             
+            var keyboardHeight = keyboardEndFrame.height
+            
+            // Hardware keyboards
+            if keyboardEndFrame.origin.y + keyboardEndFrame.height > view.frame.height {
+                keyboardHeight = view.frame.height - keyboardEndFrame.origin.y
+            }
             
             let animationOption = UIViewAnimationOptions(rawValue: UInt(animationCurve << 16))
+            
+            
             
             UIView.animate(withDuration: animationDuration,
                            delay: 0.0,
                            options: [animationOption],
                            animations:
                 {
-                    self.updateMessagesViewInsets(with: keyboardEndFrame)
+                    self.updateMessagesViewInsets(with: keyboardHeight)
                     if self.automaticallyScrollsToMostRecentMessage {
                         self.scrollToBottom(animated: true)
                     }
                     
-                    
-                }, completion: nil)
+                }, completion: nil)                        
         }
         
     }
