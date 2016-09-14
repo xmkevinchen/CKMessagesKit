@@ -74,15 +74,11 @@ Use Carthage to download the dependencies of the Sample project
 
 ### [Release Notes](CHANGELOG.md)
 
-## Why recreate the wheel
-First of all, CKMessagesKit is strongly inspired by [JSQMessagesViewController](https://github.com/jessesquires/JSQMessagesViewController) and [LayerKit](https://layer.com/).
+<hr/>
+Finally, CKMessagesKit is strongly inspired by [JSQMessagesViewController](https://github.com/jessesquires/JSQMessagesViewController) and [LayerKit](https://layer.com/). Thanks to Authors and Contributors
 
 However, there're some reasons pushing me to create CKMessagesKit by myself
 
 * Pure Swift implementation, written in Swift 3.0
 * Nested collection UI presentation support, like using `UICollectionView`, `UITableView` in `UICollectionViewCell` to show such **Data Card** UI design
-* JSQMessagesViewController has some design strongly against the SOLID principles and MVC design pattern, misusing the Model and View, such as
-    * Message model has `UIView` property
-    * Input toolbar has quite a few assumption which loses the simplicity to customize. Because of the pre-assembly of *Send* button, delegate propagation up and function override are introduced.
-
-* LayerKit heavily integrated with its Layer service
+* Make customize easier and more close to the SOLID taste
