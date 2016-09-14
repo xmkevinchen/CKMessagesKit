@@ -14,8 +14,7 @@ open class CKMessagesViewController: UIViewController {
     // MARK: - Public Properties
     
     @IBOutlet public weak var messagesView: CKMessagesView!
-    @IBOutlet public weak var inputToolbar: CKMessagesToolbar!
-    
+    @IBOutlet public var inputToolbar: CKMessagesToolbar!
     
     /// Specify the bar item should be enabled automatically when the `textView` contains text
     public weak var enablesAutomaticallyBarItem: CKMessagesToolbarItem? {
@@ -69,6 +68,23 @@ open class CKMessagesViewController: UIViewController {
     fileprivate var unusedPresentors = [String: [CKMessagePresenting]]()
     fileprivate var prefetchedPresentors = [IndexPath: CKMessagePresenting]()
     fileprivate var keyboardEndFrame: CGRect = .zero
+    
+    
+    convenience init() {
+        let nibName = String(describing: CKMessagesViewController.self)
+        let bundle = Bundle(for: CKMessagesViewController.self)
+        
+        self.init(nibName: nibName, bundle: bundle)
+    }
+    
+    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
     // MARK: - Life Cycle
     

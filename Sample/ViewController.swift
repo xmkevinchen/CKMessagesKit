@@ -22,18 +22,21 @@ extension String {
 
 class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
     
+    var isModel: Bool = false
+    
     var messages = [CKMessageData]()
-    
     var formatter = DateFormatter()
-    
     var incomingAvatar: CKMessagesAvatarImageData?
     
     override func viewDidLoad() {
-        
-        
         super.viewDidLoad()
+        
         title = "Messages"
-                
+        
+        if isModel {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss(_:)))
+        }
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.typing, style: .plain, target: self, action: #selector(showTypingIndicator(_:)))
         
         /// 1. Register presentor for specified message type
@@ -72,9 +75,15 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         
     }
 
+    func dismiss(_ sender: AnyObject) {
+        resignFirstResponder()
+        dismiss(animated: true, completion: nil)
+        
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
