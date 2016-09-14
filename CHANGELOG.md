@@ -1,4 +1,4 @@
-## Release Note
+## Release Notes
 
 ### 1.1.1
 -  Fix inputToolbar deallocated when presents `CKMessagesViewController` as Model
