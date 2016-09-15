@@ -51,7 +51,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         messagesView.messagesViewLayout.outgoingAvatarSize = .zero
         messagesView.messagesViewLayout.incomingAvatarSize = CGSize(width: 48, height: 48)        
         
-        for _ in 0..<4 {
+        for _ in 0..<1 {
             insertNewMessage()
         }
         
@@ -173,7 +173,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
 
 extension ViewController: CKMessagesViewDecorating {
         
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, contentSizeAt indexPath: IndexPath) -> CGSize? {
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, messageSizeAt indexPath: IndexPath) -> CGSize? {
         let message = messages[indexPath.item]
         
         switch message {

@@ -192,7 +192,7 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
         
         if let attributes = layoutAttributes as? CKMessagesViewLayoutAttributes {
             
-            guard attributes.representedElementCategory == .cell else {
+            guard attributes.representedElementCategory == .cell && attributes.isConfigured else {
                 return
             }
             
@@ -211,7 +211,11 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
         
     }
     
-    
+    open override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+        
+        let attributes = super.preferredLayoutAttributesFitting(layoutAttributes)
+        return attributes
+    }
     
     
     
@@ -396,6 +400,7 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
             
             width.priority = 999
             height.priority = 999
+            bottom.priority = 999
         }
         
         var constraints: [NSLayoutConstraint] {

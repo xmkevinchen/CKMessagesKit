@@ -156,7 +156,24 @@ public protocol CKMessagesViewDecorating: NSObjectProtocol {
     ///
     /// - returns: The content size of the message at the specified indexPath
     ///
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, contentSizeAt indexPath: IndexPath) -> CGSize?
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, messageSizeAt indexPath: IndexPath) -> CGSize?
+    
+    /// Asks the decorator for the message insets that corresponds to the message at the specified indexPath
+    ///
+    /// If return `nil` from this method, `CKMessagesViewLayout` will use the value of its property `messageInsets`,
+    /// otherwise, `CKMessagesViewLayout` will just use the return value from this method.
+    ///
+    ///
+    /// These size above will retrieve for their corresponding delegate method,
+    /// and `CKMessagesViewLayout` will use them to calculate the finalize size of the whole message cell
+    ///
+    /// - parameter messagesView: The messages view object displaying the flow layout
+    /// - parameter layout:       The layout object requesting the information
+    /// - parameter at:           The layout object requesting the information
+    ///
+    /// - returns: The insets of the message at the specified indexPath
+    ///
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, messageInsetsAt indexPath: IndexPath) -> UIEdgeInsets?
     
     
     /// Asks the decorator for the bubble tail horizonal space till its body that corresponds to the message at the specified indexPath
@@ -215,7 +232,7 @@ open class CKMessagesView: UICollectionView {
             isPrefetchingEnabled = true
         }
     }
-    
+        
 }
 
 
@@ -393,7 +410,26 @@ public extension CKMessagesViewDecorating {
     ///
     /// - returns: The content size of the message at the specified indexPath
     ///
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, contentSizeAt indexPath: IndexPath) -> CGSize? {
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, messageSizeAt indexPath: IndexPath) -> CGSize? {
+        return nil
+    }
+    
+    /// Asks the decorator for the message insets that corresponds to the message at the specified indexPath
+    ///
+    /// If return `nil` from this method, `CKMessagesViewLayout` will use the value of its property `messageInsets`,
+    /// otherwise, `CKMessagesViewLayout` will just use the return value from this method.
+    ///
+    ///
+    /// These size above will retrieve for their corresponding delegate method,
+    /// and `CKMessagesViewLayout` will use them to calculate the finalize size of the whole message cell
+    ///
+    /// - parameter messagesView: The messages view object displaying the flow layout
+    /// - parameter layout:       The layout object requesting the information
+    /// - parameter at:           The layout object requesting the information
+    ///
+    /// - returns: The insets of the message at the specified indexPath
+    ///
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, messageInsetsAt indexPath: IndexPath) -> UIEdgeInsets? {
         return nil
     }
     

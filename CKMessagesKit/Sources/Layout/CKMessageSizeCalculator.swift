@@ -11,8 +11,6 @@ import UIKit
 
 class CKMessageSizeCalculator: CKMessageSizeCalculating {
     
-
-    
     private var cache: NSCache<AnyObject, AnyObject>
     private var minimumWidth: CGFloat
     private var additionalInsets : CGFloat = 2
@@ -32,56 +30,66 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
         self.init(cache: cache, minimumWidth: minimumWidth)
     }
     
-    func size(of message: CKMessageData, at indexPath: IndexPath, with layout: CKMessagesViewLayout) -> CGSize {
+    func size(of message: CKMessageData, at indexPath: IndexPath, with layout: CKMessagesViewLayout) -> CKMessageCalculatingSize {
+        
+        
+        var size: CKMessageCalculatedSize = .zero
+        let messagesView = layout.messagesView
+        let decoractor = messagesView.decorator
+        
+        
+        // Avatar size
+        size.avatar = self.avatarSize(of: message, with: layout)
+        
+        // Message insets
+        
+        if let messageInsets = decoractor?.messagesView(messagesView, layout: layout, messageInsetsAt: indexPath) {
+            size.messageInsets = messageInsets
+        } else {
+            size.messageInsets = layout.messageInsets
+        }
+        
+        size.topLabel = labelSize(of: .top, with: layout, at: indexPath)
+        size.bubbleTopLabel = labelSize(of: .bubbleTop, with: layout, at: indexPath)
+        size.bottomLabel = labelSize(of: .bottom, with: layout, at: indexPath)
+        
+        
+        // Message itself size
         
         let key = message.hash as AnyObject
-        
         if let cachedSize = cache.object(forKey: key) as? CGSize {
-            return cachedSize
+            size.messageSize = cachedSize
         }
         
-        let avatarSize: CGSize = self.avatarSize(of: message, with: layout)
-        let messageInsets = layout.messageInsets
-        let horizontalSpace = messageInsets.left + messageInsets.right
+        size.avatar = avatarSize(of: message, with: layout)
+        var horizontalSpace = size.messageInsets.left + size.messageInsets.right
+        
         let bubbleTailWidth = layout.messagesView.decorator?.messagesView(layout.messagesView, layout: layout, bubbleTailHorizontalSpaceAt: indexPath) ?? layout.messageBubbleTailHorizonalSpace
-        let maximumWidth = layout.itemWidth - avatarSize.width - horizontalSpace - layout.messageBubbleMarginWidth - bubbleTailWidth
+        horizontalSpace += bubbleTailWidth
+        
+        let maximumWidth = layout.itemWidth - size.avatar.width - horizontalSpace - layout.messageBubbleMarginWidth
         
         /// If decorator returns contentSize of message, just use it without caching it
-        if var contentSize = layout.messagesView.decorator?.messagesView(layout.messagesView, layout: layout, contentSizeAt: indexPath) {
-            contentSize.width = min(maximumWidth, contentSize.width)
-            cache.setObject(contentSize as AnyObject, forKey: key)
-            return contentSize
+        if var messageSize = layout.messagesView.decorator?.messagesView(layout.messagesView, layout: layout, messageSizeAt: indexPath) {
+            messageSize.width = min(maximumWidth, messageSize.width)
+            size.messageSize = messageSize
+            
+        } else {
+            
+            let textView = CKMessageCellTextView()
+            textView.text = message.text
+            textView.font = layout.messageFont
+            var messageSize = textView.sizeThatFits(CGSize(width: maximumWidth, height: CGFloat.greatestFiniteMagnitude))
+            
+            /// Because we use the insets to layout messageView inside of the message bubble image
+            /// So the minimuWidth should subtract the horizontal insets as well
+            messageSize.width = max(messageSize.width, minimumWidth - horizontalSpace)
+            size.messageSize = messageSize
+            
+            cache.setObject(messageSize as AnyObject, forKey: key)
         }
         
-                                        
-        //         let textView = CKMessageCellTextView()
-        //         textView.text = message.text
-        //         let referenceSize = textView.sizeThatFits(CGSize(width: maximumWidth, height: CGFloat.greatestFiniteMagnitude))
-        
-        let stringRect = NSString(string: message.text)
-            .boundingRect(with: CGSize(width: maximumWidth, height: CGFloat.greatestFiniteMagnitude),
-                          options: [.usesLineFragmentOrigin, .usesFontLeading],
-                          attributes: [NSFontAttributeName: layout.messageFont],
-                          context: nil)
-        
-        var stringSize = stringRect.integral.size
-        
-        // The stringSize calculated here is 2 pixels less than the one calculated by UIText.sizeThatFits(_:) method
-        // as the comment above the stringRect calculation.
-        // In order to keep this code without UI components, we still use the additional insets
-        
-        stringSize.height += additionalInsets
-        
-        var contentSize = stringSize
-        
-        /// Because we use the insets to layout messageView inside of the message bubble image
-        /// So the minimuWidth should subtract the horizontal insets as well
-        
-        contentSize.width = max(contentSize.width, minimumWidth - messageInsets.left - messageInsets.right - bubbleTailWidth)
-        
-        cache.setObject(contentSize as AnyObject, forKey: key)
-        
-        return contentSize
+        return size
     }
     
     func prepareForResetting(layout: CKMessagesViewLayout) {
@@ -99,11 +107,58 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
             }
             
         } else {
+            
             return .zero
         }
         
     }
     
+    private enum CKMessageLabelPosition {
+        case top
+        case bubbleTop
+        case bottom
+    }
     
+    private func labelSize(of position: CKMessageLabelPosition, with layout: CKMessagesViewLayout, at indexPath: IndexPath) -> CGSize {
+        
+        let messagesView = layout.messagesView
+        let decoractor = messagesView.decorator
+        
+        let label = CKMessageInsetsLabel()
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        
+        switch position {
+        case .top:
+            
+            if let attributedText = decoractor?.messagesView(messagesView, layout: layout, attributedTextForTopLabelAt: indexPath) {
+                label.attributedText = attributedText
+            } else if let text = decoractor?.messagesView(messagesView, layout: layout, textForTopLabelAt: indexPath) {
+                label.text = text
+                label.font = UIFont.preferredFont(forTextStyle: .caption1)
+            }
+            
+        case .bubbleTop:
+            
+            if let attributedText = decoractor?.messagesView(messagesView, layout: layout, attributedTextForBubbleTopLabelAt: indexPath) {
+                label.attributedText = attributedText
+            } else if let text = decoractor?.messagesView(messagesView, layout: layout, textForBubbleTopLabelAt: indexPath) {
+                label.text = text
+                label.font = UIFont.preferredFont(forTextStyle: .caption2)
+            }
+            
+        case .bottom:
+            if let attributedText = decoractor?.messagesView(messagesView, layout: layout, attributedTextForBottomLabelAt: indexPath) {
+                label.attributedText = attributedText
+            } else if let text = decoractor?.messagesView(messagesView, layout: layout, textForBottomLabelAt: indexPath) {
+                label.text = text
+                label.font = UIFont.preferredFont(forTextStyle: .caption2)
+            }
+        }
+        
+        let size = label.sizeThatFits(CGSize(width: layout.itemWidth, height: CGFloat.greatestFiniteMagnitude))
+        
+        return size
+    }
     
 }
