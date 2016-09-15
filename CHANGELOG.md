@@ -1,5 +1,9 @@
 ## Release Notes
 
+### 1.2 Layout
+- Refactor the message size calculation logic, centralize them into the `CKMessageSizeCalculator`, remove the logic from `CKMessagesViewLayout`
+- When connect to hardware keyboard, `CKMessagesView` now just update its contentInset with input toolbar size
+
 ### 1.1.1
 -  Fix inputToolbar deallocated when presents `CKMessagesViewController` as Model
 

@@ -7,14 +7,15 @@
 
 ## Design Goals
 * [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)) Principle
+* [Protocol-Orientated Programming](https://developer.apple.com/videos/play/wwdc2015/408/) to follow the SOLID Principle
 * [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) design pattern
-* Closely mimic [iMessages](https://support.apple.com/en-us/HT201287) style and behavior
 * Easy customization and extension for clients
 
 
 ##  Requirements
 * Swift 3.0
 * Xcode 8
+* iOS 8
 
 ## Installation
 
@@ -69,16 +70,17 @@ Use Carthage to download the dependencies of the Sample project
 
 ## Current version
 
-### 1.1.1
-- Fix inputToolbar deallocated when presents `CKMessagesViewController` as Model
+### 1.2
+- Refactor the message size calculation logic, centralize them into the `CKMessageSizeCalculator`, remove the logic from `CKMessagesViewLayout`
+- When connect to hardware keyboard, `CKMessagesView` now just update its contentInset with input toolbar size
 
 ### [Release Notes](CHANGELOG.md)
 
 <hr/>
-Finally, CKMessagesKit is strongly inspired by [JSQMessagesViewController](https://github.com/jessesquires/JSQMessagesViewController) and [LayerKit](https://layer.com/). Thanks to Authors and Contributors
+Finally, CKMessagesKit was inspired by [JSQMessagesViewController](https://github.com/jessesquires/JSQMessagesViewController) and [LayerKit](https://layer.com/). Thanks to Authors and Contributors
 
 However, there're some reasons pushing me to create CKMessagesKit by myself
 
 * Pure Swift implementation, written in Swift 3.0
 * Nested collection UI presentation support, like using `UICollectionView`, `UITableView` in `UICollectionViewCell` to show such **Data Card** UI design
-* Make customize easier and more close to the SOLID taste
+* Protocol-Orientated Programming & SOLID Principle strictly follows
