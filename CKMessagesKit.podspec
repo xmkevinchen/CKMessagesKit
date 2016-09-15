@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = 'CKMessagesKit'
-  spec.version      = '1.1'
+  spec.version      = '1.2'
   spec.license      = 'MIT'
   spec.homepage     = 'https://github.com/xmkevinchen/CKMessagesKit'
   spec.authors      = { 'Kevin Chen' => 'xmkevinchen@gmail.com' }
