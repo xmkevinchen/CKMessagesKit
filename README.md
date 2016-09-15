@@ -7,14 +7,15 @@
 
 ## Design Goals
 * [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)) Principle
+* [Protocol-Orientated Programming](https://developer.apple.com/videos/play/wwdc2015/408/) to follow the SOLID Principle
 * [MVC](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) design pattern
-* Closely mimic [iMessages](https://support.apple.com/en-us/HT201287) style and behavior
 * Easy customization and extension for clients
 
 
 ##  Requirements
 * Swift 3.0
 * Xcode 8
+* iOS 8
 
 ## Installation
 
@@ -67,24 +68,19 @@ Use Carthage to download the dependencies of the Sample project
 4. Try to use `CKViewLayout` protocol to layout message cell, instead of using massive AutoLayout constraint.
 
 
-## Release version
+## Current version
 
-> 1.1.1
-
-### Release Note
-- Fix inputToolbar deallocated when presents `CKMessagesViewController` as Model
+### 1.2
+- Refactor the message size calculation logic, centralize them into the `CKMessageSizeCalculator`, remove the logic from `CKMessagesViewLayout`
+- When connect to hardware keyboard, `CKMessagesView` now just update its contentInset with input toolbar size
 
 ### [Release Notes](CHANGELOG.md)
 
-## Why recreate the wheel
-First of all, CKMessagesKit is strongly inspired by [JSQMessagesViewController](https://github.com/jessesquires/JSQMessagesViewController) and [LayerKit](https://layer.com/).
+<hr/>
+Finally, CKMessagesKit was inspired by [JSQMessagesViewController](https://github.com/jessesquires/JSQMessagesViewController) and [LayerKit](https://layer.com/). Thanks to Authors and Contributors
 
 However, there're some reasons pushing me to create CKMessagesKit by myself
 
 * Pure Swift implementation, written in Swift 3.0
 * Nested collection UI presentation support, like using `UICollectionView`, `UITableView` in `UICollectionViewCell` to show such **Data Card** UI design
-* JSQMessagesViewController has some design strongly against the SOLID principles and MVC design pattern, misusing the Model and View, such as
-    * Message model has `UIView` property
-    * Input toolbar has quite a few assumption which loses the simplicity to customize. Because of the pre-assembly of *Send* button, delegate propagation up and function override are introduced.
-
-* LayerKit heavily integrated with its Layer service
+* Protocol-Orientated Programming & SOLID Principle strictly follows

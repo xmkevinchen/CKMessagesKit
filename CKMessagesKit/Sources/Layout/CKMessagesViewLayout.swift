@@ -11,10 +11,14 @@ import UIKit
 public class CKMessagesViewLayout: UICollectionViewFlowLayout {
     
     public var messagesView: CKMessagesView {
-        return collectionView! as! CKMessagesView
+        
+        guard let messagesView = collectionView as? CKMessagesView else {
+            fatalError("CKMessagesViewLayout should have an associated CKMessagesView instance")
+        }
+        
+        return messagesView
     }
     
-    private let defaultAvatarSize: CGSize = CGSize(width: 30, height: 30)
     
     public var messageFont: UIFont = UIFont.preferredFont(forTextStyle: .body)
         {
@@ -151,32 +155,23 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
     
     public func sizeForItem(at indexPath: IndexPath) -> CGSize {
         
-        let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView)
-        let messageSize = size(of: message, at: indexPath)
-                
-        var height = messageSize.height + messageInsets.top + messageInsets.bottom
-        
-        if let attributes = layoutAttributesForItem(at: indexPath) as? CKMessagesViewLayoutAttributes {
-            
-            height += attributes.topLabelHeight
-            height += attributes.bubbleTopLabelHeight
-            height += attributes.bottomLabelHeight
-            
+        guard let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) else {
+            return CGSize(width: itemWidth, height: 0)
         }
+        
+        let size = messageSizeCalculator.size(of: message, at: indexPath, with: self)
+        
+        let height = size.topLabel.height
+            + size.bubbleTopLabel.height
+            + size.messageInsets.top
+            + size.messageSize.height
+            + size.messageInsets.bottom
+            + size.bottomLabel.height
         
         return CGSize(width: itemWidth, height: ceil(height))
         
     }
     
-    private func size(of message:CKMessageData?, at indexPath: IndexPath) -> CGSize {
-        
-        if let message = message {
-            return messageSizeCalculator.size(of: message, at: indexPath, with: self)
-        }
-        
-        return .zero
-        
-    }
     
     public var itemWidth: CGFloat {
         guard collectionView != nil else {
@@ -188,14 +183,14 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
             - sectionInset.left - sectionInset.right
     }
     
-
+    
     
     // MARK:- Private
     private func configure() {
         scrollDirection = .vertical
         sectionInset = UIEdgeInsets(top: 10, left: 5, bottom: 10, right: 5)
         minimumLineSpacing = 5
-                                
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(didReceiveApplicationMemoryWarningNotification(_:)),
                                                name: Notification.Name.UIApplicationDidReceiveMemoryWarning,
@@ -249,14 +244,21 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
     
     private func configure(attributes: CKMessagesViewLayoutAttributes) {
         let indexPath = attributes.indexPath
+        guard let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) else {
+            return
+        }
         
-        let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView)
-        let isOutgoing = (message?.senderId == messagesView.messenger?.senderId)
-        let messageSize = size(of: message, at: indexPath)
-        var messageInsets = self.messageInsets
+        let size = messageSizeCalculator.size(of: message, at: indexPath, with: self)
+        let isOutgoing = (message.senderId == messagesView.messenger?.senderId)
+        
+        let messageSize = size.messageSize
+        var messageInsets = size.messageInsets
+        
         
         let bubbleTailWidth
-            = messagesView.decorator?.messagesView(messagesView, layout: self, bubbleTailHorizontalSpaceAt: indexPath) ?? messageBubbleTailHorizonalSpace
+            = messagesView.decorator?.messagesView(messagesView,
+                                                   layout: self,
+                                                   bubbleTailHorizontalSpaceAt: indexPath) ?? messageBubbleTailHorizonalSpace
         if isOutgoing {
             attributes.avatarPosition = .right
             messageInsets.right += bubbleTailWidth
@@ -270,65 +272,18 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
         attributes.messageFont = messageFont
         attributes.incomingAvatarSize = incomingAvatarSize
         attributes.outgoingAvatarSize = outgoingAvatarSize
-                                
-        if let decorator = messagesView.decorator {
-            if let height = decorator.messagesView(messagesView, layout: self, heightForTopLabelAt: indexPath) {
-                attributes.topLabelHeight = height
-            } else if let attributedText = decorator.messagesView(messagesView, layout: self, attributedTextForTopLabelAt: indexPath) {
-                attributes.topLabelHeight = size(of: attributedText).height
-            } else if let text = decorator.messagesView(messagesView, layout: self, textForTopLabelAt: indexPath) {
-                attributes.topLabelHeight = size(of: text, attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption1)]).height
-            } else {
-                attributes.topLabelHeight = 0
-            }
-            
-            if let height = decorator.messagesView(messagesView, layout: self, heightForBubbleTopLabelAt: indexPath) {
-                attributes.bubbleTopLabelHeight = height
-            } else if let attributedText = decorator.messagesView(messagesView, layout: self, attributedTextForBubbleTopLabelAt: indexPath) {
-                attributes.bubbleTopLabelHeight = size(of: attributedText).height
-            } else if let text = decorator.messagesView(messagesView, layout: self, textForBubbleTopLabelAt: indexPath) {
-                attributes.bubbleTopLabelHeight = size(of: text, attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption1)]).height
-            } else {
-                attributes.bubbleTopLabelHeight = 0
-            }
-            
-            if let height = decorator.messagesView(messagesView, layout: self, heightForBottomLabelAt: indexPath) {
-                attributes.bottomLabelHeight = height
-            } else if let attributedText = decorator.messagesView(messagesView, layout: self, attributedTextForBottomLabelAt: indexPath) {
-                attributes.bottomLabelHeight = size(of: attributedText).height
-            } else if let text = decorator.messagesView(messagesView, layout: self, textForBottomLabelAt: indexPath) {
-                attributes.bottomLabelHeight = size(of: text, attributes: [NSFontAttributeName: UIFont.preferredFont(forTextStyle: .caption1)]).height
-            } else {
-                attributes.bottomLabelHeight = 0
-            }
-            
-        }
+        attributes.topLabelHeight = size.topLabel.height
+        attributes.bubbleTopLabelHeight = size.bubbleTopLabel.height
+        attributes.bottomLabelHeight = size.bottomLabel.height
+        
+        attributes.isConfigured = true
         
         
     }
-    
-    
-    
-    
     
     private func resetLayout() {
         messageBubbleMarginWidth = readableMessageBubbleMarginWidth()
         messageSizeCalculator.prepareForResetting(layout: self)
         invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
     }
-    
-    private func size(of text: NSAttributedString) -> CGSize {
-        let rect = text.boundingRect(with: CGSize(width: itemWidth, height: CGFloat.greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil)
-        return rect.integral.size
-    }
-    
-    private func size(of text: String, attributes: [String: Any]?) -> CGSize {
-        let rect = NSString(string: text)
-            .boundingRect(with: CGSize(width: itemWidth, height: CGFloat.greatestFiniteMagnitude),
-                          options: [.usesLineFragmentOrigin, .usesFontLeading],
-                          attributes: attributes,
-                          context: nil)
-        return rect.integral.size
-    }
-    
 }

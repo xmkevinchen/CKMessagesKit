@@ -46,9 +46,9 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="150" translatesAutoresizingMaskIntoConstraints="NO" id="Wm1-PC-L7Y" userLabel="Container View">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wm1-PC-L7Y" userLabel="Container View">
                     <subviews>
-                        <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" placeholderIntrinsicWidth="30" placeholderIntrinsicHeight="105" translatesAutoresizingMaskIntoConstraints="NO" id="gJW-VW-hfg" userLabel="Avatar Container View">
+                        <view contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="gJW-VW-hfg" userLabel="Avatar Container View">
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OLq-Lj-2Wu">
                                     <constraints>
@@ -65,10 +65,10 @@
                                 <constraint firstAttribute="trailing" secondItem="OLq-Lj-2Wu" secondAttribute="trailing" id="gtq-5X-pyS"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" placeholderIntrinsicWidth="250" placeholderIntrinsicHeight="105" translatesAutoresizingMaskIntoConstraints="NO" id="rED-XC-BNB" userLabel="Message Bubble Container View" customClass="CKMessageBubbleContainerView" customModule="CKMessagesKit" customModuleProvider="target">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rED-XC-BNB" userLabel="Message Bubble Container View" customClass="CKMessageBubbleContainerView" customModule="CKMessagesKit" customModuleProvider="target">
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xa4-wj-2ws"/>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RwI-Xz-bM1" customClass="CKMessageContainerView" customModule="CKMessagesKit" customModuleProvider="target">
+                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="250" placeholderIntrinsicHeight="105" translatesAutoresizingMaskIntoConstraints="NO" id="RwI-Xz-bM1" customClass="CKMessageContainerView" customModule="CKMessagesKit" customModuleProvider="target">
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                             </subviews>
@@ -135,7 +135,7 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-66" y="-819"/>
+            <point key="canvasLocation" x="-229" y="-950"/>
         </view>
     </objects>
 </document>

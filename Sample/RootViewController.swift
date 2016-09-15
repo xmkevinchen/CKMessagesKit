@@ -154,7 +154,7 @@ extension RootViewController: UITableViewDataSource, UITableViewDelegate {
             
         case (0, 1):
             let viewController = ViewController()
-            navigationController?.pushViewController(viewController, animated: true)
+            show(viewController, sender: nil)
             navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
             
         case (1, 0):

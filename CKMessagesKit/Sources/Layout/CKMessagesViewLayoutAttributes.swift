@@ -30,6 +30,7 @@ public class CKMessagesViewLayoutAttributes: UICollectionViewLayoutAttributes {
     public var topLabelHeight: CGFloat
     public var bubbleTopLabelHeight: CGFloat
     public var bottomLabelHeight: CGFloat
+    public var isConfigured: Bool = false
     
     
     
@@ -60,6 +61,7 @@ public class CKMessagesViewLayoutAttributes: UICollectionViewLayoutAttributes {
         copy.bubbleTopLabelHeight = bubbleTopLabelHeight
         copy.bottomLabelHeight = bottomLabelHeight
         copy.avatarPosition = avatarPosition
+        copy.isConfigured = isConfigured
         
         return copy
     }
@@ -78,6 +80,7 @@ public class CKMessagesViewLayoutAttributes: UICollectionViewLayoutAttributes {
                     && bubbleTopLabelHeight == attributes.bubbleTopLabelHeight
                     && bottomLabelHeight == attributes.bottomLabelHeight
                     && avatarPosition == attributes.avatarPosition
+                    && isConfigured == attributes.isConfigured
                     && super.isEqual(attributes)
             } else {
                 return super.isEqual(attributes)
