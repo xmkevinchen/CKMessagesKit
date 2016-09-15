@@ -77,6 +77,7 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
         let nib = UINib(nibName: String(describing: CKMessageBasicCell.self), bundle: Bundle(for: CKMessageBasicCell.self))
         if let proxyView = nib.instantiate(withOwner: self, options: nil).first as? UIView {
             proxyView.translatesAutoresizingMaskIntoConstraints = false
+            proxyView.backgroundColor = UIColor.clear
             contentView.addSubview(proxyView)
             contentView.pinSubview(proxyView)
             containerViewConstraints = ContainerViewConstraints(avatar: avatarContainerView,
@@ -295,10 +296,13 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
         contentView.backgroundColor = UIColor.clear
         containerView.backgroundColor = UIColor.clear
         avatarContainerView.backgroundColor = UIColor.clear
+        messageBubbleContainerView.backgroundColor = UIColor.clear
+        messageContainerView.backgroundColor = UIColor.clear
         accessoryContainerView.backgroundColor = UIColor.clear
         
         contentView.clipsToBounds = true
         messageBubbleContainerView.clipsToBounds = true
+        
         
         setNeedsUpdateConstraints()
         setNeedsLayout()

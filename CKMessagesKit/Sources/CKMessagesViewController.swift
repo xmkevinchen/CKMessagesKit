@@ -23,14 +23,6 @@ open class CKMessagesViewController: UIViewController {
         }
     }
     
-    public static var nib: UINib {
-        #if swift(>=3.0)
-            return UINib(nibName: String(describing:CKMessagesViewController.self), bundle: Bundle(for: CKMessagesViewController.self))
-        #else
-            return UINib(nibName: String(CKMessagesViewController.self), bundle: Bundle(for: CKMessagesViewController.self))
-        #endif
-    }
-    
     public var automaticallyScrollsToMostRecentMessage: Bool = true {
         
         didSet {
@@ -61,28 +53,35 @@ open class CKMessagesViewController: UIViewController {
     }
         
     // MARK: - Private Properties
-    
-    fileprivate var toolbarHeight: CGFloat = 44.0
     fileprivate var registeredPresentors = [String: CKMessagePresenting.Type]()
     fileprivate var usingPresentors = [IndexPath: CKMessagePresenting]()
     fileprivate var unusedPresentors = [String: [CKMessagePresenting]]()
     fileprivate var prefetchedPresentors = [IndexPath: CKMessagePresenting]()
+    fileprivate var hasRegistered: Bool = false
     
-    
-    convenience init() {
-        let nibName = String(describing: CKMessagesViewController.self)
-        let bundle = Bundle(for: CKMessagesViewController.self)
+    open override func loadView() {
+        let view = UIView()
+        view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
+        let messagesView = CKMessagesView(frame: .zero, collectionViewLayout: CKMessagesViewLayout())
+        messagesView.backgroundColor = UIColor.clear
+        messagesView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(messagesView)
+                
+        let constraints = [
+            NSLayoutConstraint(item: messagesView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: messagesView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: messagesView, attribute: .bottom, multiplier: 1.0, constant: 0),
+            NSLayoutConstraint(item: view, attribute: .trailing, relatedBy: .equal, toItem: messagesView, attribute: .trailing, multiplier: 1.0, constant: 0),
+        ]
         
-        self.init(nibName: nibName, bundle: bundle)
-    }
-    
-    public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        NSLayoutConstraint.activate(constraints)
+        
+        self.messagesView = messagesView
+        self.inputToolbar = CKMessagesToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0))
+        self.inputToolbar.backgroundColor = UIColor.magenta
+        
+        self.view = view
+        
     }
     
     // MARK: - Life Cycle
@@ -94,17 +93,20 @@ open class CKMessagesViewController: UIViewController {
     
     override open func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        // Do any additional setup after loading the view, typically from a nib.        
+        if inputToolbar == nil {
+            inputToolbar = CKMessagesToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0))
+        }
         
         configure()
-        registerObservers()
         
     }
-    
+
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        toolbarHeight = inputToolbar.preferredDefaultHeight        
+        
         messagesView.collectionViewLayout.invalidateLayout()
+        updateMessagesViewInsets()
         
         if automaticallyScrollsToMostRecentMessage {
             DispatchQueue.main.async {
@@ -112,10 +114,13 @@ open class CKMessagesViewController: UIViewController {
                 self.messagesView.messagesViewLayout.invalidateLayout(with: CKMessagesViewLayoutInvalidationContext.context())
             }
         }
+                
     }
     
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        registerObservers()
+        inputToolbar.backgroundColor = UIColor.clear
     }
     
     open override func viewWillLayoutSubviews() {
@@ -143,11 +148,7 @@ open class CKMessagesViewController: UIViewController {
     
     private func configure() {
         
-        #if swift(>=3.0)
-            type(of:self).nib.instantiate(withOwner: self, options: nil)
-        #else
-            self.dynamicType.nib.instantiate(withOwner: self, options: nil)
-        #endif
+        inputToolbar.removeFromSuperview()
         
         messagesView.translatesAutoresizingMaskIntoConstraints = false
         messagesView.alwaysBounceVertical = true
@@ -155,9 +156,7 @@ open class CKMessagesViewController: UIViewController {
         messagesView.register(for: CKMessageBasicCell.self)
         messagesView.register(for: CKMessageTextCell.self)
         messagesView.register(forSupplementaryView: UICollectionElementKindSectionFooter, for: CKMessagesIndicatorFooterView.self)
-        
-        
-        
+                        
         messagesView.delegate = self
         messagesView.dataSource = self
                 
@@ -167,13 +166,9 @@ open class CKMessagesViewController: UIViewController {
         }
         
         automaticallyScrollsToMostRecentMessage = true
-        automaticallyAdjustsScrollViewInsets = true
-        
-        toolbarHeight = inputToolbar.preferredDefaultHeight
         
         inputToolbar.contentView.textView.placeHolder = "New Message"
         inputToolbar.contentView.textView.delegate = self
-        inputToolbar.removeFromSuperview()
         
         additionalContentInsets = .zero
         updateMessagesViewInsets()
@@ -420,6 +415,8 @@ extension CKMessagesViewController {
     
     fileprivate func registerObservers() {
         
+        guard !hasRegistered else { return }
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(didReceivePreferredContentSizeChanged(_:)),
                                                name: Notification.Name.UIContentSizeCategoryDidChange,
@@ -430,9 +427,11 @@ extension CKMessagesViewController {
                                                name: Notification.Name.UIKeyboardWillChangeFrame,
                                                object: nil)
         
+    
     }
     
     fileprivate func unregisterObservers() {
+        guard hasRegistered else { return }
         NotificationCenter.default.removeObserver(self)
     }
     

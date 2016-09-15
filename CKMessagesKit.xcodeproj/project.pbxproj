@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		0A076AA01D75CE2B0028383B /* CKMessagesKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A076A731D75CE2B0028383B /* CKMessagesKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0A076AA31D75CE2B0028383B /* CKMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A781D75CE2B0028383B /* CKMessagesViewController.swift */; };
-		0A076AA41D75CE2B0028383B /* CKMessagesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0A076A791D75CE2B0028383B /* CKMessagesViewController.xib */; };
 		0A076AA61D75CE2B0028383B /* Bool+BitOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A7C1D75CE2B0028383B /* Bool+BitOperators.swift */; };
 		0A076AA71D75CE2B0028383B /* Bundle+CKMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A7D1D75CE2B0028383B /* Bundle+CKMessages.swift */; };
 		0A076AA81D75CE2B0028383B /* UIColor+CKMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A076A7E1D75CE2B0028383B /* UIColor+CKMessages.swift */; };
@@ -109,7 +108,6 @@
 		0A076A731D75CE2B0028383B /* CKMessagesKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKMessagesKit.h; sourceTree = "<group>"; };
 		0A076A741D75CE2B0028383B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0A076A781D75CE2B0028383B /* CKMessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesViewController.swift; sourceTree = "<group>"; };
-		0A076A791D75CE2B0028383B /* CKMessagesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKMessagesViewController.xib; sourceTree = "<group>"; };
 		0A076A7C1D75CE2B0028383B /* Bool+BitOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bool+BitOperators.swift"; sourceTree = "<group>"; };
 		0A076A7D1D75CE2B0028383B /* Bundle+CKMessages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+CKMessages.swift"; sourceTree = "<group>"; };
 		0A076A7E1D75CE2B0028383B /* UIColor+CKMessages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+CKMessages.swift"; sourceTree = "<group>"; };
@@ -210,7 +208,6 @@
 			isa = PBXGroup;
 			children = (
 				0A076A781D75CE2B0028383B /* CKMessagesViewController.swift */,
-				0A076A791D75CE2B0028383B /* CKMessagesViewController.xib */,
 				0A076A7B1D75CE2B0028383B /* Extensions */,
 				0A076A801D75CE2B0028383B /* Factories */,
 				0A076A821D75CE2B0028383B /* Layout */,
@@ -488,7 +485,6 @@
 				0AE4F2221D851DD40094EB64 /* CKMessageTextCell.xib in Resources */,
 				0A1751891D83C5F0002919DF /* CKMessagesIndicatorFooterView.xib in Resources */,
 				0A076AC31D75CF250028383B /* Images.xcassets in Resources */,
-				0A076AA41D75CE2B0028383B /* CKMessagesViewController.xib in Resources */,
 				0A9175FA1D8476AF00D2A11F /* CKMessageBasicCell.xib in Resources */,
 				0A17518E1D83C5F0002919DF /* CKMessagesToolbarContentView.xib in Resources */,
 			);

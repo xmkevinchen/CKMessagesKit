@@ -72,7 +72,7 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="trailing" secondItem="xa4-wj-2ws" secondAttribute="trailing" id="R5T-Nt-gxO"/>
                                 <constraint firstItem="xa4-wj-2ws" firstAttribute="leading" secondItem="rED-XC-BNB" secondAttribute="leading" id="TH5-be-zHR"/>

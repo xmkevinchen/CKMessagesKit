@@ -24,15 +24,33 @@ public class CKMessagesToolbar: UIToolbar {
         return contentView.textView
     }
     
+    override public init(frame: CGRect) {
+        super.init(frame: frame)
+        configure()
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     override public func awakeFromNib() {
         super.awakeFromNib()
-        
-        self.contentView = CKMessagesToolbarContentView.viewFromNib()        
+        configure()
+       
+    }
+    
+    private func configure() {
+        self.contentView = CKMessagesToolbarContentView.viewFromNib()
         addSubview(contentView)
         pinSubview(contentView)
-        setNeedsUpdateConstraints()
-        translatesAutoresizingMaskIntoConstraints = false
-    }        
+        setNeedsUpdateConstraints()        
+    }
+    
+    public override var backgroundColor: UIColor? {
+        didSet {
+            contentView.backgroundColor = backgroundColor
+        }
+    }
     
 }
 

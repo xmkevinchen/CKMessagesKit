@@ -65,7 +65,6 @@ class RootViewController: UIViewController, SegueHandler {
         
         switch segueIdentifier(for: segue) {
         case .PushSegue:
-            
             navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
             
         case .PresentModalSegua:
@@ -154,8 +153,9 @@ extension RootViewController: UITableViewDataSource, UITableViewDelegate {
             
         case (0, 1):
             let viewController = ViewController()
-            show(viewController, sender: nil)
             navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
+            navigationController?.pushViewController(viewController, animated: true)
+            
             
         case (1, 0):
             performSegue(withIdentifier: .PresentModalSegua, sender: nil)
@@ -164,7 +164,7 @@ extension RootViewController: UITableViewDataSource, UITableViewDelegate {
             let viewController = ViewController()
             viewController.isModel = true
             let navController = UINavigationController(rootViewController: viewController)
-            present(navController, animated: true, completion: nil)
+            showDetailViewController(navController, sender: nil)
             
         default:
             break

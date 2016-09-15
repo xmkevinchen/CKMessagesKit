@@ -117,12 +117,10 @@ public class CKMessagesToolbarContentView: UIView {
     override public func awakeFromNib() {
         super.awakeFromNib()
         translatesAutoresizingMaskIntoConstraints = false
-        
-        
+                
         leftBarItem = nil
         rightBarItem = nil
         
-        backgroundColor = UIColor.clear
     }
     
     deinit {

@@ -13,7 +13,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" placeholderIntrinsicWidth="34" placeholderIntrinsicHeight="infinite" translatesAutoresizingMaskIntoConstraints="NO" id="brC-Ky-39d">
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="Z4c-EG-3x5"/>
                     </constraints>
@@ -21,7 +21,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h2g-bs-jN6">
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="afO-ue-cnW" customClass="CKMessagesComposerTextView" customModule="CKMessagesKit" customModuleProvider="target">
-                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="Jnn-fJ-ztr"/>
                                 <constraint firstAttribute="height" constant="32" id="T0c-u4-SUT"/>
@@ -31,7 +31,7 @@
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="afO-ue-cnW" secondAttribute="trailing" id="0mg-0z-ZJc"/>
                         <constraint firstAttribute="bottom" secondItem="afO-ue-cnW" secondAttribute="bottom" id="RlW-1x-Mp7"/>
@@ -40,13 +40,13 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" placeholderIntrinsicWidth="50" placeholderIntrinsicHeight="infinite" translatesAutoresizingMaskIntoConstraints="NO" id="qC1-de-qcP">
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="1Iv-P9-7ac"/>
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="h2g-bs-jN6" firstAttribute="leading" secondItem="brC-Ky-39d" secondAttribute="trailing" constant="8" id="1oU-Oq-tcC"/>
                 <constraint firstItem="h2g-bs-jN6" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="6" id="4xU-He-4qo"/>

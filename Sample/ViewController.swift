@@ -32,6 +32,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         super.viewDidLoad()
         
         title = "Messages"
+        view.backgroundColor = UIColor.magenta
         
         if isModel {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss(_:)))
@@ -142,8 +143,8 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
             message = CKMessage(senderId: senderId, sender: sender, text: "Your Apple ID must be associated with a paid Apple Developer Program or Apple Developer Enterprise Program to access certain software downloads.")
             
         case 2:
-            let length = self.text.lengthOfBytes(using: .utf8)
-            let maximum = min(Int(arc4random_uniform(UInt32(length - 1))), 60)
+            _ = self.text.lengthOfBytes(using: .utf8)
+            let maximum = max(60, Int(arc4random_uniform(UInt32(120))))
             let lastIndex = self.text.index(self.text.startIndex, offsetBy: maximum)
             let substring = self.text.substring(to: lastIndex)
             message = CKMessage(senderId: "incoming", sender: "Incoming", text: substring)
