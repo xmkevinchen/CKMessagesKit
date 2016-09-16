@@ -15,6 +15,9 @@ open class CKMessagesViewController: UIViewController {
     
     @IBOutlet public weak var messagesView: CKMessagesView!
     @IBOutlet public var inputToolbar: CKMessagesToolbar!
+    @IBOutlet public var inputToolbarBottomConstraint: NSLayoutConstraint!
+    @IBOutlet public var inputToolbarLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet public var inputToolbarTrailingConstraint: NSLayoutConstraint!
     
     /// Specify the bar item should be enabled automatically when the `textView` contains text
     public weak var enablesAutomaticallyBarItem: CKMessagesToolbarItem? {
@@ -58,31 +61,8 @@ open class CKMessagesViewController: UIViewController {
     fileprivate var unusedPresentors = [String: [CKMessagePresenting]]()
     fileprivate var prefetchedPresentors = [IndexPath: CKMessagePresenting]()
     fileprivate var hasRegistered: Bool = false
-    
-    open override func loadView() {
-        let view = UIView()
-        view.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        let messagesView = CKMessagesView(frame: .zero, collectionViewLayout: CKMessagesViewLayout())
-        messagesView.backgroundColor = UIColor.clear
-        messagesView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(messagesView)
-                
-        let constraints = [
-            NSLayoutConstraint(item: messagesView, attribute: .top, relatedBy: .equal, toItem: view, attribute: .top, multiplier: 1.0, constant: 0),
-            NSLayoutConstraint(item: messagesView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1.0, constant: 0),
-            NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: messagesView, attribute: .bottom, multiplier: 1.0, constant: 0),
-            NSLayoutConstraint(item: view, attribute: .trailing, relatedBy: .equal, toItem: messagesView, attribute: .trailing, multiplier: 1.0, constant: 0),
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
-        
-        self.messagesView = messagesView
-        self.inputToolbar = CKMessagesToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0))
-        self.inputToolbar.backgroundColor = UIColor.magenta
-        
-        self.view = view
-        
-    }
+    fileprivate var keyboardEndFrame: CGRect = .zero
+    fileprivate var toolbarHeight: CGFloat = 44.0
     
     // MARK: - Life Cycle
     
@@ -93,10 +73,7 @@ open class CKMessagesViewController: UIViewController {
     
     override open func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.        
-        if inputToolbar == nil {
-            inputToolbar = CKMessagesToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0))
-        }
+        // Do any additional setup after loading the view, typically from a nib.
         
         configure()
         
@@ -132,6 +109,12 @@ open class CKMessagesViewController: UIViewController {
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
     
+        if toolbarHeight != inputToolbar.bounds.height {
+            toolbarHeight = inputToolbar.bounds.height
+            updateMessagesViewInsets(with: keyboardEndFrame)
+            scrollToBottom(animated: true)
+        }
+
     }
     
         
@@ -148,8 +131,36 @@ open class CKMessagesViewController: UIViewController {
     
     private func configure() {
         
-        inputToolbar.removeFromSuperview()
+        if self.messagesView == nil {
+            let messagesView = CKMessagesView(frame: .zero, collectionViewLayout: CKMessagesViewLayout())
+            messagesView.backgroundColor = UIColor.white
+            view.addSubview(messagesView)
+            view.pinSubview(messagesView)
+            self.messagesView = messagesView
+        }
         
+        if inputToolbar == nil {
+            inputToolbar = CKMessagesToolbar(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 44.0))
+            view.addSubview(inputToolbar)
+            
+        }
+        
+        if inputToolbarBottomConstraint == nil {
+            inputToolbarBottomConstraint = NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: inputToolbar, attribute: .bottom, multiplier: 1.0, constant: 0)
+            view.addConstraint(inputToolbarBottomConstraint)
+        }
+        
+        if inputToolbarLeadingConstraint == nil {
+            inputToolbarLeadingConstraint = NSLayoutConstraint(item: inputToolbar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1.0, constant: 0)
+            view.addConstraint(inputToolbarLeadingConstraint)
+        }
+        
+        if inputToolbarTrailingConstraint == nil {
+            inputToolbarTrailingConstraint = NSLayoutConstraint(item: view, attribute: .trailing, relatedBy: .equal, toItem: inputToolbar, attribute: .trailing, multiplier: 1.0, constant: 0)
+            view.addConstraint(inputToolbarTrailingConstraint)
+        }
+        
+        inputToolbar.translatesAutoresizingMaskIntoConstraints = false
         messagesView.translatesAutoresizingMaskIntoConstraints = false
         messagesView.alwaysBounceVertical = true
         
@@ -166,7 +177,7 @@ open class CKMessagesViewController: UIViewController {
         }
         
         automaticallyScrollsToMostRecentMessage = true
-        
+        toolbarHeight = inputToolbar.preferredDefaultHeight
         inputToolbar.contentView.textView.placeHolder = "New Message"
         inputToolbar.contentView.textView.delegate = self
         
@@ -350,11 +361,12 @@ extension CKMessagesViewController {
 
 extension CKMessagesViewController {
     
-    fileprivate func updateMessagesViewInsets(with keyboardHeight: CGFloat = 0) {
+    fileprivate func updateMessagesViewInsets(with keyboradFrame: CGRect = .zero) {
+        self.keyboardEndFrame = keyboradFrame
         
         let top = additionalContentInsets.top + topLayoutGuide.length
         
-        let bottom = max(keyboardHeight, inputToolbar.bounds.height) + additionalContentInsets.bottom
+        let bottom = additionalContentInsets.bottom + toolbarHeight + keyboradFrame.height
         
         let insets = UIEdgeInsets(top: top,
                                   left: additionalContentInsets.left,
@@ -418,6 +430,15 @@ extension CKMessagesViewController {
         guard !hasRegistered else { return }
         
         NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didReceiveKeyboardWillShow(_:)),
+                                               name: Notification.Name.UIKeyboardWillShow,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didReceiveKeyboardWillHide(_:)),
+                                               name: Notification.Name.UIKeyboardWillHide,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
                                                selector: #selector(didReceivePreferredContentSizeChanged(_:)),
                                                name: Notification.Name.UIContentSizeCategoryDidChange,
                                                object: nil)
@@ -448,28 +469,94 @@ extension CKMessagesViewController {
                 return
             }
             
-            var keyboardHeight = keyboardEndFrame.height
+            var keyboardFrame = keyboardEndFrame
             
             // Hardware keyboards
             if keyboardEndFrame.origin.y + keyboardEndFrame.height > view.frame.height {
-                keyboardHeight = view.frame.height - keyboardEndFrame.origin.y
+                keyboardFrame.size.height = view.frame.height - keyboardEndFrame.origin.y
             }
             
             let animationOption = UIViewAnimationOptions(rawValue: UInt(animationCurve << 16))
             
             
+            UIView.animate(withDuration: animationDuration,
+                           delay: 0.0,
+                           options: [animationOption, .allowUserInteraction, .beginFromCurrentState],
+                           animations:
+                {
+                    self.updateMessagesViewInsets(with: keyboardFrame)
+                    
+                    self.inputToolbarBottomConstraint.constant = keyboardFrame.height
+                    self.view.layoutIfNeeded()
+                    
+                    if self.automaticallyScrollsToMostRecentMessage {
+                        self.scrollToBottom(animated: true)
+                    }
+                    
+                }, completion: nil)                        
+        }
+        
+    }
+    
+    @objc private func didReceiveKeyboardWillShow(_ notification: Notification) {
+        
+        if let userInfo = notification.userInfo,
+            let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
+            let animationCurve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? Int,
+            let animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double
+        {
+            
+            
+            guard !keyboardEndFrame.isNull else {
+                return
+            }
+            
+            
+            let animationOption = UIViewAnimationOptions(rawValue: UInt(animationCurve << 16))
             
             UIView.animate(withDuration: animationDuration,
                            delay: 0.0,
                            options: [animationOption],
                            animations:
                 {
-                    self.updateMessagesViewInsets(with: keyboardHeight)
-                    if self.automaticallyScrollsToMostRecentMessage {
-                        self.scrollToBottom(animated: true)
-                    }
+                    self.updateMessagesViewInsets(with: keyboardEndFrame)
+                    self.inputToolbarBottomConstraint.constant = keyboardEndFrame.height
+                    self.view.layoutIfNeeded()
+                    self.scrollToBottom(animated: true)
                     
-                }, completion: nil)                        
+                    
+                }, completion: { _ in })
+        }
+        
+    }
+    
+    @objc private func didReceiveKeyboardWillHide(_ notification: Notification) {
+        
+        if let userInfo = notification.userInfo,
+            let keyboardEndFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue,
+            let animationCurve = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? Int,
+            let animationDuration = userInfo[UIKeyboardAnimationDurationUserInfoKey] as? Double
+        {
+            
+            
+            guard !keyboardEndFrame.isNull else {
+                return
+            }
+            
+            
+            let animationOption = UIViewAnimationOptions(rawValue: UInt(animationCurve << 16))
+            
+            UIView.animate(withDuration: animationDuration,
+                           delay: 0.0,
+                           options: [animationOption],
+                           animations:
+                {
+                    self.updateMessagesViewInsets(with: .zero)
+                    self.inputToolbarBottomConstraint.constant = 0
+                    self.view.layoutIfNeeded()
+                    
+                    
+                }, completion: { _ in })
         }
         
     }
@@ -779,19 +866,23 @@ extension CKMessagesViewController: UITextViewDelegate {
     }
 }
 
+extension CKMessagesViewController: UIScrollViewDelegate {
+    
+}
+
 // MARK: - Input
 
-extension CKMessagesViewController {
-
-    open override var canBecomeFirstResponder: Bool {
-        return true
-    }
-
-    open override var inputAccessoryView: UIView? {
-        return self.inputToolbar
-    }
-
-}
+//extension CKMessagesViewController {
+//
+//    open override var canBecomeFirstResponder: Bool {
+//        return true
+//    }
+//
+//    open override var inputAccessoryView: UIView? {
+//        return self.inputToolbar
+//    }
+//
+//}
 
 
 // MARK: - Debugging
