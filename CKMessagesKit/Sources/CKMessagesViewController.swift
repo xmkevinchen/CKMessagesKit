@@ -169,10 +169,7 @@ open class CKMessagesViewController: UIViewController {
         messagesView.translatesAutoresizingMaskIntoConstraints = false
         messagesView.alwaysBounceVertical = true
         
-        messagesView.register(for: CKMessageBasicCell.self)
-        messagesView.register(for: CKMessageTextCell.self)
-        messagesView.register(forSupplementaryView: UICollectionElementKindSectionFooter, for: CKMessagesIndicatorFooterView.self)
-                        
+                                
         messagesView.delegate = self
         messagesView.dataSource = self
                 

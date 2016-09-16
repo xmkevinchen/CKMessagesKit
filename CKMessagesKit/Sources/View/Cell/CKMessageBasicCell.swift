@@ -219,6 +219,10 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
     }
     
     
+    /// Indicate whether there's `CKMessagePresentor` associated 
+    public var hasPresentor: Bool {
+        return messageView != nil
+    }
     
     public weak var messageView: UIView? {
         

@@ -6,8 +6,6 @@
 //  Copyright © 2016 Kevin Chen. All rights reserved.
 //
 
-
-
 public protocol CKMessagePresenting {
                             
     var messageView: UIView { get }
