@@ -21,7 +21,16 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="rwc-IE-Kka" customClass="CKMessagesView" customModule="CKMessagesKit">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewLayout key="collectionViewLayout" id="nkR-Lt-Ah7" customClass="CKMessagesViewLayout" customModule="CKMessagesKit"/>
-                                <cells/>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="dyY-b8-ISm">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
                             </collectionView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mrj-oM-anY" customClass="CKMessagesToolbar" customModule="CKMessagesKit">
                                 <items/>
@@ -45,7 +54,6 @@
                         <outlet property="inputToolbarLeadingConstraint" destination="wng-o9-zEK" id="l6n-iA-v7k"/>
                         <outlet property="inputToolbarTrailingConstraint" destination="iGb-Zu-bQZ" id="5yu-Mu-4tZ"/>
                         <outlet property="messagesView" destination="rwc-IE-Kka" id="iY5-P2-dd3"/>
-                        <outlet property="view" destination="rwc-IE-Kka" id="cRm-Aj-0VW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -273,65 +281,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7ZD-V3-k35" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1202" y="-526"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Wmz-lT-VS8">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mgH-mv-p5E" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="g0z-Ua-nEz">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Ser-Nv-xJ3" kind="relationship" relationship="rootViewController" id="f2r-bx-YJy"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="vA4-iW-nd3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-452" y="-402.54872563718146"/>
-        </scene>
-        <!--Messages-->
-        <scene sceneID="dYf-a6-uo0">
-            <objects>
-                <viewController title="Messages" id="Ser-Nv-xJ3" customClass="ViewController" customModule="CKMessages" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Sx1-KN-y6x"/>
-                        <viewControllerLayoutGuide type="bottom" id="f7c-OT-ntO"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="oBf-ZU-UDP">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="nEl-OT-sqj" customClass="CKMessagesView" customModule="CKMessagesKit">
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <collectionViewLayout key="collectionViewLayout" id="6kj-qb-oAJ" customClass="CKMessagesViewLayout" customModule="CKMessagesKit"/>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="aV6-TJ-IqL" customClass="CKMessagesViewLayout" customModule="CKMessagesKit">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </view>
-                                    </collectionViewCell>
-                                </cells>
-                            </collectionView>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="nEl-OT-sqj" firstAttribute="leading" secondItem="oBf-ZU-UDP" secondAttribute="leading" id="7R1-RR-eIe"/>
-                            <constraint firstAttribute="trailing" secondItem="nEl-OT-sqj" secondAttribute="trailing" id="RsO-VZ-ZgF"/>
-                            <constraint firstAttribute="bottom" secondItem="nEl-OT-sqj" secondAttribute="bottom" id="Vig-SS-Oit"/>
-                            <constraint firstItem="nEl-OT-sqj" firstAttribute="top" secondItem="oBf-ZU-UDP" secondAttribute="top" id="aoO-LV-wKp"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="R4l-9d-MZb"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="YUc-hD-vcl" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="305" y="-403"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

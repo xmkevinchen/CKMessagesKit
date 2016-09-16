@@ -50,6 +50,7 @@ open class CKMessagesView: UICollectionView {
             isPrefetchingEnabled = true
         }
     }
+    
         
 }
 
