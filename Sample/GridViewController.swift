@@ -10,7 +10,12 @@ import UIKit
 import CKMessagesKit
 import Reusable
 
-class GridViewController: UIViewController, CKMessagePresenting, Identifiable {
+class GridViewController: UIViewController, CKMessagePresentor, Identifiable {
+    
+    public func prepareForReuse() {
+        
+    }
+
     
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -21,8 +26,8 @@ class GridViewController: UIViewController, CKMessagePresenting, Identifiable {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let message = self.message {
-            renderPresenting(with: message)
+        if let message = self.message as? GridMessage {
+            update(with: message)
         }
         
     }
@@ -33,23 +38,23 @@ class GridViewController: UIViewController, CKMessagePresenting, Identifiable {
     }
     
     public var message: CKMessageData?
-    public var messageType: CKMessageData.Type = GridMessage.self
+    public var messageView: UIView {
+        return view
+    }
     
-    public static func presentor() -> CKMessagePresenting {
+    public static func presentor() -> CKMessagePresentor {
         
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let viewController: GridViewController = storyboard.instantiate()
         return viewController
     }
     
-    func renderPresenting(with message: CKMessageData) {
+    func update(with message: CKMessageData) {
         if let message = message as? GridMessage, let collectionView = collectionView {
             self.message = message
             collectionView.reloadData()
         }
     }
-
-    
     
 }
 

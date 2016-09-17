@@ -10,11 +10,11 @@ import UIKit
 import QuartzCore
 
 /// Protocol where defines the basic requirement for presenting a message in the `CKMessagesView` with its cells
-public protocol CKMessagePresentor {
+public protocol CKMessagePresentor: class {
     
     var identifier: String { get }
     var messageView: UIView { get }
-    var message: CKMessageData? { get }
+    var message: CKMessageData? { get set }
     
     static func presentor() -> CKMessagePresentor
     

@@ -7,18 +7,22 @@
 //
 
 import UIKit
+import Reusable
 
-public class CKTextMessagePresentor: CKMessagePresentor {
+public class CKTextMessagePresentor: NSObject, CKMessagePresentor, Reusable {
         
     @IBOutlet public var textView: CKMessageCellTextView!
     
-    init() {
-        
+    override init() {
+        super.init()
         let nib = UINib(nibName: String(describing: CKTextMessagePresentor.self), bundle: Bundle(for: CKTextMessagePresentor.self))
-        guard let textView = nib.instantiate(withOwner: self, options: nil).first as? CKMessageCellTextView else {
+        
+        guard nib.instantiate(withOwner: self, options: nil).first is CKMessageCellTextView else {
             fatalError()
         }
-        self.textView = textView
+        
+        textView.textColor = UIColor.white
+        
         
     }
     
@@ -26,14 +30,21 @@ public class CKTextMessagePresentor: CKMessagePresentor {
         return textView
     }
     
-    public var message: CKMessageData?
+    public var message: CKMessageData? {
+        
+        didSet {
+            textView.text = message?.text
+            textView.dataDetectorTypes = .all
+        }
+    }
     
     public func prepareForReuse() {
         textView.text = nil
     }
     
     public func update(with message: CKMessageData) {
-        textView.text = message.text
+        self.message = message
+        
     }
     
     public static func presentor() -> CKMessagePresentor {

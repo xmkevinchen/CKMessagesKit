@@ -26,7 +26,7 @@ struct ListMessage: CKMessageData, Hashable {
     
 }
 
-class ListViewController: UIViewController, CKMessagePresenting, UITableViewDataSource, UITableViewDelegate, Identifiable {
+class ListViewController: UIViewController, CKMessagePresentor, UITableViewDataSource, UITableViewDelegate, Identifiable {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -44,29 +44,83 @@ class ListViewController: UIViewController, CKMessagePresenting, UITableViewData
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let message = self.message {
-            renderPresenting(with: message)
+            update(with: message)
         }
         
     }
 
     
     public var message: CKMessageData?
-    public var messageType: CKMessageData.Type = ListMessage.self
     
-    public static func presentor() -> CKMessagePresenting {
+    public var messageView: UIView {
+        replaceLayoutGuide()
+        return view
+    }
+    
+    public static func presentor() -> CKMessagePresentor {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         let viewController: ListViewController = storyboard.instantiate()
         return viewController
     }
     
-    func renderPresenting(with message: CKMessageData) {
+    func update(with message: CKMessageData) {
         if let message = message as? ListMessage, let tableView = tableView {
             self.message = message
             tableView.reloadData()
         }
     }
     
+    func prepareForReuse() {
+        
+    }
 
+    
+    func replaceLayoutGuide() {
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        let removingConstraints = view.constraints.filter {
+            return ($0.firstItem is UILayoutSupport && $0.secondItem != nil)
+                || ($0.secondItem is UILayoutSupport)
+        }
+        
+        let replacingConstraints = removingConstraints.filter {
+            return ($0.firstItem is UILayoutSupport && $0.secondItem as? UIView != view)
+                || ($0.firstItem as? UIView != view && $0.secondItem is UILayoutSupport)
+            }
+            .flatMap { constraint -> NSLayoutConstraint in
+                
+                if constraint.firstItem is UILayoutSupport {
+                    return NSLayoutConstraint(item: view,
+                                              attribute: constraint.secondAttribute,
+                                              relatedBy: constraint.relation,
+                                              toItem: constraint.secondItem,
+                                              attribute: constraint.secondAttribute,
+                                              multiplier: constraint.multiplier,
+                                              constant: constraint.constant)
+                } else {
+                    
+                    return NSLayoutConstraint(item: constraint.firstItem,
+                                              attribute: constraint.firstAttribute,
+                                              relatedBy: constraint.relation,
+                                              toItem: view,
+                                              attribute: constraint.firstAttribute,
+                                              multiplier: constraint.multiplier,
+                                              constant: constraint.constant)
+                }
+                
+                
+                
+                
+        }
+        
+        view.removeConstraints(removingConstraints)
+        view.addConstraints(replacingConstraints)
+        
+        view.subviews.filter { $0 is UILayoutSupport }
+            .forEach { $0.removeFromSuperview() }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let _ = message as? ListMessage {
             return 10

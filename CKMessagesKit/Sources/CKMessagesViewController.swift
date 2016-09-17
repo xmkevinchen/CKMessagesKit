@@ -151,17 +151,26 @@ open class CKMessagesViewController: UIViewController {
         }
         
         if inputToolbarBottomConstraint == nil {
-            inputToolbarBottomConstraint = NSLayoutConstraint(item: view, attribute: .bottom, relatedBy: .equal, toItem: inputToolbar, attribute: .bottom, multiplier: 1.0, constant: 0)
+            inputToolbarBottomConstraint = NSLayoutConstraint(item: view, attribute: .bottom,
+                                                              relatedBy: .equal,
+                                                              toItem: inputToolbar, attribute: .bottom,
+                                                              multiplier: 1.0, constant: 0)
             view.addConstraint(inputToolbarBottomConstraint)
         }
         
         if inputToolbarLeadingConstraint == nil {
-            inputToolbarLeadingConstraint = NSLayoutConstraint(item: inputToolbar, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1.0, constant: 0)
+            inputToolbarLeadingConstraint = NSLayoutConstraint(item: inputToolbar, attribute: .leading,
+                                                               relatedBy: .equal,
+                                                               toItem: view, attribute: .leading,
+                                                               multiplier: 1.0, constant: 0)
             view.addConstraint(inputToolbarLeadingConstraint)
         }
         
         if inputToolbarTrailingConstraint == nil {
-            inputToolbarTrailingConstraint = NSLayoutConstraint(item: view, attribute: .trailing, relatedBy: .equal, toItem: inputToolbar, attribute: .trailing, multiplier: 1.0, constant: 0)
+            inputToolbarTrailingConstraint = NSLayoutConstraint(item: view, attribute: .trailing,
+                                                                relatedBy: .equal,
+                                                                toItem: inputToolbar, attribute: .trailing,
+                                                                multiplier: 1.0, constant: 0)
             view.addConstraint(inputToolbarTrailingConstraint)
         }
         
@@ -547,131 +556,169 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-
-        var cellForItem: UICollectionViewCell!
         
-        if let messagesView = collectionView as? CKMessagesView,
-            let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) {
-            
-            var messageCell: CKMessageBasicCell!
-            
-            
-            if hasPresentor(of: message) {
-                let cell: CKMessageBasicCell = collectionView.dequeueReusable(at: indexPath)
-                
-                if #available(iOS 10, *) {
-                    
-                    /**
-                     * For some unknown reason, on iOS 10, the hostedView sometime would be added to wrong indexPath cell
-                     * which makes some cells are empty.
-                     * So on iOS 10, at least, for now, moving attaching hostedView process to @collectionView(_:willDisplay:forItemAt:) delegate could solve the issue
-                     */
-                    prefetchPresentor(of: message, at: indexPath)
-                    
-                } else {
-                    if let presentor = presentor(of: message, at: indexPath) {
-                        cell.messageView = presentor.messageView
-                    }
-                }
-
-                
-                messageCell = cell
-                
-            } else {
-                
-                // For all unregistered / unknown message type, handle as text message, which is the basic case of messages view
-                
-                let cell: CKMessageTextCell = collectionView.dequeueReusable(at: indexPath)
-                cell.textView.text = message.text
-                cell.textView.dataDetectorTypes = .all
-                                
-                messageCell = cell
-            }
-            
-            
-            var needsAvatar: Bool = true
-            let isOutgoing = self.isOutgoing(message: message)
-            if isOutgoing {
-                messageCell.orientation = .outgoing
-                if messagesView.messagesViewLayout.outgoingAvatarSize == .zero {
-                    needsAvatar = false
-                }
-                
-            } else {
-                messageCell.orientation = .incoming
-                if messagesView.messagesViewLayout.incomingAvatarSize == .zero {
-                    needsAvatar = false
-                }
-            }
-            
-            
-            var avatarImageData: CKMessagesAvatarImageData?
-            
-            if needsAvatar {
-                avatarImageData = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, avatarAt: indexPath)
-                messageCell.avatarImageView.image = avatarImageData?.avatar
-                messageCell.avatarImageView.highlightedImage = avatarImageData?.highlighted                
-            }
-            
-            let bubbleImageData = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, messageBubbleAt: indexPath)
-            messageCell.bubbleImageView.image = bubbleImageData?.image
-            messageCell.bubbleImageView.highlightedImage = bubbleImageData?.highlightedImage
-            
-            if let attributedText = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, attributedTextForTopLabelAt: indexPath) {
-                messageCell.topLabel.attributedText = attributedText
-            } else if let text = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, textForTopLabelAt: indexPath) {
-                messageCell.topLabel.text = text
-            }
-            
-            if let attributedText = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, attributedTextForBubbleTopLabelAt: indexPath) {
-                messageCell.bubbleTopLabel.attributedText = attributedText
-            } else if let text = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, textForBubbleTopLabelAt: indexPath) {
-                
-                var messageTopLabelInset: CGFloat = 15
-                let textInsets = messageCell.bubbleTopLabel.textInsets
-                if isOutgoing {
-                    if messagesView.messagesViewLayout.outgoingAvatarSize != .zero {
-                        messageTopLabelInset += messagesView.messagesViewLayout.outgoingAvatarSize.width
-                    }
-                    messageCell.bubbleTopLabel.textAlignment = .right
-                    messageCell.bubbleTopLabel.textInsets = UIEdgeInsets(top: textInsets.top, left: 0, bottom: textInsets.bottom, right: messageTopLabelInset)
-                    
-                } else {
-                    
-                    if messagesView.messagesViewLayout.incomingAvatarSize != .zero {
-                        messageTopLabelInset += messagesView.messagesViewLayout.incomingAvatarSize.width
-                    }
-                    
-                    messageCell.bubbleTopLabel.textAlignment = .left
-                    messageCell.bubbleTopLabel.textInsets = UIEdgeInsets(top: textInsets.top, left: messageTopLabelInset, bottom: textInsets.bottom, right: 0)
-                }
-                messageCell.bubbleTopLabel.text = text
-            }
-            
-            
-            
-            if let attributedText = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, attributedTextForBottomLabelAt: indexPath) {
-                messageCell.bottomLabel.attributedText = attributedText
-            } else if let text = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, textForBottomLabelAt: indexPath) {
-                messageCell.bottomLabel.text = text
-                
-                if  isOutgoing {
-                    messageCell.bottomLabel.textAlignment = .right
-                } else {
-                    messageCell.bottomLabel.textAlignment = .left
-                }
-            }
-                        
-            cellForItem = messageCell
-                        
+        /// Dequeue the basic cell to be rendered
+        let cell: CKMessageBasicCell = collectionView.dequeueReusable(at: indexPath)
+        guard let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) else {
+            fatalError()
         }
         
-        assert(cellForItem != nil)
+        let isOutgoing = message.senderId == messagesView.messenger?.senderId
         
-        cellForItem.layer.rasterizationScale = UIScreen.main.scale
-        cellForItem.layer.shouldRasterize = true
+        /// Dequeu proper presentor for cell and message
+        let presentor = messagesView.dequeueReusablePresentor(of: type(of: message), at: indexPath)
+        presentor.message = message
+        cell.messageView = presentor.messageView
         
-        return cellForItem
+        
+        
+        let bubbleImageData = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, messageBubbleAt: indexPath)
+        cell.bubbleImageView.image = bubbleImageData?.image
+        cell.bubbleImageView.highlightedImage = bubbleImageData?.highlightedImage
+        
+        if let attributedText = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, attributedTextForTopLabelAt: indexPath) {
+            cell.topLabel.attributedText = attributedText
+        } else if let text = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, textForTopLabelAt: indexPath) {
+            cell.topLabel.text = text
+        }
+        
+        if let attributedText = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, attributedTextForBubbleTopLabelAt: indexPath) {
+            cell.bubbleTopLabel.attributedText = attributedText
+        } else if let text = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, textForBubbleTopLabelAt: indexPath) {
+            
+            var messageTopLabelInset: CGFloat = 15
+            let textInsets = cell.bubbleTopLabel.textInsets
+            if isOutgoing {
+                if messagesView.messagesViewLayout.outgoingAvatarSize != .zero {
+                    messageTopLabelInset += messagesView.messagesViewLayout.outgoingAvatarSize.width
+                }
+                cell.bubbleTopLabel.textAlignment = .right
+                cell.bubbleTopLabel.textInsets = UIEdgeInsets(top: textInsets.top, left: 0, bottom: textInsets.bottom, right: messageTopLabelInset)
+                
+            } else {
+                
+                if messagesView.messagesViewLayout.incomingAvatarSize != .zero {
+                    messageTopLabelInset += messagesView.messagesViewLayout.incomingAvatarSize.width
+                }
+                
+                cell.bubbleTopLabel.textAlignment = .left
+                cell.bubbleTopLabel.textInsets = UIEdgeInsets(top: textInsets.top, left: messageTopLabelInset, bottom: textInsets.bottom, right: 0)
+            }
+            cell.bubbleTopLabel.text = text
+        }
+        
+        
+        
+        if let attributedText = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, attributedTextForBottomLabelAt: indexPath) {
+            cell.bottomLabel.attributedText = attributedText
+        } else if let text = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, textForBottomLabelAt: indexPath) {
+            cell.bottomLabel.text = text
+            
+            if  isOutgoing {
+                cell.bottomLabel.textAlignment = .right
+            } else {
+                cell.bottomLabel.textAlignment = .left
+            }
+        }
+        
+    
+        return cell
+
+//        var cellForItem: UICollectionViewCell!
+//
+//        if let messagesView = collectionView as? CKMessagesView,
+//            let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) {
+//
+//            var messageCell: CKMessageBasicCell!
+//
+//
+//            if hasPresentor(of: message) {
+//                let cell: CKMessageBasicCell = collectionView.dequeueReusable(at: indexPath)
+//                
+//                if let presentor = usingPresentors[indexPath] {
+//                    
+//                    print("===> presentor.message: \(type(of: presentor.message)), message: \(type(of: message))")
+//                    if presentor.message != nil && type(of: presentor.message) == type(of:message) {
+//                        presentor.renderPresenting(with: message)
+//                    } else {
+//                        cell.messageView = nil
+//                    }
+//                    
+//                }
+//                
+//                if !cell.hasPresentor {
+//                    if let presentor = self.presentor(of: message, at: indexPath) {
+//                        cell.messageView = presentor.messageView
+//                    }
+//                }
+//                
+//                
+//                
+//                
+////                if #available(iOS 10, *) {
+////                    
+////                    /**
+////                     * For some unknown reason, on iOS 10, the hostedView sometime would be added to wrong indexPath cell
+////                     * which makes some cells are empty.
+////                     * So on iOS 10, at least, for now, moving attaching hostedView process to @collectionView(_:willDisplay:forItemAt:) delegate could solve the issue
+////                     */
+////                    prefetchPresentor(of: message, at: indexPath)
+////                    
+////                } else {
+////                    if let presentor = presentor(of: message, at: indexPath) {
+////                        cell.messageView = presentor.messageView
+////                    }
+////                }
+//
+//                
+//                messageCell = cell
+//                
+//            } else {
+//                
+//                // For all unregistered / unknown message type, handle as text message, which is the basic case of messages view
+//                
+//                let cell: CKMessageTextCell = collectionView.dequeueReusable(at: indexPath)
+//                cell.textView.text = message.text
+//                cell.textView.dataDetectorTypes = .all
+//                                
+//                messageCell = cell
+//            }
+//            
+//            
+//            var needsAvatar: Bool = true
+//            let isOutgoing = self.isOutgoing(message: message)
+//            if isOutgoing {
+//                messageCell.orientation = .outgoing
+//                if messagesView.messagesViewLayout.outgoingAvatarSize == .zero {
+//                    needsAvatar = false
+//                }
+//                
+//            } else {
+//                messageCell.orientation = .incoming
+//                if messagesView.messagesViewLayout.incomingAvatarSize == .zero {
+//                    needsAvatar = false
+//                }
+//            }
+//            
+//            
+//            var avatarImageData: CKMessagesAvatarImageData?
+//            
+//            if needsAvatar {
+//                avatarImageData = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, avatarAt: indexPath)
+//                messageCell.avatarImageView.image = avatarImageData?.avatar
+//                messageCell.avatarImageView.highlightedImage = avatarImageData?.highlighted                
+//            }
+//            
+
+//        
+//        assert(cellForItem != nil)
+//        
+//        cellForItem.layer.rasterizationScale = UIScreen.main.scale
+//        cellForItem.layer.shouldRasterize = true
+//        
+//        debuggingPresentors()
+//        
+//        return cellForItem
         
         
         
@@ -683,31 +730,37 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
         
     }
     
-    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-        
-        if let messagesView = collectionView as? CKMessagesView,
-            let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) {
-            
-            if #available(iOS 10, *) {
-                
-                /**
-                 * For some unknown reason, on iOS 10, the hostedView sometime would be added to wrong indexPath cell
-                 * which makes some cells are empty.
-                 * So on iOS 10, at least, for now, process attaching hostedView in willDisplay could solve the issue
-                 */
-                
-                if let cell = cell as? CKMessageBasicCell, let presentor = presentor(of: message, at: indexPath) {
-                    cell.messageView = presentor.messageView
-                    presentor.renderPresenting(with: message)
-                }
-            }
-        }               
-    }
+//    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        
+//        guard let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) else {
+//            fatalError()
+//        }
+//        
+//        let presentor = messagesView.dequeueReusablePresentor(of: type(of: message), at: indexPath)
+//        presentor.update(with: message)
+//        
+//        if let messagesView = collectionView as? CKMessagesView,
+//            let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) {
+//            
+//            if #available(iOS 10, *) {
+//                
+//                /**
+//                 * For some unknown reason, on iOS 10, the hostedView sometime would be added to wrong indexPath cell
+//                 * which makes some cells are empty.
+//                 * So on iOS 10, at least, for now, process attaching hostedView in willDisplay could solve the issue
+//                 */
+//                
+//                if let cell = cell as? CKMessageBasicCell, let presentor = presentor(of: message, at: indexPath) {
+//                    cell.messageView = presentor.messageView
+//                    presentor.renderPresenting(with: message)
+//                }
+//            }
+//        }               
+//    }
     
     
     public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        recyclePresentor(at: indexPath)
+        messagesView.recycleReusablePresentor(at: indexPath)
     }
     
     public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -738,15 +791,17 @@ extension CKMessagesViewController: UICollectionViewDataSourcePrefetching {
     
     public func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         
-        guard let messagesView = collectionView as? CKMessagesView else {
-            return
-        }
+        messagesView.prefetchPresentors(at: indexPaths)
         
-        indexPaths.forEach { indexPath in
-            if let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) {
-                prefetchPresentor(of: message, at: indexPath)
-            }
-        }
+//        guard let messagesView = collectionView as? CKMessagesView else {
+//            return
+//        }
+//        
+//        indexPaths.forEach { indexPath in
+//            if let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) {
+//                prefetchPresentor(of: message, at: indexPath)
+//            }
+//        }
         
         
     }

@@ -41,8 +41,9 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage.typing, style: .plain, target: self, action: #selector(showTypingIndicator(_:)))
         
         /// 1. Register presentor for specified message type
-        register(presentor: GridViewController.self, for: GridMessage.self)
-        register(presentor: ListViewController.self, for: ListMessage.self)
+        messagesView.register(presentor: GridViewController.self, of: GridMessage.self)
+        messagesView.register(presentor: ListViewController.self, of: ListMessage.self)
+        messagesView.register(presentor: CKTextMessagePresentor.self, of: CKMessage.self)
         
         messagesView.messenger = self
         messagesView.decorator = self        
@@ -138,21 +139,23 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         let value = index % 4
         
         switch value {
-        case 0:
-            
-            message = CKMessage(senderId: senderId, sender: sender, text: "Your Apple ID must be associated with a paid Apple Developer Program or Apple Developer Enterprise Program to access certain software downloads.")
-            
         case 2:
+            
+            message = CKMessage(senderId: senderId,
+                                sender: sender,
+                                text: "Your Apple ID must be associated with a paid Apple Developer Program or Apple Developer Enterprise Program to access certain software downloads.")
+            
+        case 3:
             _ = self.text.lengthOfBytes(using: .utf8)
             let maximum = max(60, Int(arc4random_uniform(UInt32(120))))
             let lastIndex = self.text.index(self.text.startIndex, offsetBy: maximum)
             let substring = self.text.substring(to: lastIndex)
             message = CKMessage(senderId: "incoming", sender: "Incoming", text: substring)
             
-        case 1:
+        case 0:
             message = GridMessage(senderId: senderId, sender: sender, text: String(index))
             
-        case 3:
+        case 1:
             message = ListMessage(senderId: "incoming", sender: "Incoming", text: String(index))
             
         default:
@@ -192,12 +195,7 @@ extension ViewController: CKMessagesViewDecorating {
     
     func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForTopLabelAt indexPath: IndexPath) -> String? {
         
-        if indexPath.item % 3 == 0 {
-            let message = messages[indexPath.item]
-            return formatter.string(from: message.timestamp)
-        } else {
-            return nil
-        }
+       return "\(indexPath)"
     }
     
     func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForBubbleTopLabelAt indexPath: IndexPath) -> String? {

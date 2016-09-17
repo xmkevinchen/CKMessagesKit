@@ -19,8 +19,7 @@ class CKMessageBubbleContainerView: UIView {
 class CKMessageContainerView: UIView {
     
     override func willRemoveSubview(_ subview: UIView) {
-        super.willRemoveSubview(subview)
-//        removeConstraints(constraints)
+        super.willRemoveSubview(subview)    
     }
 }
 
@@ -125,6 +124,9 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
                 if constraints == nil {
                     constraints = MessageViewConstraints(target: messageView, superview: messageContainerView, insets: messageInsets, size: messageSize)
                     messageViewConstraints = constraints
+                    messageView.removeConstraints(
+                        messageView.constraints.filter { $0.firstAttribute == .width || $0.firstAttribute == .height }
+                    )
                     NSLayoutConstraint.activate(constraints.constraints)
                 }
                 
@@ -170,11 +172,6 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
         super.updateConstraints()
     }
 
-//    open override func layoutSubviews() {
-//        super.layoutSubviews()
-//        print("====> \(#function) messageBubbleContainerView.frame: \(messageBubbleContainerView.frame)")
-//        print("====> \(#function) messageView.frame: \(messageView?.frame)")
-//    }
     
     override open func prepareForReuse() {
         super.prepareForReuse()
@@ -197,6 +194,9 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
                 return
             }
             
+            
+//            print("====> messageSize at\(attributes.indexPath): \(attributes.messageSize)")
+            
             topLabelHeightConstraint.constant = attributes.topLabelHeight
             bubbleTopLabelHeightConstraint.constant = attributes.bubbleTopLabelHeight
             bottomLabelHeightConstraint.constant = attributes.bottomLabelHeight
@@ -217,17 +217,14 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
         let attributes = super.preferredLayoutAttributesFitting(layoutAttributes)
         return attributes
     }
-    
-    
-    /// Indicate whether there's `CKMessagePresentor` associated 
-    public var hasPresentor: Bool {
-        return messageView != nil
-    }
-    
+            
     public weak var messageView: UIView? {
         
         willSet {            
             messageViewConstraints = nil
+            if newValue == nil {
+                messageView?.removeFromSuperview()
+            }
         }
         
         didSet {
@@ -392,7 +389,7 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
                                      multiplier: 1.0, constant: insets.top)
             
             bottom = NSLayoutConstraint(item: superview, attribute: .bottom,
-                                        relatedBy: .equal,
+                                        relatedBy: .greaterThanOrEqual,
                                         toItem: target, attribute: .bottom,
                                         multiplier: 1.0, constant: insets.bottom)
             
