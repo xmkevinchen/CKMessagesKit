@@ -125,7 +125,12 @@ class ListViewController: UIViewController, CKMessagePresentor, Identifiable {
 }
 
 extension ListViewController: CKMessageMaskablePresentor, CKMessageEmbeddablePresentor {
-    var size: CGSize {
+    
+    public var isMessageBubbleHidden: Bool {
+        return false
+    }
+
+    public func size(of trait: UITraitCollection) -> CGSize {
         return CGSize(width: 240, height: 180)
     }
     

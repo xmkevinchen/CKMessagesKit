@@ -8,7 +8,7 @@
 
 import Foundation
 
-class CKMessagesBubbleImageMasker {
+public class CKMessagesBubbleImageMasker {
     
     let bubbleImageFactory: CKMessagesBubbleImageFactory
     
@@ -20,7 +20,7 @@ class CKMessagesBubbleImageMasker {
         self.init(bubbleImageFactory: CKMessagesBubbleImageFactory())
     }
     
-    func apply(to view: UIView, orientation: CKMessageOrientation) {
+    public func apply(to view: UIView, orientation: CKMessageOrientation, size: CGSize? = nil) {
         
         var image: UIImage
         switch orientation {
@@ -32,21 +32,26 @@ class CKMessagesBubbleImageMasker {
             
         }
         
-        mask(view, with: image)
+        mask(view, with: image, size: size)
         
     }
     
-    private func mask(_ view: UIView, with image: UIImage) {
+    private func mask(_ view: UIView, with image: UIImage, size: CGSize? = nil) {
         
         let imageView = UIImageView(image: image)
-        imageView.frame = view.frame
+        var frame = view.bounds
+        if size != nil {
+            frame.size = size!
+        }
+        
+        imageView.frame = frame
         view.layer.mask = imageView.layer        
         
     }
     
-    static func apply(to view: UIView, orientation: CKMessageOrientation) {
+    static public func apply(to view: UIView, orientation: CKMessageOrientation, size: CGSize? = nil) {
         let masker = CKMessagesBubbleImageMasker()
-        masker.apply(to: view, orientation: orientation)
+        masker.apply(to: view, orientation: orientation, size: size)
         
     }
     

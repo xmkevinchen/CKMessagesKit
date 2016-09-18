@@ -62,10 +62,28 @@ class ImagePresentor: CKMessagePresentor {
     
 }
 
+extension ImagePresentor: CKMessageSizablePresentor {
+    
+    public func size(of trait: UITraitCollection) -> CGSize {
+        
+        var size: CGSize
+        switch (trait.horizontalSizeClass, trait.verticalSizeClass) {
+            
+        case (.compact, .regular):
+            size = CGSize(width: 160, height: 90)
+            
+        default:
+            size = CGSize(width: 240, height: 135)
+            
+        }
+        
+        return size
+    }
+    
+}
+
 extension ImagePresentor: CKMessageMaskablePresentor {
-    /// The size of message content
-    /// If the value is nil, would calculate the size with its assoicated message text
-    public var size: CGSize {
-        return CGSize(width: 240, height: 135)
+    var isMessageBubbleHidden: Bool {
+        return true
     }
 }

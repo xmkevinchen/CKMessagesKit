@@ -56,7 +56,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         messagesView.messagesViewLayout.outgoingAvatarSize = .zero
         messagesView.messagesViewLayout.incomingAvatarSize = CGSize(width: 48, height: 48)        
         
-        for _ in 0..<10 {
+        for _ in 0..<24 {
             insertNewMessage()
         }
         
@@ -142,10 +142,10 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
     private func generateMessage(at index: Int) -> CKMessageData? {
         
         var message: CKMessageData?
-        let value = index % 5
+        let value = index % 6
         
         switch value {
-        case 1:
+        case 0:
             
             message = CKMessage(senderId: senderId,
                                 sender: sender,
@@ -164,8 +164,11 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         case 4:
             message = ListMessage(senderId: "incoming", sender: "Incoming", text: String(index))
             
-        case 0:
+        case 5:
             message = ImageMessage(senderId: "image", sender: "Image Message", text: "")
+            
+        case 1:
+            message = ImageMessage(senderId: senderId, sender: sender, text: "")
             
         default:
             break

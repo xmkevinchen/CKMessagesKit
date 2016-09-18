@@ -9,7 +9,7 @@
 import Foundation
 import CKMessagesKit
 
-struct GridMessage: CKExtendMessageData, Hashable {
+struct GridMessage: CKMessageData, Hashable {
     
     public var senderId: String
     public var sender: String
@@ -22,7 +22,5 @@ struct GridMessage: CKExtendMessageData, Hashable {
         self.text = text
         self.timestamp = timestamp
     }
-    
-    public var metadata: [String: Any] = [String: Any]()
-    
+        
 }

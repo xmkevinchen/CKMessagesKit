@@ -57,18 +57,19 @@ public protocol CKMessageEmbeddablePresentor: CKMessagePresentor {
 /// A protocol inherits from `CKMessagePresentor`
 /// where gives presentor a capability to resize its message view
 /// when message content changed
-public protocol CKMessageResizablePresentor: CKMessagePresentor {
-    
+public protocol CKMessageSizablePresentor: CKMessagePresentor {
     
     /// The size of message content
-    /// If the value is nil, would calculate the size with its assoicated message text
-    var size: CGSize { get }
-    
+    func size(of trait: UITraitCollection) -> CGSize
+            
 }
 
 /// A protocol inherits from `CKMessagePresentor` protocol, indicates it's maskable presentor
 
-public protocol CKMessageMaskablePresentor: CKMessageResizablePresentor {}
+public protocol CKMessageMaskablePresentor: CKMessageSizablePresentor {
+
+    var isMessageBubbleHidden: Bool { get }
+}
 
 
 

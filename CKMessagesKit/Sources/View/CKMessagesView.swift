@@ -63,6 +63,7 @@ open class CKMessagesView: UICollectionView {
         }
         
         register(for: CKMessageBasicCell.self)
+        register(for: CKMessageMaskableCell.self)
         register(forSupplementaryView: UICollectionElementKindSectionFooter, for: CKMessagesIndicatorFooterView.self)
         
 

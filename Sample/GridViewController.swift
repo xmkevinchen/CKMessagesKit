@@ -10,10 +10,10 @@ import UIKit
 import CKMessagesKit
 import Reusable
 
-class GridViewController: UIViewController, CKMessageResizablePresentor, CKMessageEmbeddablePresentor, Identifiable {
+class GridViewController: UIViewController, CKMessageSizablePresentor, CKMessageEmbeddablePresentor, Identifiable {
     
     
-    var size: CGSize {
+    public func size(of trait: UITraitCollection) -> CGSize {
         return CGSize(width: 240, height: 60)
     }
     

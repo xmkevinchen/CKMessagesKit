@@ -39,6 +39,7 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
         
         var size: CKMessageCalculatedSize = .zero
         let messagesView = layout.messagesView
+        
 
         // Avatar size
         size.avatar = self.avatarSize(of: message, with: layout)
@@ -59,8 +60,8 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
         size.avatar = avatarSize(of: message, with: layout)
         
         // Message itself size
-        if let presentor = presentor as? CKMessageResizablePresentor {
-            size.messageSize = presentor.size
+        if let presentor = presentor as? CKMessageSizablePresentor {
+            size.messageSize = presentor.size(of: messagesView.traitCollection)
         } else {
             
             var horizontalSpace = size.messageInsets.left + size.messageInsets.right
@@ -76,7 +77,7 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
             /// Because we use the insets to layout messageView inside of the message bubble image
             /// So the minimuWidth should subtract the horizontal insets as well
             messageSize.width = max(messageSize.width, minimumWidth - horizontalSpace)
-            size.messageSize = messageSize
+            size.messageSize = CGSize(width:ceil(messageSize.width), height:ceil(messageSize.height))
         }
         
         cache.setObject(size as AnyObject, forKey: key)

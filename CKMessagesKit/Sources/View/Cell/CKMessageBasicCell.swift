@@ -9,19 +9,9 @@
 import UIKit
 import Reusable
 
-class CKMessageBubbleContainerView: UIView {
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-    }
-}
+class CKMessageBubbleContainerView: UIView {}
 
-class CKMessageContainerView: UIView {
-    
-    override func willRemoveSubview(_ subview: UIView) {
-        super.willRemoveSubview(subview)    
-    }
-}
+class CKMessageContainerView: UIView {}
 
 
 public enum CKMessageOrientation {
@@ -100,6 +90,10 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
         configure()
         
     }
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+    }
 
     open override func updateConstraints() {
         
@@ -168,6 +162,7 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
         }
         
         super.updateConstraints()
+        
     }
 
     
@@ -192,23 +187,22 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
                 return
             }
             
-            
-//            print("====> messageSize at\(attributes.indexPath): \(attributes.messageSize)")
-            
             topLabelHeightConstraint.constant = attributes.topLabelHeight
             bubbleTopLabelHeightConstraint.constant = attributes.bubbleTopLabelHeight
             bottomLabelHeightConstraint.constant = attributes.bottomLabelHeight
             
-            self.orientation = attributes.avatarPosition == .left ? .incoming : .outgoing
-            self.avatarSize = (orientation == .incoming) ? attributes.incomingAvatarSize : attributes.outgoingAvatarSize
-            self.messageSize = attributes.messageSize
-            self.messageInsets = attributes.messageInsets
+            orientation = attributes.avatarPosition == .left ? .incoming : .outgoing
+            avatarSize = (orientation == .incoming) ? attributes.incomingAvatarSize : attributes.outgoingAvatarSize
+            messageSize = attributes.messageSize
+            messageInsets = attributes.messageInsets
             
             setNeedsUpdateConstraints()
             setNeedsLayout()
+            
         }
-        
     }
+    
+
     
     open override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         
@@ -263,6 +257,8 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
     /// The size of message to `messageView`
     public var messageSize: CGSize = .zero
     
+        
+    /// MARK: - Private Methods
     private func configure() {
         
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -306,7 +302,7 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
         setNeedsUpdateConstraints()
         setNeedsLayout()
     }
-    
+        
     
     
     // MARK:- Layout Convenience Holder

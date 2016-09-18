@@ -422,35 +422,39 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        /// Dequeue the basic cell to be rendered
-        let cell: CKMessageBasicCell = collectionView.dequeueReusable(at: indexPath)
+        
         guard let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) else {
             fatalError()
+        }
+        
+        /// Dequeu proper presentor for cell and message
+        let presentor = messagesView.dequeueReusablePresentor(of: type(of: message), at: indexPath)
+        
+        
+        /// Dequeue the basic cell to be rendered
+        var cell: CKMessageBasicCell
+        if presentor is CKMessageMaskablePresentor {
+            cell = collectionView.dequeueReusable(at: indexPath, for: CKMessageMaskableCell.self)
+        } else {
+            cell = collectionView.dequeueReusable(at: indexPath)
         }
         
         let orientation: CKMessageOrientation
             = (message.senderId == messagesView.messenger?.senderId) ? .outgoing : .incoming
         cell.orientation = orientation
-        
-        /// Dequeu proper presentor for cell and message
-        let presentor = messagesView.dequeueReusablePresentor(of: type(of: message), at: indexPath)
         presentor.message = message
         cell.messageView = presentor.messageView
 
+        var isMessageBubbleHidden = false
         if let presentor = presentor as? CKMessageMaskablePresentor {
-            if presentor.messageView.frame.size != presentor.size {
-                var frame = presentor.messageView.frame
-                frame.size = presentor.size
-                presentor.messageView.frame = frame
-            }
-            
-            CKMessagesBubbleImageMasker.apply(to: presentor.messageView, orientation: orientation)
+            isMessageBubbleHidden = presentor.isMessageBubbleHidden
         }
         
-        
-        let bubbleImageData = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, messageBubbleAt: indexPath)
-        cell.bubbleImageView.image = bubbleImageData?.image
-        cell.bubbleImageView.highlightedImage = bubbleImageData?.highlightedImage
+        if !isMessageBubbleHidden {
+            let bubbleImageData = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, messageBubbleAt: indexPath)
+            cell.bubbleImageView.image = bubbleImageData?.image
+            cell.bubbleImageView.highlightedImage = bubbleImageData?.highlightedImage
+        }
     
         if let attributedText = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, attributedTextForTopLabelAt: indexPath) {
             cell.topLabel.attributedText = attributedText
