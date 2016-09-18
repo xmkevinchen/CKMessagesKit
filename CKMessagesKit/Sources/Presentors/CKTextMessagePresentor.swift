@@ -12,6 +12,11 @@ import Reusable
 public class CKTextMessagePresentor: NSObject, CKMessagePresentor, Reusable {
         
     @IBOutlet public var textView: CKMessageCellTextView!
+    public var font = UIFont.preferredFont(forTextStyle: .body) {
+        didSet {
+            textView.setNeedsDisplay()
+        }
+    }
     
     override init() {
         super.init()
@@ -21,6 +26,7 @@ public class CKTextMessagePresentor: NSObject, CKMessagePresentor, Reusable {
             fatalError()
         }
         
+        textView.font = font
         textView.textColor = UIColor.white
         
         
@@ -53,10 +59,3 @@ public class CKTextMessagePresentor: NSObject, CKMessagePresentor, Reusable {
     
 }
 
-extension CKTextMessagePresentor: CKMessageEmbeddablePresentor {
-    
-    public var insets: UIEdgeInsets? {
-        return UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
-    }
-    
-}

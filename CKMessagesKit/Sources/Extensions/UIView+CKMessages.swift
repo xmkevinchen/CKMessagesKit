@@ -14,7 +14,8 @@ public extension UIView {
         
         let imageView = UIImageView(image: image)
         imageView.frame = frame.insetBy(dx: inset, dy: inset)
-        layer.mask = imageView.layer        
+        layer.mask = imageView.layer
+        layer.masksToBounds = true
     }
     
 }

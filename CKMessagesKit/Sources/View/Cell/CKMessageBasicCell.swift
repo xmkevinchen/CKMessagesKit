@@ -24,14 +24,12 @@ class CKMessageContainerView: UIView {
 }
 
 
+public enum CKMessageOrientation {
+    case incoming
+    case outgoing
+}
+
 open class CKMessageBasicCell: UICollectionViewCell, Reusable {
-    
-    public enum MessageOrientation {
-        case incoming
-        case outgoing
-    }
-    
-    
     
     /// Public outlets
     @IBOutlet public weak var topLabel: CKMessageInsetsLabel!
@@ -190,7 +188,7 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
         
         if let attributes = layoutAttributes as? CKMessagesViewLayoutAttributes {
             
-            guard attributes.representedElementCategory == .cell && attributes.isConfigured else {
+            guard attributes.representedElementCategory == .cell else {
                 return
             }
             
@@ -217,7 +215,7 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
         let attributes = super.preferredLayoutAttributesFitting(layoutAttributes)
         return attributes
     }
-            
+    
     public weak var messageView: UIView? {
         
         willSet {            
@@ -247,7 +245,7 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
     
     
     /// The orientation of message, Default is incoming
-    public var orientation: MessageOrientation = .incoming
+    public var orientation: CKMessageOrientation = .incoming
     
     
     /// The size of avatar, Default is CGSize.zero
@@ -321,7 +319,7 @@ open class CKMessageBasicCell: UICollectionViewCell, Reusable {
         var message: UIView
         var accessory: UIView
         
-        var actived: MessageOrientation?
+        var actived: CKMessageOrientation?
         
         lazy var incoming: [NSLayoutConstraint] = {
             

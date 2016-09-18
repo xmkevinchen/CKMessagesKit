@@ -58,9 +58,6 @@ class GridViewController: UIViewController, CKMessagePresentor, Identifiable {
     
 }
 
-
-
-
 @IBDesignable
 class GridCell: UICollectionViewCell {
     

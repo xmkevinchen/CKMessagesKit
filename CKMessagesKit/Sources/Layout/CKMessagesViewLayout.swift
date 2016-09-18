@@ -275,8 +275,7 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
         attributes.topLabelHeight = size.topLabel.height
         attributes.bubbleTopLabelHeight = size.bubbleTopLabel.height
         attributes.bottomLabelHeight = size.bottomLabel.height
-        
-        attributes.isConfigured = true
+                
         
         
     }

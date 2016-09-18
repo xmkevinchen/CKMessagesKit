@@ -556,25 +556,28 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
     
     open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        
         /// Dequeue the basic cell to be rendered
         let cell: CKMessageBasicCell = collectionView.dequeueReusable(at: indexPath)
         guard let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) else {
             fatalError()
         }
         
-        let isOutgoing = message.senderId == messagesView.messenger?.senderId
+        let orientation: CKMessageOrientation = (message.senderId == messagesView.messenger?.senderId) ? .outgoing : .incoming
         
         /// Dequeu proper presentor for cell and message
         let presentor = messagesView.dequeueReusablePresentor(of: type(of: message), at: indexPath)
         presentor.message = message
         cell.messageView = presentor.messageView
-        
-        
+
+        if let presentor = presentor as? CKMessageMaskablePresentor {
+            CKMessagesBubbleImageMasker.apply(to: presentor.messageView, orientation: orientation)            
+        }
         
         let bubbleImageData = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, messageBubbleAt: indexPath)
         cell.bubbleImageView.image = bubbleImageData?.image
         cell.bubbleImageView.highlightedImage = bubbleImageData?.highlightedImage
+        
+        
         
         if let attributedText = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, attributedTextForTopLabelAt: indexPath) {
             cell.topLabel.attributedText = attributedText
@@ -588,7 +591,7 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
             
             var messageTopLabelInset: CGFloat = 15
             let textInsets = cell.bubbleTopLabel.textInsets
-            if isOutgoing {
+            if orientation == .outgoing {
                 if messagesView.messagesViewLayout.outgoingAvatarSize != .zero {
                     messageTopLabelInset += messagesView.messagesViewLayout.outgoingAvatarSize.width
                 }
@@ -614,14 +617,13 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
         } else if let text = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, textForBottomLabelAt: indexPath) {
             cell.bottomLabel.text = text
             
-            if  isOutgoing {
+            if  orientation == .outgoing {
                 cell.bottomLabel.textAlignment = .right
             } else {
                 cell.bottomLabel.textAlignment = .left
             }
         }
-        
-    
+
         return cell
 
 //        var cellForItem: UICollectionViewCell!

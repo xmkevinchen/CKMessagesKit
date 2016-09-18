@@ -15,8 +15,7 @@ public protocol CKMessagePresenting {
     static func presentor() -> CKMessagePresenting
     func renderPresenting(with message: CKMessageData)
     
-    
-    
+
 }
 
 

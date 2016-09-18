@@ -29,39 +29,27 @@ public extension CKMessagePresentor {
     }
 }
 
-
-
-/// Embeddable presentor
-public protocol CKMessageEmbeddablePresentor: CKMessagePresentor {
+public extension CKMessagePresentor where Self: UIViewController {
     
-    
-    /// The insets of the message view inside the message bubble
-    var insets: UIEdgeInsets? { get }
-}
-
-
-/// A protocol inherits from `CKMessagePresentor` protocol
-/// where gives presentor a capability to supply a `maskerLayer` to mask its message view
-public protocol CKMessageMaskablePresentor: CKMessagePresentor {
-    
-    
-    /// A specified masker layer, if nil, the message buuble would be used as default masker
-    var maskerLayer: CALayer? { get }
+    var messagesViewController: CKMessagesViewController? {
+        
+        var parentVC: UIViewController? = parent
+        
+        while parentVC != nil && !(parentVC! is CKMessagesViewController) {
+            parentVC = parentVC?.parent
+        }
+        
+        return parentVC as? CKMessagesViewController
+        
+    }
     
 }
 
 
-/// A protocol inherits from `CKMessagePresentor`
-/// where gives presentor a capability to resize its message view
-/// when message content changed
-public protocol CKMessageResizablePresentor: CKMessagePresentor {
-    
-    
-    /// The size of message content
-    /// If the value is nil, would calculate the size with its assoicated message text
-    var size: CGSize? { get }
-    
-}
+/// A protocol inherits from `CKMessagePresentor` protocol, indicates it's maskable presentor
+
+public protocol CKMessageMaskablePresentor: CKMessagePresentor {}
+
 
 
 /// A protocol inherits from `CKMessagePresentor`
