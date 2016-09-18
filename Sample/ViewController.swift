@@ -27,12 +27,14 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
     var messages = [CKMessageData]()
     var formatter = DateFormatter()
     var incomingAvatar: CKMessagesAvatarImageData?
+    var incomingBubbleImage: CKMessagesBubbleImageData?
+    var outgoingBubbleImage: CKMessagesBubbleImageData?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Messages"
-        messagesView.backgroundColor = UIColor.lightGray
+//        messagesView.backgroundColor = UIColor.lightGray
         
         if isModel {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss(_:)))
@@ -54,7 +56,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         messagesView.messagesViewLayout.outgoingAvatarSize = .zero
         messagesView.messagesViewLayout.incomingAvatarSize = CGSize(width: 48, height: 48)        
         
-        for _ in 0..<5 {
+        for _ in 0..<10 {
             insertNewMessage()
         }
         
@@ -73,6 +75,9 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         enablesAutomaticallyBarItem = send
         
         incomingAvatar = avatarFactory.avatar(image: UIImage(named: "wechat")!)
+        let bubbleFactory = CKMessagesBubbleImageFactory()
+        incomingBubbleImage = bubbleFactory.incomingBubbleImage(with: .messageBubbleLightGray)
+        outgoingBubbleImage = bubbleFactory.outgoingBubbleImage(with: .messageBubbleBlue)
         
         messagesView.reloadData()
         
@@ -140,13 +145,13 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         let value = index % 5
         
         switch value {
-        case 4:
+        case 1:
             
             message = CKMessage(senderId: senderId,
                                 sender: sender,
                                 text: "Your Apple ID must be associated with a paid Apple Developer Program or Apple Developer Enterprise Program to access certain software downloads.")
             
-        case 1:
+        case 3:
             _ = self.text.lengthOfBytes(using: .utf8)
             let maximum = max(60, Int(arc4random_uniform(UInt32(120))))
             let lastIndex = self.text.index(self.text.startIndex, offsetBy: maximum)
@@ -156,7 +161,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         case 2:
             message = GridMessage(senderId: senderId, sender: sender, text: String(index))
             
-        case 3:
+        case 4:
             message = ListMessage(senderId: "incoming", sender: "Incoming", text: String(index))
             
         case 0:
@@ -180,7 +185,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
 }
 
 extension ViewController: CKMessagesViewDecorating {
-        
+    
     func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, messageSizeAt indexPath: IndexPath) -> CGSize? {
         let message = messages[indexPath.item]
         
@@ -202,7 +207,7 @@ extension ViewController: CKMessagesViewDecorating {
     
     func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForTopLabelAt indexPath: IndexPath) -> String? {
         
-       return "\(indexPath)"
+        return "\(indexPath)"
     }
     
     func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, textForBubbleTopLabelAt indexPath: IndexPath) -> String? {
@@ -271,8 +276,22 @@ extension ViewController: CKMessagesViewDecorating {
         if message is ImageMessage {
             return 0
         }
-
+        
         return nil
+    }
+    
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, messageBubbleAt indexPath: IndexPath) -> CKMessagesBubbleImageData? {
+        
+        let message = messages[indexPath.item]
+        if message.senderId == senderId  {
+            
+            return outgoingBubbleImage
+            
+        } else {
+            return incomingBubbleImage
+        }
+        
+        
     }
     
     

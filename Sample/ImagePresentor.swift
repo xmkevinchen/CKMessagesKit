@@ -32,7 +32,7 @@ class ImagePresentor: CKMessagePresentor {
     var imageView: UIImageView
     
     init() {
-        imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 160, height: 90))
+        imageView = UIImageView(frame: .zero)
     }
     
     var messageView: UIView {
@@ -57,9 +57,15 @@ class ImagePresentor: CKMessagePresentor {
     }
     
     func prepareForReuse() {
-//        imageView.image = nil
+        imageView.image = nil
     }
     
 }
 
-extension ImagePresentor: CKMessageMaskablePresentor {}
+extension ImagePresentor: CKMessageMaskablePresentor {
+    /// The size of message content
+    /// If the value is nil, would calculate the size with its assoicated message text
+    public var size: CGSize {
+        return CGSize(width: 240, height: 135)
+    }
+}

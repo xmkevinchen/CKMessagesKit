@@ -10,7 +10,16 @@ import UIKit
 import CKMessagesKit
 import Reusable
 
-class GridViewController: UIViewController, CKMessagePresentor, Identifiable {
+class GridViewController: UIViewController, CKMessageResizablePresentor, CKMessageEmbeddablePresentor, Identifiable {
+    
+    
+    var size: CGSize {
+        return CGSize(width: 240, height: 60)
+    }
+    
+    var insets: UIEdgeInsets {
+        return UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+    }
     
     public func prepareForReuse() {
         
@@ -57,6 +66,8 @@ class GridViewController: UIViewController, CKMessagePresentor, Identifiable {
     }
     
 }
+
+
 
 @IBDesignable
 class GridCell: UICollectionViewCell {

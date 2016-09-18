@@ -59,3 +59,8 @@ public class CKTextMessagePresentor: NSObject, CKMessagePresentor, Reusable {
     
 }
 
+extension CKTextMessagePresentor: CKMessageEmbeddablePresentor {
+    public var insets: UIEdgeInsets {
+        return UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+    }
+}

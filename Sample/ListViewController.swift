@@ -26,10 +26,9 @@ struct ListMessage: CKMessageData, Hashable {
     
 }
 
-class ListViewController: UIViewController, CKMessageMaskablePresentor, UITableViewDataSource, UITableViewDelegate, Identifiable {
+class ListViewController: UIViewController, CKMessagePresentor, Identifiable {
 
     @IBOutlet weak var tableView: UITableView!
-    
     
     
     override func viewDidLoad() {
@@ -121,6 +120,22 @@ class ListViewController: UIViewController, CKMessageMaskablePresentor, UITableV
             .forEach { $0.removeFromSuperview() }
     }
     
+    
+
+}
+
+extension ListViewController: CKMessageMaskablePresentor, CKMessageEmbeddablePresentor {
+    var size: CGSize {
+        return CGSize(width: 240, height: 180)
+    }
+    
+    var insets: UIEdgeInsets {
+        return UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
+    }
+
+}
+
+extension ListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let _ = message as? ListMessage {
             return 10
@@ -136,5 +151,4 @@ class ListViewController: UIViewController, CKMessageMaskablePresentor, UITableV
         }
         return cell
     }
-
 }

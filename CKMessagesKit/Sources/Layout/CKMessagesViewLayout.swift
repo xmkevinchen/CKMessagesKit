@@ -45,7 +45,7 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
         }
     }
     
-    public var messageInsets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16) {
+    public var messageInsets: UIEdgeInsets = .zero {
         didSet {
             if messageInsets != oldValue {
                 resetLayout()
@@ -155,6 +155,19 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
     
     public func sizeForItem(at indexPath: IndexPath) -> CGSize {
         
+//        guard let attributes = layoutAttributesForItem(at: indexPath) as? CKMessagesViewLayoutAttributes else {
+//            return CGSize(width: itemWidth, height: 0)
+//        }
+//        
+//        let height = attributes.topLabelHeight
+//            + attributes.bubbleTopLabelHeight
+//            + attributes.messageInsets.top
+//            + attributes.messageSize.height
+//            + attributes.messageInsets.bottom
+//            + attributes.bottomLabelHeight
+//        
+//        return CGSize(width: itemWidth, height: ceil(height))
+        
         guard let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView) else {
             return CGSize(width: itemWidth, height: 0)
         }
@@ -255,10 +268,20 @@ public class CKMessagesViewLayout: UICollectionViewFlowLayout {
         var messageInsets = size.messageInsets
         
         
-        let bubbleTailWidth
-            = messagesView.decorator?.messagesView(messagesView,
-                                                   layout: self,
-                                                   bubbleTailHorizontalSpaceAt: indexPath) ?? messageBubbleTailHorizonalSpace
+//        let bubbleTailWidth
+//            = messagesView.decorator?.messagesView(messagesView,
+//                                                   layout: self,
+//                                                   bubbleTailHorizontalSpaceAt: indexPath) ?? messageBubbleTailHorizonalSpace
+        let bubbleTailWidth: CGFloat
+        
+        if messagesView.registeredPresentors[String(describing: type(of: message))]?.presentor is CKMessageMaskablePresentor.Type {
+        
+//        if let _ = messagesView.presentor(at: indexPath) as? CKMessageMaskablePresentor {
+            bubbleTailWidth = 0.0
+        } else {
+            bubbleTailWidth = messageBubbleTailHorizonalSpace
+        }
+        
         if isOutgoing {
             attributes.avatarPosition = .right
             messageInsets.right += bubbleTailWidth

@@ -58,12 +58,12 @@ public class CKMessagesBubbleImageFactory {
         
     }
     
-    public static var defaultIncomingBubbleImage: CKMessageBubbleImageData = {
+    public static var defaultIncomingBubbleImage: CKMessagesBubbleImageData = {
         let factory = CKMessagesBubbleImageFactory()
         return factory.incomingBubbleImage(with: UIColor.messageBubbleRed)
     }()
     
-    public static var defaultOutgoingBubbleImage: CKMessageBubbleImageData = {
+    public static var defaultOutgoingBubbleImage: CKMessagesBubbleImageData = {
         let factory = CKMessagesBubbleImageFactory()
         return factory.outgoingBubbleImage(with: UIColor.messageBubbleBlue)
     }()

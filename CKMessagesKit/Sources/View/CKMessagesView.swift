@@ -95,7 +95,6 @@ open class CKMessagesView: UICollectionView {
         if let presentor = presentorQueue.using[indexPath] {
             
             if presentor.message != nil && type(of: presentor.message!) == message {
-                presentor.prepareForReuse()
                 return presentor
             }
             
@@ -117,12 +116,12 @@ open class CKMessagesView: UICollectionView {
             
             if selectedIndex != nil {
                 presentor = presentorQueue.reusable.remove(at: selectedIndex!)
+                presentor.prepareForReuse()
             } else {
                 presentor = registered.presentor.presentor()
             }
 
-            presentorQueue.using[indexPath] = presentor
-            presentor.prepareForReuse()
+            presentorQueue.using[indexPath] = presentor            
             return presentor
             
         } else {
@@ -157,7 +156,13 @@ open class CKMessagesView: UICollectionView {
     /// - returns: if the cell at indexPath return its associated presentor, otherwise return nil
     
     public func presentor(at indexPath: IndexPath) -> CKMessagePresentor? {
-        return presentorQueue.using[indexPath]
+        
+        if let message = messenger?.messageForItem(at: indexPath, of: self) {
+            return dequeueReusablePresentor(of: type(of:message), at: indexPath)
+        }
+        
+        return nil
+        
     }
     
     struct CKRegisteredPresentor {

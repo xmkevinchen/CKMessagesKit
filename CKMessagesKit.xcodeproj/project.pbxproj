@@ -290,8 +290,8 @@
 			isa = PBXGroup;
 			children = (
 				0A7284A41D8A76BB002FC729 /* CKMessagesView.swift */,
-				0A7284A51D8A76BB002FC729 /* CKMessagesViewDecorating.swift */,
 				0A7284A61D8A76BB002FC729 /* CKMessagesViewMessaging.swift */,
+				0A7284A51D8A76BB002FC729 /* CKMessagesViewDecorating.swift */,
 				0A076A911D75CE2B0028383B /* Cell */,
 				0A17517A1D83C5F0002919DF /* Components */,
 			);

@@ -32,50 +32,42 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
     
     func size(of message: CKMessageData, at indexPath: IndexPath, with layout: CKMessagesViewLayout) -> CKMessageCalculatingSize {
         
+        let key = message.hash as AnyObject
+        if let cachedSize = cache.object(forKey: key) as? CKMessageCalculatingSize {
+            return cachedSize
+        }
         
         var size: CKMessageCalculatedSize = .zero
         let messagesView = layout.messagesView
-        let decoractor = messagesView.decorator
-        
-        
+
         // Avatar size
         size.avatar = self.avatarSize(of: message, with: layout)
         
         // Message insets
-        
-        if let messageInsets = decoractor?.messagesView(messagesView, layout: layout, messageInsetsAt: indexPath) {
-            size.messageInsets = messageInsets
+        let presentor = messagesView.presentor(at: indexPath)
+        if let presentor = presentor as? CKMessageEmbeddablePresentor {
+            size.messageInsets = presentor.insets
         } else {
             size.messageInsets = layout.messageInsets
         }
         
+        
         size.topLabel = labelSize(of: .top, with: layout, at: indexPath)
         size.bubbleTopLabel = labelSize(of: .bubbleTop, with: layout, at: indexPath)
         size.bottomLabel = labelSize(of: .bottom, with: layout, at: indexPath)
-        
+                
+        size.avatar = avatarSize(of: message, with: layout)
         
         // Message itself size
-        
-        let key = message.hash as AnyObject
-        if let cachedSize = cache.object(forKey: key) as? CGSize {
-            size.messageSize = cachedSize
-        }
-        
-        size.avatar = avatarSize(of: message, with: layout)
-        var horizontalSpace = size.messageInsets.left + size.messageInsets.right
-        
-        let bubbleTailWidth = layout.messagesView.decorator?.messagesView(layout.messagesView, layout: layout, bubbleTailHorizontalSpaceAt: indexPath) ?? layout.messageBubbleTailHorizonalSpace
-        horizontalSpace += bubbleTailWidth
-        
-        let maximumWidth = layout.itemWidth - size.avatar.width - horizontalSpace - layout.messageBubbleMarginWidth
-        
-        /// If decorator returns contentSize of message, just use it without caching it
-        if var messageSize = layout.messagesView.decorator?.messagesView(layout.messagesView, layout: layout, messageSizeAt: indexPath) {
-            messageSize.width = min(maximumWidth, messageSize.width)
-            size.messageSize = messageSize
-            
+        if let presentor = presentor as? CKMessageResizablePresentor {
+            size.messageSize = presentor.size
         } else {
             
+            var horizontalSpace = size.messageInsets.left + size.messageInsets.right
+            let bubbleTailWidth = layout.messageBubbleTailHorizonalSpace
+            horizontalSpace += bubbleTailWidth
+            
+            let maximumWidth = layout.itemWidth - size.avatar.width - horizontalSpace - layout.messageBubbleMarginWidth
             let textView = CKMessageCellTextView()
             textView.text = message.text
             textView.font = layout.messageFont
@@ -85,9 +77,9 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
             /// So the minimuWidth should subtract the horizontal insets as well
             messageSize.width = max(messageSize.width, minimumWidth - horizontalSpace)
             size.messageSize = messageSize
-            
-            cache.setObject(messageSize as AnyObject, forKey: key)
         }
+        
+        cache.setObject(size as AnyObject, forKey: key)
         
         return size
     }

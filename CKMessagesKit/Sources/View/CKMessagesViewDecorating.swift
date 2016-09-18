@@ -113,7 +113,7 @@ public protocol CKMessagesViewDecorating: class {
     ///
     /// - returns: The bubble image data of the message at the specified indexPath
     ///
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, messageBubbleAt indexPath: IndexPath) -> CKMessageBubbleImageData?
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, messageBubbleAt indexPath: IndexPath) -> CKMessagesBubbleImageData?
     
     /// Asks the decorator for the avatar image data that corresponds to the message at the specified indexPath
     ///
@@ -125,55 +125,6 @@ public protocol CKMessagesViewDecorating: class {
     ///
     func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, avatarAt indexPath: IndexPath) -> CKMessagesAvatarImageData?
     
-    /// Asks the decorator for the content size that corresponds to the message at the specified indexPath
-    ///
-    /// If return `nil` from this method, `CKMessagesViewLayout` will use the text of `CKMessageData` to calculate the size,
-    /// otherwise, `CKMessagesViewLayout` will just use the return value from this method.
-    ///
-    /// The content size is just for message content itself, it doesn't include the size of such as
-    /// * `topLabel`
-    /// * `messageLabel`
-    /// * `bottomLabel`
-    /// * `avatarImageView`
-    /// * `accessoryView`
-    ///
-    /// These size above will retrieve for their corresponding delegate method,
-    /// and `CKMessagesViewLayout` will use them to calculate the finalize size of the whole message cell
-    ///
-    /// - parameter messagesView: The messages view object displaying the flow layout
-    /// - parameter layout:       The layout object requesting the information
-    /// - parameter at:           The layout object requesting the information
-    ///
-    /// - returns: The content size of the message at the specified indexPath
-    ///
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, messageSizeAt indexPath: IndexPath) -> CGSize?
-    
-    /// Asks the decorator for the message insets that corresponds to the message at the specified indexPath
-    ///
-    /// If return `nil` from this method, `CKMessagesViewLayout` will use the value of its property `messageInsets`,
-    /// otherwise, `CKMessagesViewLayout` will just use the return value from this method.
-    ///
-    ///
-    /// These size above will retrieve for their corresponding delegate method,
-    /// and `CKMessagesViewLayout` will use them to calculate the finalize size of the whole message cell
-    ///
-    /// - parameter messagesView: The messages view object displaying the flow layout
-    /// - parameter layout:       The layout object requesting the information
-    /// - parameter at:           The layout object requesting the information
-    ///
-    /// - returns: The insets of the message at the specified indexPath
-    ///
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, messageInsetsAt indexPath: IndexPath) -> UIEdgeInsets?
-    
-    
-    /// Asks the decorator for the bubble tail horizonal space till its body that corresponds to the message at the specified indexPath
-    ///
-    /// - parameter messagesView: The messages view object displaying the flow layout
-    /// - parameter layout:       The layout object requesting the information
-    /// - parameter indexPath:    The layout object requesting the information
-    ///
-    /// - returns: The bubble tail horizontal space at the specified indexPath
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, bubbleTailHorizontalSpaceAt indexPath: IndexPath) -> CGFloat?
     
 }
 
@@ -300,20 +251,8 @@ public extension CKMessagesViewDecorating {
     ///
     /// - returns: The bubble image data of the message at the specified indexPath
     ///
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, messageBubbleAt indexPath: IndexPath) -> CKMessageBubbleImageData? {
-        
-        if let message = messagesView.messenger?.messageForItem(at: indexPath, of: messagesView),
-            let senderId = messagesView.messenger?.senderId {
-            
-            if message.senderId == senderId  {
-                
-                return CKMessagesBubbleImageFactory.defaultOutgoingBubbleImage
-                
-            } else {
-                return CKMessagesBubbleImageFactory.defaultIncomingBubbleImage
-            }
-            
-        }
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, messageBubbleAt indexPath: IndexPath) -> CKMessagesBubbleImageData? {
+               
         
         return nil
     }
@@ -330,61 +269,6 @@ public extension CKMessagesViewDecorating {
         return nil
     }
     
-    /// Asks the decorator for the content size that corresponds to the message at the specified indexPath
-    ///
-    /// If return `nil` from this method, `CKMessagesViewLayout` will use the text of `CKMessageData` to calculate the size,
-    /// otherwise, `CKMessagesViewLayout` will just use the return value from this method.
-    ///
-    /// The content size is just for message content itself, it doesn't include the size of such as
-    /// * `topLabel`
-    /// * `messageLabel`
-    /// * `bottomLabel`
-    /// * `avatarImageView`
-    /// * `accessoryView`
-    ///
-    /// These size above will retrieve for their corresponding delegate method,
-    /// and `CKMessagesViewLayout` will use them to calculate the finalize size of the whole message cell
-    ///
-    /// - parameter messagesView: The messages view object displaying the flow layout
-    /// - parameter layout:       The layout object requesting the information
-    /// - parameter at:           The index path of the item
-    ///
-    /// - returns: The content size of the message at the specified indexPath
-    ///
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, messageSizeAt indexPath: IndexPath) -> CGSize? {
-        return nil
-    }
-    
-    /// Asks the decorator for the message insets that corresponds to the message at the specified indexPath
-    ///
-    /// If return `nil` from this method, `CKMessagesViewLayout` will use the value of its property `messageInsets`,
-    /// otherwise, `CKMessagesViewLayout` will just use the return value from this method.
-    ///
-    ///
-    /// These size above will retrieve for their corresponding delegate method,
-    /// and `CKMessagesViewLayout` will use them to calculate the finalize size of the whole message cell
-    ///
-    /// - parameter messagesView: The messages view object displaying the flow layout
-    /// - parameter layout:       The layout object requesting the information
-    /// - parameter at:           The layout object requesting the information
-    ///
-    /// - returns: The insets of the message at the specified indexPath
-    ///
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, messageInsetsAt indexPath: IndexPath) -> UIEdgeInsets? {
-        return nil
-    }
-    
-    /// Asks the decorator for the bubble tail horizonal space till its body that corresponds to the message at the specified indexPath
-    ///
-    /// - parameter messagesView: The messages view object displaying the flow layout
-    /// - parameter layout:       The layout object requesting the information
-    /// - parameter indexPath:    The layout object requesting the information
-    ///
-    /// - returns: The bubble tail horizontal space at the specified indexPath
-    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, bubbleTailHorizontalSpaceAt indexPath: IndexPath) -> CGFloat? {
-        return nil
-    }
-    
-    
+
     
 }

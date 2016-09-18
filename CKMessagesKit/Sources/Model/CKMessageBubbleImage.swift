@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct CKMessageBubbleImage: CKMessageBubbleImageData {
+public struct CKMessageBubbleImage: CKMessagesBubbleImageData {
     
     public let image: UIImage
     
