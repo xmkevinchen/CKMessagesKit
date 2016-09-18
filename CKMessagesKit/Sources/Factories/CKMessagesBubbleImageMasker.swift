@@ -40,8 +40,7 @@ class CKMessagesBubbleImageMasker {
         
         let imageView = UIImageView(image: image)
         imageView.frame = view.frame
-        view.layer.mask = imageView.layer
-        view.layer.masksToBounds = true
+        view.layer.mask = imageView.layer        
         
     }
     

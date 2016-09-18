@@ -44,6 +44,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         messagesView.register(presentor: GridViewController.self, of: GridMessage.self)
         messagesView.register(presentor: ListViewController.self, of: ListMessage.self)
         messagesView.register(presentor: CKTextMessagePresentor.self, of: CKMessage.self)
+        messagesView.register(presentor: ImagePresentor.self, of: ImageMessage.self)
         
         messagesView.messenger = self
         messagesView.decorator = self        
@@ -53,7 +54,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         messagesView.messagesViewLayout.outgoingAvatarSize = .zero
         messagesView.messagesViewLayout.incomingAvatarSize = CGSize(width: 48, height: 48)        
         
-        for _ in 0..<12 {
+        for _ in 0..<5 {
             insertNewMessage()
         }
         
@@ -136,10 +137,10 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
     private func generateMessage(at index: Int) -> CKMessageData? {
         
         var message: CKMessageData?
-        let value = index % 4
+        let value = index % 5
         
         switch value {
-        case 0:
+        case 4:
             
             message = CKMessage(senderId: senderId,
                                 sender: sender,
@@ -157,6 +158,9 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
             
         case 3:
             message = ListMessage(senderId: "incoming", sender: "Incoming", text: String(index))
+            
+        case 0:
+            message = ImageMessage(senderId: "image", sender: "Image Message", text: "")
             
         default:
             break
@@ -186,6 +190,9 @@ extension ViewController: CKMessagesViewDecorating {
             
         case is ListMessage:
             return CGSize(width: 240, height: 150)
+            
+        case is ImageMessage:
+            return CGSize(width: 160, height: 90)
             
         default:
             return nil
@@ -248,10 +255,23 @@ extension ViewController: CKMessagesViewDecorating {
     func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, messageInsetsAt indexPath: IndexPath) -> UIEdgeInsets? {
         let message = messages[indexPath.item]
         
+        
         if message is ListMessage {
+            return .zero
+        } else if message is ImageMessage {
             return .zero
         }
         
+        return nil
+    }
+    
+    func messagesView(_ messagesView: CKMessagesView, layout: CKMessagesViewLayout, bubbleTailHorizontalSpaceAt indexPath: IndexPath) -> CGFloat? {
+        let message = messages[indexPath.item]
+        
+        if message is ImageMessage {
+            return 0
+        }
+
         return nil
     }
     

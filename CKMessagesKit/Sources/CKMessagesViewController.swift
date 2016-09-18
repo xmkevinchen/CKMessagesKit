@@ -56,17 +56,13 @@ open class CKMessagesViewController: UIViewController {
     }
         
     // MARK: - Private Properties
-    fileprivate var registeredPresentors = [String: CKMessagePresenting.Type]()
-    fileprivate var usingPresentors = [IndexPath: CKMessagePresenting]()
-    fileprivate var unusedPresentors = [String: [CKMessagePresenting]]()
-    fileprivate var prefetchedPresentors = [IndexPath: CKMessagePresenting]()
+
     fileprivate var hasRegistered: Bool = false
     fileprivate var toolbarHeight: CGFloat = 44.0
     
     // MARK: - Life Cycle
     
     deinit {
-        removePresentors()
         unregisterObservers()
     }
     
@@ -104,7 +100,7 @@ open class CKMessagesViewController: UIViewController {
     
     open override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        
+        updateMessagesViewInsets()
     }
     
     open override func viewDidLayoutSubviews() {
@@ -125,9 +121,7 @@ open class CKMessagesViewController: UIViewController {
         
     open override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        
-        removePresentors()
-        
+                
         messagesView.collectionViewLayout.invalidateLayout()
         messagesView.setNeedsLayout()
         
@@ -188,12 +182,12 @@ open class CKMessagesViewController: UIViewController {
         }
         
         automaticallyScrollsToMostRecentMessage = true
+        
         toolbarHeight = inputToolbar.preferredDefaultHeight
         inputToolbar.contentView.textView.placeHolder = "New Message"
         inputToolbar.contentView.textView.delegate = self
         
-        additionalContentInsets = .zero
-        updateMessagesViewInsets()
+        additionalContentInsets = .zero        
         
         
     }
@@ -202,134 +196,6 @@ open class CKMessagesViewController: UIViewController {
     
 }
 
-
-// MARK: - Presentor
-
-extension CKMessagesViewController {
-    
-    
-    /// Register presentor type of specified message type
-    ///
-    /// - parameter presentor: Presentor type
-    /// - parameter message:   Message type
-    public func register(presentor: CKMessagePresenting.Type, for message: CKMessageData.Type) {
-        registeredPresentors[String(describing: message)] = presentor
-    }
-    
-    
-    fileprivate func hasPresentor(of message: CKMessageData) -> Bool {
-        return registeredPresentors[String(describing: type(of:message))] != nil
-    }
-    
-    
-    fileprivate func presentor(of message: CKMessageData, at indexPath: IndexPath) -> CKMessagePresenting? {
-        
-        let MessageType = String(describing: type(of:message))
-        guard let PresentorType = registeredPresentors[MessageType] else {
-            return nil
-        }
-        
-        // If pretchPresentors has presentor for indexPath then just use it
-        
-        if let presentor = prefetchedPresentors[indexPath] {
-            usingPresentors[indexPath] = presentor
-            prefetchedPresentors.removeValue(forKey: indexPath)
-            return presentor
-        }
-        
-        
-        if var presentor = unusedPresentors[MessageType]?.first {
-            unusedPresentors[MessageType]?.removeFirst()
-            usingPresentors[indexPath] = presentor
-            presentor.message = message
-            return presentor
-        }
-        
-        var presentor = PresentorType.presentor()
-        presentor.message = message
-        usingPresentors[indexPath] = presentor
-        
-        if let child = presentor as? UIViewController {
-            addChildViewController(child)
-            child.didMove(toParentViewController: self)
-        }
-        
-        return presentor
-        
-    }
-    
-    fileprivate func prefetchPresentor(of message: CKMessageData, at indexPath: IndexPath) {
-        
-        guard prefetchedPresentors[indexPath] == nil else {
-            return
-        }
-        
-        let MessageType = String(describing: type(of:message))
-        guard let PresentorType = registeredPresentors[MessageType] else {
-            return
-        }
-        
-        if var presentor = unusedPresentors[MessageType]?.first {
-            unusedPresentors[MessageType]?.removeFirst()
-            presentor.message = message
-            prefetchedPresentors[indexPath] = presentor
-        } else {
-            var presentor = PresentorType.presentor()
-            presentor.message = message
-            prefetchedPresentors[indexPath] = presentor
-            
-            if let child = presentor as? UIViewController {
-                addChildViewController(child)
-                child.didMove(toParentViewController: self)
-            }
-        }
-        
-    }
-    
-    
-    fileprivate func recyclePresentor(at indexPath: IndexPath) {
-        
-        if let presentor = usingPresentors[indexPath] {
-            usingPresentors.removeValue(forKey: indexPath)
-            
-            let MessageType = String(describing: presentor.messageType)
-            if unusedPresentors[MessageType] == nil {
-                unusedPresentors[MessageType] = []
-            }
-            
-            unusedPresentors[MessageType]!.append(presentor)
-            
-            presentor.messageView.removeFromSuperview()
-        }
-    }
-    
-    
-    fileprivate func removePresentors() {
-        unusedPresentors.flatMap { return $0.value }.forEach { presentor in
-            if let presentor = presentor as? UIViewController {
-                presentor.removeFromParentViewController()
-            }
-        }
-        
-        unusedPresentors.removeAll()
-        
-        prefetchedPresentors.flatMap { return $0.value }.forEach { presentor in
-            if let presentor = presentor as? UIViewController {
-                presentor.removeFromParentViewController()
-            }
-        }
-        
-        prefetchedPresentors.removeAll()
-        
-        usingPresentors.flatMap { return $0.value }.forEach { presentor in
-            if let presentor = presentor as? UIViewController {
-                presentor.removeFromParentViewController()
-            }
-        }
-        
-        usingPresentors.removeAll()
-    }
-}
 
 
 // MARK: - Rotation
@@ -572,7 +438,7 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
         if let presentor = presentor as? CKMessageMaskablePresentor {
             CKMessagesBubbleImageMasker.apply(to: presentor.messageView, orientation: orientation)            
         }
-        
+
         let bubbleImageData = messagesView.decorator?.messagesView(messagesView, layout: messagesView.messagesViewLayout, messageBubbleAt: indexPath)
         cell.bubbleImageView.image = bubbleImageData?.image
         cell.bubbleImageView.highlightedImage = bubbleImageData?.highlightedImage
@@ -904,15 +770,5 @@ extension CKMessagesViewController: UIScrollViewDelegate {
 //}
 
 
-// MARK: - Debugging
-extension CKMessagesViewController {
-    fileprivate func debuggingPresentors(place: StaticString = #function) {
-        print("===> \(place) usingPresentors: \(usingPresentors)")
-        print("===> \(place) unusedPresentors: \(unusedPresentors)")
-        print("===> \(place) pretchedPresentors: \(prefetchedPresentors)")
-        print("")
-        print("")
-    }
-}
 
 
