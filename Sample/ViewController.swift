@@ -52,9 +52,9 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         messagesView.decorator = self        
         
         /// 2. Show / Hide avatars
-        let avatarFactory = CKMessagesAvatarImageFactory(diameter: 48)
+        let avatarFactory = CKMessagesAvatarImageFactory(diameter: 36)
         messagesView.messagesViewLayout.outgoingAvatarSize = .zero
-        messagesView.messagesViewLayout.incomingAvatarSize = CGSize(width: 48, height: 48)        
+        messagesView.messagesViewLayout.incomingAvatarSize = CGSize(width: 36, height: 36)
         
         for _ in 0..<24 {
             insertNewMessage()
@@ -74,7 +74,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         /// 4. Specify the bar item should be enabled automatically when the `textView` contains text.
         enablesAutomaticallyBarItem = send
         
-        incomingAvatar = avatarFactory.avatar(image: UIImage(named: "wechat")!)
+        incomingAvatar = avatarFactory.avatar(image: #imageLiteral(resourceName: "super-mario"))
         let bubbleFactory = CKMessagesBubbleImageFactory()
         incomingBubbleImage = bubbleFactory.incomingBubbleImage(with: .messageBubbleLightGray)
         outgoingBubbleImage = bubbleFactory.outgoingBubbleImage(with: .messageBubbleBlue)
@@ -96,6 +96,22 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = super.collectionView(collectionView, cellForItemAt: indexPath)
+        
+        let message = messages[indexPath.row]
+        
+        if message.senderId != senderId {
+            if let presentor = messagesView.dequeueReusablePresentor(of: type(of: message), at: indexPath) as? CKTextMessagePresentor {
+                presentor.textView.textColor = UIColor.black
+            }
+        }
+        
+        return cell
+        
     }
     
     public func messageForItem(at indexPath: IndexPath, of messagesView: CKMessagesView) -> CKMessageData {

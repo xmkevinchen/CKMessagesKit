@@ -70,10 +70,10 @@ extension ImagePresentor: CKMessageSizablePresentor {
         switch (trait.horizontalSizeClass, trait.verticalSizeClass) {
             
         case (.compact, .regular):
-            size = CGSize(width: 160, height: 90)
+            size = CGSize(width: 240, height: 135)
             
         default:
-            size = CGSize(width: 240, height: 135)
+            size = CGSize(width: 320, height: 180)
             
         }
         

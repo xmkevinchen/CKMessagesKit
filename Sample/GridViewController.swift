@@ -14,7 +14,19 @@ class GridViewController: UIViewController, CKMessageSizablePresentor, CKMessage
     
     
     public func size(of trait: UITraitCollection) -> CGSize {
-        return CGSize(width: 240, height: 60)
+        
+        var size: CGSize
+        switch (trait.horizontalSizeClass, trait.verticalSizeClass) {
+            
+        case (.compact, .regular):
+            size = CGSize(width: 200, height: 60)
+            
+        default:
+            size = CGSize(width: 320, height: 60)
+            
+        }
+        
+        return size
     }
     
     var insets: UIEdgeInsets {

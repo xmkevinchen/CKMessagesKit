@@ -43,7 +43,7 @@ public extension UIImage {
     func circular(diameter: UInt, highlighted color: UIColor? = nil) -> UIImage {
         let frame = CGRect(x: 0, y: 0, width: Int(diameter), height: Int(diameter))
         
-        UIGraphicsBeginImageContextWithOptions(frame.size, false, 0)
+        UIGraphicsBeginImageContextWithOptions(frame.size, false, scale)
         
         let context = UIGraphicsGetCurrentContext()!
         let path = UIBezierPath(ovalIn: frame)
