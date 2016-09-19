@@ -56,8 +56,7 @@ open class CKMessagesViewController: UIViewController {
     }
         
     // MARK: - Private Properties
-
-    fileprivate var hasRegistered: Bool = false
+    
     fileprivate var toolbarHeight: CGFloat = 44.0
     
     // MARK: - Life Cycle
@@ -99,8 +98,7 @@ open class CKMessagesViewController: UIViewController {
     }
     
     open override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        updateMessagesViewInsets()
+        super.viewWillLayoutSubviews()    
     }
     
     open override func viewDidLayoutSubviews() {
@@ -302,7 +300,6 @@ extension CKMessagesViewController {
     
     fileprivate func registerObservers() {
         
-        guard !hasRegistered else { return }
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(didReceiveKeyboardWillShow(_:)),
@@ -321,7 +318,6 @@ extension CKMessagesViewController {
     }
     
     fileprivate func unregisterObservers() {
-        guard hasRegistered else { return }
         NotificationCenter.default.removeObserver(self)
     }
     
