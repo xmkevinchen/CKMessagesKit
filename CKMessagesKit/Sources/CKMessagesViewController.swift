@@ -424,6 +424,17 @@ extension CKMessagesViewController: UICollectionViewDataSource, UICollectionView
         
         /// Dequeu proper presentor for cell and message
         let presentor = messagesView.dequeueReusablePresentor(of: type(of: message), at: indexPath)
+        if let viewController = presentor as? UIViewController {
+            if viewController.parent == nil {
+                addChildViewController(viewController)
+                viewController.didMove(toParentViewController: self)
+            } else if viewController.parent !== self {
+                viewController.removeFromParentViewController()
+                viewController.didMove(toParentViewController: nil)
+                addChildViewController(viewController)
+                viewController.didMove(toParentViewController: self)
+            }
+        }
         
         
         /// Dequeue the basic cell to be rendered
