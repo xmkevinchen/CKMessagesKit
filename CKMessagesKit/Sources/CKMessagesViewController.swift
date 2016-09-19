@@ -39,7 +39,7 @@ open class CKMessagesViewController: UIViewController {
     
     public var additionalContentInsets: UIEdgeInsets = .zero {
         didSet {
-            updateMessagesViewInsets()
+            updateMessagesViewInsets(with: keyboardFrame)
         }
     }
     
@@ -58,6 +58,7 @@ open class CKMessagesViewController: UIViewController {
     // MARK: - Private Properties
     
     fileprivate var toolbarHeight: CGFloat = 44.0
+    fileprivate var keyboardFrame: CGRect = .zero
     
     // MARK: - Life Cycle
     
@@ -80,7 +81,6 @@ open class CKMessagesViewController: UIViewController {
         
         messagesView.collectionViewLayout.invalidateLayout()
         view.layoutIfNeeded()
-        updateMessagesViewInsets()
         
         if automaticallyScrollsToMostRecentMessage {
             DispatchQueue.main.async {
@@ -98,7 +98,8 @@ open class CKMessagesViewController: UIViewController {
     }
     
     open override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()    
+        super.viewWillLayoutSubviews()
+        updateMessagesViewInsets(with: keyboardFrame)
     }
     
     open override func viewDidLayoutSubviews() {
@@ -184,10 +185,7 @@ open class CKMessagesViewController: UIViewController {
         toolbarHeight = inputToolbar.preferredDefaultHeight
         inputToolbar.contentView.textView.placeHolder = "New Message"
         inputToolbar.contentView.textView.delegate = self
-        
-        additionalContentInsets = .zero        
-        
-        
+                
     }
 
     
@@ -237,6 +235,7 @@ extension CKMessagesViewController {
 extension CKMessagesViewController {
     
     fileprivate func updateMessagesViewInsets(with keyboradFrame: CGRect = .zero) {
+        self.keyboardFrame = keyboradFrame
         
         let top = additionalContentInsets.top + topLayoutGuide.length
         let bottom = additionalContentInsets.bottom + toolbarHeight + keyboradFrame.height

@@ -56,7 +56,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         messagesView.messagesViewLayout.outgoingAvatarSize = .zero
         messagesView.messagesViewLayout.incomingAvatarSize = CGSize(width: 36, height: 36)
         
-        for _ in 0..<24 {
+        for _ in 0..<12 {
             insertNewMessage()
         }
         
@@ -181,10 +181,10 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
             message = ListMessage(senderId: "incoming", sender: "Incoming", text: String(index))
             
         case 5:
-            message = ImageMessage(senderId: "image", sender: "Image Message", text: "")
+            message = ImageMessage(senderId: "image", sender: "Image Message", text: "")            
             
         case 1:
-            message = ImageMessage(senderId: senderId, sender: sender, text: "")
+            message = ImageMessage(senderId: senderId, sender: sender, text: "", image: #imageLiteral(resourceName: "zoro"))
             
         default:
             break

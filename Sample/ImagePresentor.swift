@@ -17,12 +17,12 @@ struct ImageMessage: CKMessageData, Hashable {
     public var timestamp: Date
     public var image: UIImage?
     
-    public init(senderId: String, sender: String, text: String, timestamp: Date = Date()) {
+    public init(senderId: String, sender: String, text: String, image: UIImage? = #imageLiteral(resourceName: "sample-image"), timestamp: Date = Date()) {
         self.senderId = senderId
         self.sender = sender
         self.text = text
         self.timestamp = timestamp
-        self.image = UIImage(named: "sample-image")
+        self.image = image
     }
     
 }
