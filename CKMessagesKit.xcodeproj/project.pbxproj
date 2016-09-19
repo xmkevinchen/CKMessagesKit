@@ -50,10 +50,13 @@
 		0A9176041D8481E300D2A11F /* Reusable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A9176001D8480F000D2A11F /* Reusable.framework */; };
 		0A9176051D8481E300D2A11F /* Reusable.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0A9176001D8480F000D2A11F /* Reusable.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0AB11D581D8E3DBD00EECFF9 /* CKMessagesBubbleImageMasker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB11D571D8E3DBD00EECFF9 /* CKMessagesBubbleImageMasker.swift */; };
+		0ABAE9861D9033670002FA94 /* CKMessageImageData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABAE9851D9033660002FA94 /* CKMessageImageData.swift */; };
 		0AE356B41D8E4F8D00612D26 /* ImagePresentor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE356B21D8E4CA600612D26 /* ImagePresentor.swift */; };
 		0AE356D41D8F412A00612D26 /* CKMessageMaskableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE356D31D8F412A00612D26 /* CKMessageMaskableCell.swift */; };
 		0AE4F2201D8512F20094EB64 /* CKMessageTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE4F21F1D8512F20094EB64 /* CKMessageTextCell.swift */; };
 		0AE4F2221D851DD40094EB64 /* CKMessageTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AE4F2211D851DD40094EB64 /* CKMessageTextCell.xib */; };
+		0AFD55C21D903F2300D1FAC6 /* CKMessageImageDataPresentor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFD55C11D903F2300D1FAC6 /* CKMessageImageDataPresentor.swift */; };
+		0AFD55C41D903F4700D1FAC6 /* CKMessageImageDataPresentor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AFD55C31D903F4700D1FAC6 /* CKMessageImageDataPresentor.xib */; };
 		0AFD7D481D6E9E2D000367B2 /* GridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFD7D471D6E9E2D000367B2 /* GridViewController.swift */; };
 		912224161D6E6D3300C5F3B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224151D6E6D3300C5F3B4 /* AppDelegate.swift */; };
 		912224181D6E6D3300C5F3B4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912224171D6E6D3300C5F3B4 /* ViewController.swift */; };
@@ -151,10 +154,13 @@
 		0A9175F81D8476AF00D2A11F /* CKMessageBasicCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKMessageBasicCell.xib; sourceTree = "<group>"; };
 		0A9175FB1D8480F000D2A11F /* Reusable.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Reusable.xcodeproj; path = Carthage/Checkouts/Reusable/Reusable.xcodeproj; sourceTree = "<group>"; };
 		0AB11D571D8E3DBD00EECFF9 /* CKMessagesBubbleImageMasker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessagesBubbleImageMasker.swift; sourceTree = "<group>"; };
+		0ABAE9851D9033660002FA94 /* CKMessageImageData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageImageData.swift; sourceTree = "<group>"; };
 		0AE356B21D8E4CA600612D26 /* ImagePresentor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePresentor.swift; sourceTree = "<group>"; };
 		0AE356D31D8F412A00612D26 /* CKMessageMaskableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageMaskableCell.swift; sourceTree = "<group>"; };
 		0AE4F21F1D8512F20094EB64 /* CKMessageTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageTextCell.swift; sourceTree = "<group>"; };
 		0AE4F2211D851DD40094EB64 /* CKMessageTextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKMessageTextCell.xib; sourceTree = "<group>"; };
+		0AFD55C11D903F2300D1FAC6 /* CKMessageImageDataPresentor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageImageDataPresentor.swift; sourceTree = "<group>"; };
+		0AFD55C31D903F4700D1FAC6 /* CKMessageImageDataPresentor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKMessageImageDataPresentor.xib; sourceTree = "<group>"; };
 		0AFD7D471D6E9E2D000367B2 /* GridViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridViewController.swift; sourceTree = "<group>"; };
 		912224041D6E6D0E00C5F3B4 /* CKMessagesKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CKMessagesKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		912224131D6E6D3300C5F3B4 /* CKMessages.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CKMessages.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -262,8 +268,9 @@
 		0A076A881D75CE2B0028383B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				0A076A8A1D75CE2B0028383B /* CKMessage.swift */,
 				0A076A8D1D75CE2B0028383B /* CKMessageData.swift */,
+				0A076A8A1D75CE2B0028383B /* CKMessage.swift */,
+				0ABAE9851D9033660002FA94 /* CKMessageImageData.swift */,
 				0A076A8C1D75CE2B0028383B /* CKMessageBubbleImageData.swift */,
 				0A076A8B1D75CE2B0028383B /* CKMessageBubbleImage.swift */,
 				0A5A48D01D7A375300BFC790 /* CKMessagesAvatarImageData.swift */,
@@ -278,6 +285,8 @@
 				0A7284D41D8C427E002FC729 /* CKMessagePresentor.swift */,
 				0A7284D61D8C442D002FC729 /* CKTextMessagePresentor.swift */,
 				0A7284D81D8C4617002FC729 /* CKTextMessagePresentor.xib */,
+				0AFD55C11D903F2300D1FAC6 /* CKMessageImageDataPresentor.swift */,
+				0AFD55C31D903F4700D1FAC6 /* CKMessageImageDataPresentor.xib */,
 			);
 			path = Presentors;
 			sourceTree = "<group>";
@@ -491,6 +500,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AFD55C41D903F4700D1FAC6 /* CKMessageImageDataPresentor.xib in Resources */,
 				0AE4F2221D851DD40094EB64 /* CKMessageTextCell.xib in Resources */,
 				0A7284D91D8C4617002FC729 /* CKTextMessagePresentor.xib in Resources */,
 				0A1751891D83C5F0002919DF /* CKMessagesIndicatorFooterView.xib in Resources */,
@@ -547,6 +557,7 @@
 				0A076AB11D75CE2B0028383B /* CKMessage.swift in Sources */,
 				0A1751861D83C5F0002919DF /* CKMessageCellTextView.swift in Sources */,
 				0A7284D51D8C427E002FC729 /* CKMessagePresentor.swift in Sources */,
+				0AFD55C21D903F2300D1FAC6 /* CKMessageImageDataPresentor.swift in Sources */,
 				0A1751871D83C5F0002919DF /* CKMessagesComposerTextView.swift in Sources */,
 				91A556921D80E2F800ACF4B3 /* CGSize+CKMessages.swift in Sources */,
 				0A076AAE1D75CE2B0028383B /* CKMessageSizeCalculating.swift in Sources */,
@@ -571,6 +582,7 @@
 				0A076AB21D75CE2B0028383B /* CKMessageBubbleImage.swift in Sources */,
 				0A17518A1D83C5F0002919DF /* CKMessagesIndicatorView.swift in Sources */,
 				0A17518C1D83C5F0002919DF /* CKMessagesInputToolbarItem.swift in Sources */,
+				0ABAE9861D9033670002FA94 /* CKMessageImageData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
