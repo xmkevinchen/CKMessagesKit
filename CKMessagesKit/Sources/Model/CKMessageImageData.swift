@@ -8,14 +8,14 @@
 
 import Foundation
 
-public protocol CKMessageImageData: CKMessageData, Hashable {
+public protocol CKMessageImageData: CKMessageData {
     
     var imageURL: URL { get }
     var image: UIImage? { get }
     
 }
 
-extension CKMessageImageData {
+extension CKMessageImageData where Self: Hashable {
     
     static func ==(lhs: Self, rhs: Self) -> Bool {
         
