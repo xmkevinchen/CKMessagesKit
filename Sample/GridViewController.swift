@@ -10,7 +10,7 @@ import UIKit
 import CKMessagesKit
 import Reusable
 
-class GridViewController: UIViewController, CKMessageSizablePresentor, CKMessageEmbeddablePresentor, Identifiable {
+class GridViewController: UIViewController, CKMessageSizablePresentor, CKMessageEmbeddablePresentor, Reusable {
     
     
     public func size(of trait: UITraitCollection) -> CGSize {

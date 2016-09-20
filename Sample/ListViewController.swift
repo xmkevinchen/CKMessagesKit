@@ -26,7 +26,7 @@ struct ListMessage: CKMessageData, Hashable {
     
 }
 
-class ListViewController: UIViewController, CKMessagePresentor, Identifiable {
+class ListViewController: UIViewController, CKMessagePresentor, Reusable {
 
     @IBOutlet weak var tableView: UITableView!
     
