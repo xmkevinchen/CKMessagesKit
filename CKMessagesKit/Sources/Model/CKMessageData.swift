@@ -15,7 +15,6 @@ public protocol CKMessageData {
     var senderId: String { get }
     var sender: String { get }
     var timestamp: Date { get }
-    var text: String { get }
     var hash: Int { get }
     
 }
@@ -26,14 +25,9 @@ extension CKMessageData where Self: Hashable {
     public var hash: Int {
         return hashValue
     }
-    
-    public var hashValue: Int {
-        return "\(senderId).\(text).\(timestamp)".hashValue
-    }
-    
+        
     public static func ==(lhs: Self, rhs: Self) -> Bool {
         return lhs.senderId == rhs.senderId
-            && lhs.text == rhs.text
             && lhs.timestamp == rhs.timestamp
     }
 

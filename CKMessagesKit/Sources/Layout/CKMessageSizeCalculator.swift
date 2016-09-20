@@ -70,7 +70,12 @@ class CKMessageSizeCalculator: CKMessageSizeCalculating {
             
             let maximumWidth = layout.itemWidth - size.avatar.width - horizontalSpace - layout.messageBubbleMarginWidth
             let textView = CKMessageCellTextView()
-            textView.text = message.text
+            if let message = message as? CKMessageTextData {
+                textView.text = message.text
+            } else {
+                textView.text = ""
+            }
+            
             textView.font = layout.messageFont
             var messageSize = textView.sizeThatFits(CGSize(width: maximumWidth, height: CGFloat.greatestFiniteMagnitude))
             

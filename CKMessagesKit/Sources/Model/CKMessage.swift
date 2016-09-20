@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct CKMessage: CKMessageData, Hashable {
+public struct CKMessage: CKMessageTextData, Hashable {
     
     public var senderId: String
     public var sender: String

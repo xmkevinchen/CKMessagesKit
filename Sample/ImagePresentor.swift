@@ -11,16 +11,19 @@ import CKMessagesKit
 
 struct ImageMessage: CKMessageData, Hashable {
     
+    public var hashValue: Int {
+        return "\(senderId).\(timestamp).\(image.hashValue)".hashValue
+    }
+
+    
     public var senderId: String
     public var sender: String
-    public var text: String
     public var timestamp: Date
-    public var image: UIImage?
+    public var image: UIImage
     
-    public init(senderId: String, sender: String, text: String, image: UIImage? = #imageLiteral(resourceName: "sample-image"), timestamp: Date = Date()) {
+    public init(senderId: String, sender: String, image: UIImage = #imageLiteral(resourceName: "sample-image"), timestamp: Date = Date()) {
         self.senderId = senderId
-        self.sender = sender
-        self.text = text
+        self.sender = sender        
         self.timestamp = timestamp
         self.image = image
     }

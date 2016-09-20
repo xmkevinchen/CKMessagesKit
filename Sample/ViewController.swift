@@ -45,7 +45,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         /// 1. Register presentor for specified message type
         messagesView.register(presentor: GridViewController.self, of: GridMessage.self)
         messagesView.register(presentor: ListViewController.self, of: ListMessage.self)
-        messagesView.register(presentor: CKTextMessagePresentor.self, of: CKMessage.self)
+        messagesView.register(presentor: CKMessageTextDataPresentor.self, of: CKMessage.self)
         messagesView.register(presentor: ImagePresentor.self, of: ImageMessage.self)
         
         messagesView.messenger = self
@@ -56,7 +56,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         messagesView.messagesViewLayout.outgoingAvatarSize = .zero
         messagesView.messagesViewLayout.incomingAvatarSize = CGSize(width: 36, height: 36)
         
-        for _ in 0..<12 {
+        for _ in 0..<6 {
             insertNewMessage()
         }
         
@@ -105,7 +105,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         let message = messages[indexPath.row]
         
         if message.senderId != senderId {
-            if let presentor = messagesView.dequeueReusablePresentor(of: type(of: message), at: indexPath) as? CKTextMessagePresentor {
+            if let presentor = messagesView.dequeueReusablePresentor(of: type(of: message), at: indexPath) as? CKMessageTextDataPresentor {
                 presentor.textView.textColor = UIColor.black
             }
         }
@@ -161,7 +161,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         let value = index % 6
         
         switch value {
-        case 0:
+        case 1:
             
             message = CKMessage(senderId: senderId,
                                 sender: sender,
@@ -174,17 +174,17 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
             let substring = self.text.substring(to: lastIndex)
             message = CKMessage(senderId: "incoming", sender: "Incoming", text: substring)
             
-        case 2:
-            message = GridMessage(senderId: senderId, sender: sender, text: String(index))
+        case 0:
+            message = GridMessage(senderId: senderId, sender: sender, index: index)
             
         case 4:
-            message = ListMessage(senderId: "incoming", sender: "Incoming", text: String(index))
+            message = ListMessage(senderId: "incoming", sender: "Incoming", index: index)
             
         case 5:
-            message = ImageMessage(senderId: "image", sender: "Image Message", text: "")            
+            message = ImageMessage(senderId: "image", sender: "Image Message")
             
-        case 1:
-            message = ImageMessage(senderId: senderId, sender: sender, text: "", image: #imageLiteral(resourceName: "zoro"))
+        case 2:
+            message = ImageMessage(senderId: senderId, sender: sender, image: #imageLiteral(resourceName: "zoro"))
             
         default:
             break

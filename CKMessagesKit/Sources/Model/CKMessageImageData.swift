@@ -25,7 +25,7 @@ extension CKMessageImageData where Self: Hashable {
     }
     
     var hashValue: Int {
-         return "\(senderId).\(text).\(timestamp).\(imageURL)".hashValue        
+         return "\(senderId).\(timestamp).\(imageURL)".hashValue        
     }
     
 }

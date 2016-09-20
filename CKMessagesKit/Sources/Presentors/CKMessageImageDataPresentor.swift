@@ -39,7 +39,7 @@ class CKMessageImageDataPresentor: UIViewController, CKMessagePresentor {
     func update(with message: CKMessageData) {
         
         if let message = message as? CKMessageImageData {
-            
+            self.message = message
         }
         
     }

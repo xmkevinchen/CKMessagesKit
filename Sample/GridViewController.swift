@@ -10,6 +10,27 @@ import UIKit
 import CKMessagesKit
 import Reusable
 
+struct GridMessage: CKMessageData, Hashable {
+    
+    public var senderId: String
+    public var sender: String
+    public var index: Int
+    public var timestamp: Date
+    
+    public var hashValue: Int {
+        return "GridMessage:\(senderId).\(index).\(timestamp)".hashValue
+    }
+    
+    public init(senderId: String, sender: String, index: Int, timestamp: Date = Date()) {
+        self.senderId = senderId
+        self.sender = sender
+        self.index = index
+        self.timestamp = timestamp
+    }
+    
+}
+
+
 class GridViewController: UIViewController, CKMessageSizablePresentor, CKMessageEmbeddablePresentor, Reusable {
     
     
@@ -110,7 +131,9 @@ extension GridViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GridCell", for: indexPath) as! GridCell
         
-        cell.textLabel.text = String(indexPath.item + Int(message!.text)!)
+        if let message = message as? GridMessage {
+            cell.textLabel.text = String(indexPath.item + message.index)
+        }
         return cell
     }
     

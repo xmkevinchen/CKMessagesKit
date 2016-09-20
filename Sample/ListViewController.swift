@@ -14,14 +14,18 @@ struct ListMessage: CKMessageData, Hashable {
     
     public var senderId: String
     public var sender: String
-    public var text: String
     public var timestamp: Date
+    public var index: Int
     
-    public init(senderId: String, sender: String, text: String, timestamp: Date = Date()) {
+    public init(senderId: String, sender: String, index: Int, timestamp: Date = Date()) {
         self.senderId = senderId
         self.sender = sender
-        self.text = text
+        self.index = index
         self.timestamp = timestamp
+    }
+    
+    public var hashValue: Int {
+        return "ListMessage:\(senderId).\(index).\(timestamp)".hashValue
     }
     
 }
@@ -152,7 +156,7 @@ extension ListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         if let message = message as? ListMessage {
-            cell.textLabel?.text = String(Int(message.text)! + indexPath.row)
+            cell.textLabel?.text = String(message.index + indexPath.row)
         }
         return cell
     }
