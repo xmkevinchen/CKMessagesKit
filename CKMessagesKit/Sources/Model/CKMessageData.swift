@@ -15,6 +15,11 @@ public protocol CKMessageData {
     var senderId: String { get }
     var sender: String { get }
     var timestamp: Date { get }
+    
+    
+    /// Hash value of message
+    /// The default implementation of `CKMessageSizeCalculating` protocol strongly depends on its value's differentiate
+    /// If different messages have same hash value the wrong cached message size would be used inproperly
     var hash: Int { get }
     
 }
