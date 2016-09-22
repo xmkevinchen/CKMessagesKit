@@ -79,4 +79,7 @@ public extension UIImage {
         return UIImage(named: "typing", in: Bundle.messages, compatibleWith: nil)!
     }
     
+    public static var placeholder: UIImage {
+        return UIImage(named: "image-placeholder", in: Bundle.messages, compatibleWith: nil)!
+    }
 }

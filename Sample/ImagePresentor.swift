@@ -14,7 +14,7 @@ struct ImageMessage: CKMessageData, Hashable {
     public var hashValue: Int {
         return "\(senderId).\(timestamp).\(image.hashValue)".hashValue
     }
-
+    
     
     public var senderId: String
     public var sender: String
@@ -23,9 +23,32 @@ struct ImageMessage: CKMessageData, Hashable {
     
     public init(senderId: String, sender: String, image: UIImage = #imageLiteral(resourceName: "sample-image"), timestamp: Date = Date()) {
         self.senderId = senderId
-        self.sender = sender        
+        self.sender = sender
         self.timestamp = timestamp
         self.image = image
+    }
+    
+}
+
+struct CKMessageImage: CKMessageImageData, Hashable {
+    
+    var senderId: String
+    var sender: String
+    var timestamp: Date
+    
+    var image: UIImage?
+    var imageURL: URL
+    
+    init(senderId: String, sender: String, imageURL: URL, image: UIImage? = nil, timestamp: Date = Date()) {
+        self.senderId = senderId
+        self.sender = sender
+        self.timestamp = timestamp
+        self.imageURL = imageURL
+        if image != nil {
+            self.image = image
+        } else {
+            self.image = UIImage(contentsOfFile: imageURL.path)
+        }
     }
     
 }

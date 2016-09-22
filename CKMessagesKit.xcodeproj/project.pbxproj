@@ -54,6 +54,7 @@
 		0AE356D41D8F412A00612D26 /* CKMessageMaskableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE356D31D8F412A00612D26 /* CKMessageMaskableCell.swift */; };
 		0AE4F2201D8512F20094EB64 /* CKMessageTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AE4F21F1D8512F20094EB64 /* CKMessageTextCell.swift */; };
 		0AE4F2221D851DD40094EB64 /* CKMessageTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AE4F2211D851DD40094EB64 /* CKMessageTextCell.xib */; };
+		0AFC3FCB1D9373CC0047C666 /* zoro@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AFC3FCA1D9373CC0047C666 /* zoro@2x.png */; };
 		0AFD55C21D903F2300D1FAC6 /* CKMessageImageDataPresentor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFD55C11D903F2300D1FAC6 /* CKMessageImageDataPresentor.swift */; };
 		0AFD55C41D903F4700D1FAC6 /* CKMessageImageDataPresentor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AFD55C31D903F4700D1FAC6 /* CKMessageImageDataPresentor.xib */; };
 		0AFD55C61D90C9BB00D1FAC6 /* CKMessageTextData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFD55C51D90C9BB00D1FAC6 /* CKMessageTextData.swift */; };
@@ -158,6 +159,7 @@
 		0AE356D31D8F412A00612D26 /* CKMessageMaskableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageMaskableCell.swift; sourceTree = "<group>"; };
 		0AE4F21F1D8512F20094EB64 /* CKMessageTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageTextCell.swift; sourceTree = "<group>"; };
 		0AE4F2211D851DD40094EB64 /* CKMessageTextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKMessageTextCell.xib; sourceTree = "<group>"; };
+		0AFC3FCA1D9373CC0047C666 /* zoro@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zoro@2x.png"; sourceTree = "<group>"; };
 		0AFD55C11D903F2300D1FAC6 /* CKMessageImageDataPresentor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageImageDataPresentor.swift; sourceTree = "<group>"; };
 		0AFD55C31D903F4700D1FAC6 /* CKMessageImageDataPresentor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CKMessageImageDataPresentor.xib; sourceTree = "<group>"; };
 		0AFD55C51D90C9BB00D1FAC6 /* CKMessageTextData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CKMessageTextData.swift; sourceTree = "<group>"; };
@@ -349,6 +351,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		0AFC3FC91D9373CC0047C666 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				0AFC3FCA1D9373CC0047C666 /* zoro@2x.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		912223FA1D6E6D0E00C5F3B4 = {
 			isa = PBXGroup;
 			children = (
@@ -372,6 +382,7 @@
 		912224141D6E6D3300C5F3B4 /* Sample */ = {
 			isa = PBXGroup;
 			children = (
+				0AFC3FC91D9373CC0047C666 /* Resources */,
 				912224151D6E6D3300C5F3B4 /* AppDelegate.swift */,
 				91AA8E441D88C1FA006C3F87 /* RootViewController.swift */,
 				912224171D6E6D3300C5F3B4 /* ViewController.swift */,
@@ -516,6 +527,7 @@
 			files = (
 				912224201D6E6D3300C5F3B4 /* LaunchScreen.storyboard in Resources */,
 				9122241D1D6E6D3300C5F3B4 /* Assets.xcassets in Resources */,
+				0AFC3FCB1D9373CC0047C666 /* zoro@2x.png in Resources */,
 				9122241B1D6E6D3300C5F3B4 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

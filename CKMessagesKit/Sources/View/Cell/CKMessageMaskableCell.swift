@@ -13,7 +13,9 @@ class CKMessageMaskableCell: CKMessageBasicCell {
     override func layoutSubviews() {
         super.layoutSubviews()
     
-        CKMessagesBubbleImageMasker.apply(to: messageContainerView, orientation: orientation, size: messageSize)
+        if let messageView = messageView {
+            CKMessagesBubbleImageMasker.apply(to: messageView, orientation: orientation, size: messageSize)
+        }
     }
     
     

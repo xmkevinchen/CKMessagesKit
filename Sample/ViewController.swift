@@ -34,7 +34,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         super.viewDidLoad()
         
         title = "Messages"
-//        messagesView.backgroundColor = UIColor.lightGray
+        messagesView.backgroundColor = UIColor.lightGray
         
         if isModel {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss(_:)))
@@ -46,6 +46,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         messagesView.register(presentor: GridViewController.self, of: GridMessage.self)
         messagesView.register(presentor: ListViewController.self, of: ListMessage.self)
         messagesView.register(presentor: CKMessageTextDataPresentor.self, of: CKMessage.self)
+        messagesView.register(presentor: CKMessageImageDataPresentor.self, of: CKMessageImage.self)
         messagesView.register(presentor: ImagePresentor.self, of: ImageMessage.self)
         
         messagesView.messenger = self
@@ -56,7 +57,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         messagesView.messagesViewLayout.outgoingAvatarSize = .zero
         messagesView.messagesViewLayout.incomingAvatarSize = CGSize(width: 36, height: 36)
         
-        for _ in 0..<6 {
+        for _ in 0..<1 {
             insertNewMessage()
         }
         
@@ -81,6 +82,46 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
         
         messagesView.reloadData()
         
+    }
+    
+    private func generateMessage(at index: Int) -> CKMessageData? {
+        
+        var message: CKMessageData?
+        let value = index % 6
+        
+        switch value {
+        case 1:
+            
+            message = CKMessage(senderId: senderId,
+                                sender: sender,
+                                text: "Your Apple ID must be associated with a paid Apple Developer Program or Apple Developer Enterprise Program to access certain software downloads.")
+            
+        case 3:
+            _ = self.text.lengthOfBytes(using: .utf8)
+            let maximum = max(60, Int(arc4random_uniform(UInt32(120))))
+            let lastIndex = self.text.index(self.text.startIndex, offsetBy: maximum)
+            let substring = self.text.substring(to: lastIndex)
+            message = CKMessage(senderId: "incoming", sender: "Incoming", text: substring)
+            
+        case 2:
+            message = GridMessage(senderId: senderId, sender: sender, index: index)
+            
+        case 4:
+            message = ListMessage(senderId: "incoming", sender: "Incoming", index: index)
+            
+        case 5:
+            message = ImageMessage(senderId: "image", sender: "Image Message")
+            
+        case 0:
+            let filename = "zoro@2x.png"
+            let imageURL = Bundle.main.bundleURL.appendingPathComponent(filename)
+            message = CKMessageImage(senderId: senderId, sender: sender, imageURL: imageURL)
+            
+        default:
+            break
+        }
+        
+        return message
     }
 
     func dismiss(_ sender: AnyObject) {
@@ -155,43 +196,7 @@ class ViewController: CKMessagesViewController, CKMessagesViewMessaging {
     
     let text = "It is almost always cleaner and easier to update a constraint immediately after the affecting change has occurred. Deferring these changes to a later method makes the code more complex and harder to understand.\nHowever, there are times when you may want to batch changes for performance reasons. This should only be done when changing the constraints in place is too slow, or when a view is making a number of redundant changes.\nTo batch a change, instead of making the change directly, call the setNeedsUpdateConstraints method on the view holding the constraint. Then, override the view’s updateConstraints method to modify the affected constraints."
     
-    private func generateMessage(at index: Int) -> CKMessageData? {
-        
-        var message: CKMessageData?
-        let value = index % 6
-        
-        switch value {
-        case 1:
-            
-            message = CKMessage(senderId: senderId,
-                                sender: sender,
-                                text: "Your Apple ID must be associated with a paid Apple Developer Program or Apple Developer Enterprise Program to access certain software downloads.")
-            
-        case 3:
-            _ = self.text.lengthOfBytes(using: .utf8)
-            let maximum = max(60, Int(arc4random_uniform(UInt32(120))))
-            let lastIndex = self.text.index(self.text.startIndex, offsetBy: maximum)
-            let substring = self.text.substring(to: lastIndex)
-            message = CKMessage(senderId: "incoming", sender: "Incoming", text: substring)
-            
-        case 0:
-            message = GridMessage(senderId: senderId, sender: sender, index: index)
-            
-        case 4:
-            message = ListMessage(senderId: "incoming", sender: "Incoming", index: index)
-            
-        case 5:
-            message = ImageMessage(senderId: "image", sender: "Image Message")
-            
-        case 2:
-            message = ImageMessage(senderId: senderId, sender: sender, image: #imageLiteral(resourceName: "zoro"))
-            
-        default:
-            break
-        }
-        
-        return message
-    }
+    
     
     private func insertNewMessage() {
         let message = generateMessage(at: messages.count)

@@ -8,52 +8,106 @@
 
 import UIKit
 
-class CKMessageImageDataPresentor: UIViewController, CKMessagePresentor {
+open class CKMessageImageDataPresentor: UIViewController, CKMessagePresentor {
     
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    @IBOutlet public weak var imageView: UIImageView!
+    @IBOutlet public weak var spinner: UIActivityIndicatorView!
     
-    override func viewDidLoad() {
+    public var placeholderImage: UIImage = .placeholder
+    
+    override open func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if let message = message {
+            update(with: message)
+        }
     }
     
             
     /// MARK: - CKMessagePresentor
     
-    var message: CKMessageData? {
+    public var message: CKMessageData? {
         didSet {
-            if let message = message {
-                update(with: message)
+            
+            guard imageView != nil else {
+                return
+            }
+            
+            if let message = message as? CKMessageImageData {
+                
+                spinner.startAnimating()
+                spinner.isHidden = false
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    self.imageView.image = message.image != nil ? message.image : self.placeholderImage
+                    self.spinner.stopAnimating()
+                    self.spinner.isHidden = true
+                    
+                }
+                
+            
+            } else {
+                imageView.image = nil
             }
         }
     }
     
-    var messageView: UIView {
+    public var messageView: UIView {
         return view
     }
     
-    func update(with message: CKMessageData) {
+    public func update(with message: CKMessageData) {
         
         if let message = message as? CKMessageImageData {
             self.message = message
         }
         
+        imageView.setNeedsDisplay()
+        
     }
     
-    func prepareForReuse() {
+    public func prepareForReuse() {
         imageView.image = nil
         spinner.stopAnimating()
         spinner.isHidden = true
     }
     
-    static func presentor() -> CKMessagePresentor {
+    public static func presentor() -> CKMessagePresentor {
         return CKMessageImageDataPresentor(nibName: String(describing: CKMessageImageDataPresentor.self),
                                            bundle: Bundle(for: CKMessageImageDataPresentor.self))
     }
     
     
+}
+
+
+extension CKMessageImageDataPresentor: CKMessageSizablePresentor {
+    
+    public func size(of trait: UITraitCollection) -> CGSize {
+        
+        var size: CGSize
+        switch (trait.horizontalSizeClass, trait.verticalSizeClass) {
+            
+        case (.compact, .regular):
+            size = CGSize(width: 240, height: 135)
+            
+        default:
+            size = CGSize(width: 320, height: 180)
+            
+        }
+        
+        return size
+    }
+    
+}
+
+extension CKMessageImageDataPresentor: CKMessageMaskablePresentor {
+    public var isMessageBubbleHidden: Bool {
+        return false
+    }
 }

@@ -17,14 +17,14 @@ public protocol CKMessageImageData: CKMessageData {
 
 extension CKMessageImageData where Self: Hashable {
     
-    static func ==(lhs: Self, rhs: Self) -> Bool {
+    public static func ==(lhs: Self, rhs: Self) -> Bool {
         
         return lhs.senderId == rhs.senderId
             && lhs.timestamp == rhs.timestamp
             && lhs.imageURL == rhs.imageURL        
     }
     
-    var hashValue: Int {
+    public var hashValue: Int {
          return "\(senderId).\(timestamp).\(imageURL)".hashValue        
     }
     
